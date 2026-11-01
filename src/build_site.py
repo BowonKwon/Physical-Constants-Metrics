@@ -149,6 +149,9 @@ svg{max-width:100%;height:auto;display:block}svg text{font-family:var(--body);fi
 svg .hit{fill:transparent}svg .hit:hover+.dot,svg .dot:hover{stroke:var(--fg);stroke-width:2}
 .legend{display:flex;gap:1.1rem;font-size:.86rem;color:var(--fg2);flex-wrap:wrap;margin:.2rem 0 .4rem}.legend span::before{content:"";display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:.4rem;vertical-align:-1px;background:var(--c)}
 .legend span.dash::before{height:0;border-top:2px dashed var(--c);border-radius:0;vertical-align:3px}
+.takeaway{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent2);border-radius:10px;padding:.75rem 1.1rem .8rem;margin:.4rem 0 1.4rem;box-shadow:var(--shadow);max-width:80ch}
+.takeaway b{display:block;font-size:.76rem;letter-spacing:.06em;color:var(--accent2);margin-bottom:.2rem}
+.takeaway ul{margin:0;padding-left:1.1rem}.takeaway li{margin:.25rem 0}
 .note{background:color-mix(in srgb,var(--accent) 7%,var(--card));border:1px solid color-mix(in srgb,var(--accent) 25%,var(--line));border-left:4px solid var(--accent);border-radius:8px;padding:.7rem 1rem;margin:1.2rem 0;font-size:.95rem}
 .prose p,.prose ul,.prose ol{max-width:72ch}.prose p{margin:.8rem 0}.prose li{margin:.3rem 0}
 .files a{display:inline-block;font-size:.85rem;background:var(--bg2);border:1px solid var(--line2);border-radius:6px;padding:.15rem .55rem;margin:.2rem .3rem .2rem 0;color:var(--fg2)}
@@ -445,12 +448,22 @@ def numbers(qmap, m1, s2, s3, t4, summ):
         m2_r2=pct(core_all["2"]["rate"]), m2_r2_ci=ci_pct(core_all["2"]["ci_low"], core_all["2"]["ci_high"]),
         m2_r3=pct(core_all["3"]["rate"]), m2_r3_ci=ci_pct(core_all["3"]["ci_low"], core_all["3"]["ci_high"]),
         m2_zero=summ["n_zero_change_pairs"],
+        m2_x2=f"{float(core_all['2']['rate']) / 0.0455:.1f}", m2_x3=f"{float(core_all['3']['rate']) / 0.0027:.0f}",
         m3_n=a3["n"], m3_q=a3["n_quantities"], m3_m1=pct(a3["miss_1sigma"], 0), m3_m1_ci=ci(a3["miss_1sigma_ci"]),
         m3_m2=pct(a3["miss_2sigma"], 0), m3_m2_ci=ci(a3["miss_2sigma_ci"]), m3_si=pct(a3["surprise"], 0), m3_si_ci=ci(a3["surprise_ci"]),
         m3_old_m2=pct(o3["miss_2sigma"], 0), m3_new_m2=pct(n3["miss_2sigma"], 0),
         m4_n=t_nz["n_pairs"], m4_nu=t_nz["nu"], m4_nu_ci=f"{t_nz['nu_ci_low']}–{t_nz['nu_ci_high']}", m4_s=t_nz["scale"],
         m4_s_ci=f"{t_nz['scale_ci_low']}–{t_nz['scale_ci_high']}", m4_new_nu=t_new["nu"], m4_new_nu_ci=f"{t_new['nu_ci_low']}–{t_new['nu_ci_high']}",
     )
+
+
+def takeaway(lang, items):
+    """The page's takeaway box: two or three sentences a reader should leave with."""
+    items = [i for i in items if i]
+    if not items:
+        return ""
+    lab = "핵심" if lang == "ko" else "Takeaway"
+    return f'<div class="takeaway"><b>{lab}</b><ul>' + "".join(f"<li>{esc(i)}</li>" for i in items) + "</ul></div>"
 
 
 def spec_block(m, lang, N):
@@ -536,17 +549,29 @@ def build():
             intro2 = """<div class="prose"><p>Uncertainties shrank by more than four orders of magnitude in half a century. Yet the moves between editions often exceeded what those uncertainties allow. This site publishes those rates by constant and by edition, next to the earlier studies that asked the same question (Henrion & Fischhoff 1986; Bailey 2017). Every number carries its sample size and a 95% interval. "Scientists were overconfident" is an interpretation that would require looking into the measurements themselves, so the metric pages do not use it; the <a href="reading.html">reading edition</a> takes it up with its qualifications.</p></div>"""
         cards = "".join(f'<a class="card" href="metrics/{m["id"]}.html"><b>{m["id"].upper()} · {esc(m[lang]["name"])}</b><small>{esc(m[lang]["short"])}</small></a>' for m in METRICS)
         cards += f'<a class="card" href="metrics/hf.html"><b>{"재계산" if lang == "ko" else "Recalculation"} · Henrion & Fischhoff</b><small>{"1986년 논문의 지표를 이 자료로 다시 계산" if lang == "ko" else "Their 1986 indices recomputed on these data"}</small></a>'
-        body = hero + stats_h + f'<figure>{g1}<figcaption>{esc(g1cap)}</figcaption></figure>' + intro2 + f'<h2>{t["metrics"]}</h2><div class="cards">{cards}</div>'
+        hf22 = next(r for r in hf if r["reference"] == "2022" and r["qid"] == "ALL")
+        if lang == "ko":
+            tk = [f"불확도는 반세기 동안 만 배 넘게 줄었지만, 판이 바뀔 때의 이동이 공표된 불확도의 2배를 넘는 일은 정규분포 기대의 {N['m2_x2']}배, 3배를 넘는 일은 {N['m2_x3']}배로 잦았다.",
+                  f"옛 판의 ±2σ 막대 가운데 {N['m3_m2']}% 가 오늘의(2022 판) 값을 담지 못했다. 이 비율은 오래된 판과 최근 판 사이에 뚜렷한 차이가 없다.",
+                  "이 숫자는 「보고된 불확도가 판간 이동을 설명하지 못한 비율」이며, 원인(과신·계통 오차·조정 절차)은 이 자료로 가리지 않는다."]
+        else:
+            tk = [f"Uncertainties shrank more than ten-thousand-fold in half a century, yet moves between editions exceeded twice the published uncertainty {N['m2_x2']} times as often as a normal distribution allows, and three times {N['m2_x3']} times as often.",
+                  f"{N['m3_m2']}% of earlier ±2σ error bars do not contain today's (2022) value, with no clear difference between older and recent editions.",
+                  "These numbers are the share of moves the reported uncertainties did not cover; the cause (overconfidence, systematic error, adjustment procedure) is not identified by these data."]
+        body = hero + takeaway(lang, tk) + stats_h + f'<figure>{g1}<figcaption>{esc(g1cap)}</figcaption></figure>' + intro2 + f'<h2>{t["metrics"]}</h2><div class="cards">{cards}</div>'
         (base / "index.html").write_text(page(lang, t["home"], body, 1, "home"), encoding="utf-8")
 
         # ---------- metric pages
         lst = "".join(f'<a class="card" href="{m["id"]}.html"><b>{m["id"].upper()} · {esc(m[lang]["name"])}</b><small>{esc(m[lang]["short"])}</small></a>' for m in METRICS)
         lst += f'<a class="card" href="hf.html"><b>Henrion & Fischhoff</b><small>{"1986년 지표 재계산" if lang == "ko" else "1986 indices recomputed"}</small></a>'
-        (base / "metrics" / "index.html").write_text(page(lang, t["metrics"], f"<h1>{t['metrics']}</h1><div class='cards'>{lst}</div>", 2, "metrics"), encoding="utf-8")
+        mtk = (["M1 은 불확도가 얼마나 빨리 줄었는지, M2~M4 는 그 불확도가 판간 이동을 얼마나 설명했는지, M5·M6 은 상수별 경과와 정의값 전환을 본다.", "모든 수치에 표본 수와 95% 구간이 붙어 있고, 정의·공식·분모·한계는 각 면에 있다."] if lang == "ko" else
+               ["M1 shows how fast uncertainties fell; M2–M4 how well those uncertainties covered the moves between editions; M5 and M6 the history of each constant and the transitions to exact values.", "Every number carries its sample size and a 95% interval; definitions, formulas, denominators and caveats are on each page."])
+        (base / "metrics" / "index.html").write_text(page(lang, t["metrics"], f"<h1>{t['metrics']}</h1>{takeaway(lang, mtk)}<div class='cards'>{lst}</div>", 2, "metrics"), encoding="utf-8")
 
         for m in METRICS:
             d = m[lang]
-            parts = [f'<p><span class="tag k">{m["id"].upper()}</span></p><h1>{esc(d["name"])}</h1><p class="lead">{esc(d["short"])}</p>', spec_block(m, lang, N)]
+            parts = [f'<p><span class="tag k">{m["id"].upper()}</span></p><h1>{esc(d["name"])}</h1><p class="lead">{esc(d["short"])}</p>',
+                     takeaway(lang, [x.format(**N) for x in m["takeaway"][lang]]), spec_block(m, lang, N)]
             if m["id"] == "m1":
                 parts.append(f'<figure>{chart_halflife(m1, qmap, lang)}<figcaption>{"점은 반감기, 가로선은 95% 구간(화살표는 25년 넘게 열린 구간)." if lang == "ko" else "Dot = half-life; bar = 95% interval (arrow: open beyond 25 years)."}</figcaption></figure>')
                 rows = []
@@ -603,6 +628,10 @@ def build():
             hfb = f"""<h1>Henrion & Fischhoff (1986) indices, recomputed</h1><p class="lead">The last row of their table I compared five constants (α⁻¹, e, h, mₑ, N_A) in eight reviews from 1929 to 1969 with the 1973 values and reported an interquartile index of 22% and a surprise index of 57% (normal: 50% and 2%). Version 1.0 reaches back only to 1969, so it repeats part of that calculation and adds the same calculation against the 2022 edition. As in their paper and in table 34.2 of the 1973 report, α⁻¹ is used rather than α.</p>
 <div class="prose"><ul><li>1969 edition against 1973 (their reference, five constants): {esc(all73['z_old'])}.</li><li>1969–2018 editions against 2022 (five constants, editions in which they were measured, {esc(all22['edition'])}): {esc(all22['z_old'])}.</li></ul>
 <p>z = (reference value − earlier value) / earlier uncertainty. IQ is the share with |z| < 0.674, SI the share with |z| > 2.326, RMS the root mean square of z. The 1969→1973 changes of e, h, mₑ and N_A are −1.56, −3.02, −2.63 and −20.6 ppm, matching −1.6, −3.0, −2.6 and −21 in table 34.2 of the 1973 report; α⁻¹ changes by +0.146 ppm (table: +0.15). The 22% and 57% of their table I were read from a public OCR copy and have not been checked against the published version. The 1929–1963 reviews (Birge, DuMond–Cohen and others) are planned for 1.1 or later.</p></div>"""
+        si22 = pct(all22["z_old"].split("SI=")[1].split()[0], 0)
+        hftk = ([f"1969→1973 에서 다섯 상수 가운데 아보가드로 상수 하나가 옛 σ 의 3.1배를 움직였다. 나머지 넷은 0.5배 안이다.", f"2022 판을 기준으로 하면 1969~2018 판의 다섯 상수 {all22['edition'].split('=')[1]}건 중 {si22}% 가 98% 구간 밖이다(정규 기대 2%)."] if lang == "ko" else
+                [f"From 1969 to 1973, one of the five constants, the Avogadro constant, moved by 3.1 old σ; the other four by less than 0.5.", f"Against the 2022 edition, {si22}% of {all22['edition'].split('=')[1]} values of the five constants in the 1969–2018 editions lie outside their 98% interval (normal: 2%)."])
+        hfb = hfb.replace("</h1>", "</h1>" + takeaway(lang, hftk), 1)
         rows = [[esc(qmap[r["qid"]][name]), r["edition"], r["reference"], r["z_old"]] for r in hf if r["qid"] != "ALL"]
         hfb += table([t["name"], t["edition"], "ref", "z"], rows, num_cols=(3,)) + '<p class="files"><a href="../../data/hf_repro.csv">CSV: hf_repro.csv</a></p>'
         (base / "metrics" / "hf.html").write_text(page(lang, "Henrion & Fischhoff", hfb, 2, "metrics"), encoding="utf-8")
@@ -618,7 +647,9 @@ def build():
             lst.append("</div>")
         intro = ("<p class='lead'>핵심 상수 17개는 서로 정확한 환산 관계가 없도록 골랐고 M2~M4 의 분모다(M1·M3 은 판별로 측정값인 것만). 표시용 상수 11개는 널리 쓰이지만 핵심 상수의 조합이거나 정의값 전환(M6)을 보여 주려고 싣는다 — 통계에는 넣지 않는다. 민감도 후보 3개는 같은 선정 규칙에 맞아 민감도 계산에만 쓴다.</p>" if lang == "ko"
                  else "<p class='lead'>The 17 core constants were chosen so that none is an exact function of the others; they form the denominator of M2–M4 (M1 and M3 use those measured in the relevant editions). The 11 display constants are widely used but are combinations of core constants, or illustrate the exact-value transitions (M6); they are not in the statistics. The 3 sensitivity candidates meet the same selection rule and are used only in the sensitivity checks.</p>")
-        (base / "constants" / "index.html").write_text(page(lang, t["constants"], f"<h1>{t['constants']}</h1>{intro}{''.join(lst)}", 2, "constants"), encoding="utf-8")
+        ctk = (["상수마다 판별 값·불확도·원 표기·원자료 위치와 수렴 그림이 있다.", "핵심 상수 17개만 통계에 들어간다. 표시용 상수는 핵심 상수의 조합이거나 정의값 전환을 보여 준다."] if lang == "ko" else
+               ["Each constant has its values, uncertainties, printed forms, source locations and a convergence plot by edition.", "Only the 17 core constants enter the statistics; display constants are combinations of them or illustrate the exact-value transitions."])
+        (base / "constants" / "index.html").write_text(page(lang, t["constants"], f"<h1>{t['constants']}</h1>{takeaway(lang, ctk)}{intro}{''.join(lst)}", 2, "constants"), encoding="utf-8")
 
         prev_z = {(p["qid"], int(p["ed_to"])): p["z"] for p in pairs}
         lat = {(r["qid"], int(r["edition"])): r["z_old"] for r in m3r}
@@ -636,10 +667,11 @@ def build():
             hl_txt = ""
             if hl:
                 hl_txt = (f'{t["halflife"]}: {t["none"] if hl["halflife_years"] == "inf" else hl["halflife_years"] + " (" + hl["halflife_ci_low"] + "–" + hl["halflife_ci_high"] + ")"}')
+            ctk = constant_takeaway(lang, q, qm, rows, pairs, m3r, m6)
             basis = f'<dt>{t["basis"]}</dt><dd>{esc(qm["name_ko_basis"])}</dd>' if lang == "ko" else ""
             body = f"""<p><span class="tag{" k" if qm["layer"] == "K" else ""}">{ {"K": t["core"], "D": t["display"], "S": t["cand"]}[qm["layer"]] }</span></p>
 <h1>{esc(qm["symbol"])} · {esc(qm[name])}</h1><p class="lead">{esc(qm["name_en"] if lang == "ko" else qm["name_ko"])}</p>
-<div class="spec"><dl><dt>{t["unit"]}</dt><dd>{esc(qm["unit"]) if qm["unit"] != "1" else ("없음(무차원)" if lang == "ko" else "none (dimensionless)")}</dd>{basis}<dt>{"메모" if lang == "ko" else "Note"}</dt><dd>{esc(note) or "—"}</dd><dt>M1</dt><dd>{esc(hl_txt) or "—"}</dd></dl></div>
+{takeaway(lang, ctk)}<div class="spec"><dl><dt>{t["unit"]}</dt><dd>{esc(qm["unit"]) if qm["unit"] != "1" else ("없음(무차원)" if lang == "ko" else "none (dimensionless)")}</dd>{basis}<dt>{"메모" if lang == "ko" else "Note"}</dt><dd>{esc(note) or "—"}</dd><dt>M1</dt><dd>{esc(hl_txt) or "—"}</dd></dl></div>
 <figure><div class="legend"><span style="--c:var(--s1)">{"판별 값 ±1σ" if lang == "ko" else "value ±1σ by edition"}</span><span class="dash" style="--c:var(--ref)">2022</span></div>{chart_funnel(fr, lang)}
 <figcaption>{"2022 판 값에서의 상대 편차(대칭 로그 축). 속이 빈 원은 오차 막대가 2022 판 값에 닿지 않은 판, 네모는 정의값." if lang == "ko" else "Relative deviation from the 2022 value (symmetric-log axis). Open circles: the error bar does not reach the 2022 value. Squares: exact."}</figcaption></figure>
 {table([t["edition"], t["printed"], t["u"], t["urel"], t["exact"], t["z_prev"], t["z_latest"], t["source"]], tab, num_cols=(2, 3, 5, 6))}"""
@@ -652,7 +684,9 @@ def build():
         rows = [[f'<a href="../data/{f}">{f}</a>', esc(DATA_DESC[f][0 if lang == "ko" else 1])] for f in PUBLIC_DATA]
         lic = ("<p>파생 표(아래 CSV)는 CC BY 4.0. 원 수치는 NIST가 공개한 CODATA 권고값과 1969년 논문의 표에서 옮겼고, 각 행에 원자료 위치를 적었다. NIST의 원 파일(ASCII 표·PDF)은 이 저장소에 싣지 않는다 — NIST는 표준참조자료(SRD)의 복제에 사전 허락을 요구한다고 밝힌다. 원 파일의 주소·내려받은 날짜·SHA-256 은 <a href='../data/raw_manifest.json'>raw_manifest.json</a> 에 있다.</p>" if lang == "ko"
                else "<p>The derived tables below are CC BY 4.0. The underlying values were taken from the CODATA recommended values published by NIST and from the 1969 paper's table; every row records its source location. NIST's original files (ASCII tables, PDFs) are not included: NIST states that its Standard Reference Data may not be reproduced without prior permission. Their URLs, retrieval dates and SHA-256 hashes are in <a href='../data/raw_manifest.json'>raw_manifest.json</a>.</p>")
-        body = f"<h1>{t['data']}</h1>{lic}" + table([t["file"], t["desc"]], rows, cls="") + '<p class="files"><a href="../data/datapackage.json">datapackage.json</a></p>'
+        dtk = (["파생 CSV 15개와 datapackage.json 을 내려받을 수 있다. 파생 데이터는 CC BY 4.0 이다.", "NIST 원 파일은 싣지 않는다. 주소·날짜·해시로 같은 파일을 다시 받을 수 있다."] if lang == "ko" else
+               ["Fifteen derived CSV files and datapackage.json can be downloaded; the derived data are CC BY 4.0.", "NIST's original files are not included; their URLs, dates and hashes let anyone fetch the same files."])
+        body = f"<h1>{t['data']}</h1>{takeaway(lang, dtk)}{lic}" + table([t["file"], t["desc"]], rows, cls="") + '<p class="files"><a href="../data/datapackage.json">datapackage.json</a></p>'
         (base / "data.html").write_text(page(lang, t["data"], body, 1, "data"), encoding="utf-8")
 
     (OUT / "index.html").write_text('<!DOCTYPE html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=ko/index.html"><link rel="canonical" href="ko/index.html"><title>Physical Constants Metrics</title><a href="ko/index.html">한국어</a> · <a href="en/index.html">English</a>', encoding="utf-8")
@@ -660,10 +694,55 @@ def build():
     print("pages:", sum(1 for _ in OUT.rglob("*.html")))
 
 
+def constant_takeaway(lang, q, qm, rows, pairs, m3r, m6):
+    rs = sorted(rows, key=lambda r: int(r["edition"]))
+    meas = [r for r in rs if r["exact"] == "0" and float(r["u_rel"]) > 0]
+    out = []
+    if len(meas) >= 2:
+        a, z = meas[0], meas[-1]
+        fold = float(a["u_rel"]) / float(z["u_rel"])
+        if fold >= 1.5:
+            f = f"{fold:,.0f}" if fold >= 10 else f"{fold:.1f}"
+            out.append(f"{a['edition']}~{z['edition']} 판 사이 상대 불확도가 {fmt_sci(a['u_rel'])}에서 {fmt_sci(z['u_rel'])}로 약 {f}배 줄었다." if lang == "ko"
+                       else f"From {a['edition']} to {z['edition']} the relative uncertainty fell from {fmt_sci(a['u_rel'])} to {fmt_sci(z['u_rel'])}, about {f}-fold.")
+        else:
+            out.append(f"{a['edition']}~{z['edition']} 판 사이 상대 불확도가 거의 줄지 않았다({fmt_sci(a['u_rel'])} → {fmt_sci(z['u_rel'])})." if lang == "ko"
+                       else f"From {a['edition']} to {z['edition']} the relative uncertainty barely changed ({fmt_sci(a['u_rel'])} → {fmt_sci(z['u_rel'])}).")
+    m = [r for r in m3r if r["qid"] == q]
+    if m:
+        n1 = sum(int(r["miss_1sigma"]) for r in m)
+        n2 = sum(int(r["miss_2sigma"]) for r in m)
+        ex = m[0]["ref_exact"] == "1"
+        if n1 == 0:
+            out.append(f"측정값이던 옛 판 {len(m)}개 모두 2022 판 값을 ±1σ 안에 담았다{"(2022 판 값은 정의값)" if ex else ""}." if lang == "ko"
+                       else f"{'Both' if len(m) == 2 else 'All ' + str(len(m))} earlier editions with a measured value contain the 2022 value within ±1σ{" (the 2022 value is exact)" if ex else ""}.")
+        else:
+            out.append(f"측정값이던 옛 판 {len(m)}개 중 {n1}개가 2022 판 값을 ±1σ 로, {n2}개가 ±2σ 로 놓쳤다(정규 기대 약 32%·5%{"; 2022 판 값은 정의값" if ex else ""})." if lang == "ko"
+                       else f"Of {len(m)} earlier editions with a measured value, {n1} missed the 2022 value at ±1σ and {n2} at ±2σ (normal: about 32% and 5%{"; the 2022 value is exact" if ex else ""}).")
+    ps = [p for p in pairs if p["qid"] == q]
+    if ps:
+        big = max(ps, key=lambda p: abs(float(p["z"])))
+        zb = abs(float(big["z"]))
+        if zb < 0.1:
+            out.append("판간 이동은 모두 두 판의 불확도를 합친 것의 0.1배에 못 미쳤다." if lang == "ko"
+                       else "Every move between editions was below 0.1 times the combined uncertainty.")
+        else:
+            out.append(f"가장 큰 판간 이동은 {big['ed_from']}→{big['ed_to']} 판으로, 두 판의 불확도를 합친 것의 {zb:.1f}배였다." if lang == "ko"
+                   else f"The largest move between editions was {big['ed_from']}→{big['ed_to']}, {zb:.1f} times the combined uncertainty of the two editions.")
+    for e in m6:
+        if e["qid"] == q:
+            out.append((f"{e['ed_after']} 판부터 정의값이다." if e["direction"] == "measured->exact" else f"{e['ed_after']} 판부터 측정값이다(그 전에는 정의값).") if lang == "ko"
+                       else (f"Exact from the {e['ed_after']} edition." if e["direction"] == "measured->exact" else f"Measured from the {e['ed_after']} edition (exact before)."))
+    if not meas and not out:
+        out.append("이 사이트가 다루는 판에서는 줄곧 정의값이다." if lang == "ko" else "Exact in every edition covered here.")
+    return out[:4]
+
+
 def reading_page(lang, N):
     if lang == "ko":
         return f"""<div class="prose"><h1>읽기 — 오차 막대와 그 다음 판</h1>
 <p class="lead">지표 면의 숫자를 한 번에 읽는 글이다. 해석이 들어가는 대목에는 근거의 한계를 같이 적었다.</p>
+<div class="takeaway"><b>핵심</b><ul><li>불확도는 꾸준히 줄었지만, 판이 바뀔 때 값은 그 불확도가 허용하는 것보다 자주 크게 움직였다.</li><li>공표된 불확도는 「이 범위 밖일 확률 5%」라는 약속보다, 이 분야 기록이 보여 주는 두꺼운 꼬리와 함께 읽는 것이 맞다.</li></ul></div>
 <h2>무엇을 셌나</h2>
 <p>CODATA 는 대략 4년마다 그동안의 측정과 이론 계산을 한데 모아 최소제곱 조정을 하고 기본 물리 상수의 권고값과 표준불확도를 낸다. 이 사이트는 1969년 조정(CODATA 이전)과 CODATA 아홉 판에서 서로 환산 관계가 없는 핵심 상수 17개를 골라, 판이 바뀔 때 값이 움직인 폭을 그 불확도와 견주었다.</p>
 <h2>보이는 것</h2>
@@ -677,6 +756,7 @@ def reading_page(lang, N):
 <p>실무에서 쓸 만한 교훈은 하나다. 공표된 불확도는 「이 범위 밖일 확률이 5%」라는 약속으로 읽기보다, 이 분야의 과거 기록이 보여 주는 꼬리를 함께 보고 읽어야 한다는 것이다. 그 꼬리의 크기가 이 사이트의 숫자다.</p></div>"""
     return f"""<div class="prose"><h1>Reading — error bars and the next edition</h1>
 <p class="lead">An essay that reads the metric pages in one pass. Where interpretation enters, the limits of the evidence are stated alongside.</p>
+<div class="takeaway"><b>Takeaway</b><ul><li>Uncertainties fell steadily, yet values moved between editions by more than those uncertainties allow, and more often than a normal distribution predicts.</li><li>A published uncertainty is better read together with the heavy tail the field's record shows than as a promise of a 5% chance of lying outside.</li></ul></div>
 <h2>What was counted</h2>
 <p>About every four years CODATA gathers the measurements and theoretical calculations of the period, performs a least-squares adjustment, and publishes recommended values and standard uncertainties for the fundamental physical constants. This site takes 17 core constants, none an exact function of the others, from the 1969 adjustment (pre-CODATA) and the nine CODATA editions, and compares each move between editions with the stated uncertainties.</p>
 <h2>What it shows</h2>
@@ -693,12 +773,14 @@ def reading_page(lang, N):
 def prior_page(lang):
     if lang == "ko":
         return """<div class="prose"><h1>선행 연구</h1><p class="lead">같은 질문을 먼저 다룬 연구를 소개한다. 수치는 각 문헌에서 옮겼다.</p>
+<div class="takeaway"><b>핵심</b><ul><li>보고된 불확도가 실제 이동이나 측정 간 차이보다 작다는 결과는 1986년(권고값·개별 측정)과 2017년(측정 약 41,000건) 연구에서 서로 다른 자료로 나왔다.</li><li>이 사이트는 권고값 판을 2022 판까지 이어 같은 질문을 다시 센다.</li></ul></div>
 <h2>Henrion & Fischhoff (1986)</h2><p>M. Henrion, B. Fischhoff, "Assessing uncertainty in physical constants", <i>American Journal of Physics</i> 54(9), 791–798. 주관적 확률 판단의 보정(calibration)을 재는 심리학 지표 — 사분위 지수와 놀람 지수 — 를 빛의 속력·중력 상수 등의 개별 측정과 1929~1969년 권고값에 적용했다. 권고값 상수 다섯 개 × 검토 여덟 개를 1973 판 기준으로 보면 놀람 지수가 57% 였다(정규 기대 2%; 공개 사본에서 읽은 값으로 출판본 대조 전). 이 사이트는 같은 지표를 1969 판부터 2022 판까지 다시 계산한다(<a href="metrics/hf.html">재계산</a>).</p>
 <h2>Bailey (2017)</h2><p>D. C. Bailey, "Not Normal: the uncertainties of scientific measurements", <i>Royal Society Open Science</i> 4, 160600. 의학·핵물리·입자물리·실험실 간 비교의 측정 약 41,000 건, 양 약 3,200 개에서 같은 양의 측정 쌍마다 z 를 구하고 Student-t 를 맞췄다. 기본 상수 부분(양 7개, 측정 320개, 쌍 9,098개)의 자유도는 ν = 1.81 ± 0.15 다. 개별 측정끼리의 비교라는 점에서 권고값 판끼리를 비교하는 이 사이트와 단위가 다르다. 자료는 Dryad(doi:10.5061/dryad.jb3mj, CC0)에 있다.</p>
 <h2>Shlyakhter (1994)</h2><p>A. I. Shlyakhter, "Uncertainty estimates in scientific models: lessons from trends in physical measurements, population and energy projections", B. M. Ayyub, M. M. Gupta 편 <i>Uncertainty Modelling and Analysis: Theory and Applications</i>(Elsevier, 1994), 477쪽 이하. 같은 양의 연속 측정에서 정규화 편차의 분포를 지수분포로 맞추고, 과거 오차에서 불확도를 넓히는 계수를 정하자고 제안했다.</p>
 <h2>Particle Data Group</h2><p>입자의 질량·수명 등에 대해 판별 평균값의 변천을 그린 그림(history plot)을 낸다. 이 사이트는 1.0 에서 PDG 자료를 다루지 않는다.</p>
 <h2>CODATA 의 자기 점검</h2><p>CODATA 보고서는 판마다 직전 판과의 비교를 싣는다(예: 2022 보고서의 「Comparison of 2022 and 2018 CODATA recommended values」, 1973 보고서의 표 34.2 는 1963·1969 조정값과 비교). 1969년 Taylor–Parker–Langenberg 보고서도 1950년대 이후 α⁻¹ 의 변천을 그림으로 보이며 「어떤 상수 집합도 복음처럼 받아들여서는 안 된다」고 적었다.</p></div>"""
     return """<div class="prose"><h1>Prior work</h1><p class="lead">Earlier studies of the same question. Figures are taken from each publication.</p>
+<div class="takeaway"><b>Takeaway</b><ul><li>That reported uncertainties are smaller than the actual moves or the differences between measurements was found in 1986 (recommended values and individual measurements) and in 2017 (some 41,000 measurements), on different data.</li><li>This site asks the same question again, following recommended values through the 2022 edition.</li></ul></div>
 <h2>Henrion & Fischhoff (1986)</h2><p>M. Henrion and B. Fischhoff, "Assessing uncertainty in physical constants", <i>American Journal of Physics</i> 54(9), 791–798. They applied the calibration indices of the psychology of subjective probability — the interquartile index and the surprise index — to individual measurements of the speed of light, the gravitational constant and others, and to recommended values from 1929 to 1969. For five constants in eight reviews, against the 1973 values, the surprise index was 57% (normal: 2%; read from a public copy, not yet checked against the published version). This site recomputes the same indices from 1969 to 2022 (<a href="metrics/hf.html">recalculation</a>).</p>
 <h2>Bailey (2017)</h2><p>D. C. Bailey, "Not Normal: the uncertainties of scientific measurements", <i>Royal Society Open Science</i> 4, 160600. About 41,000 measurements of some 3,200 quantities in medicine, nuclear and particle physics and interlaboratory comparisons; z for every pair of measurements of the same quantity, fitted with Student-t. For the fundamental constants (7 quantities, 320 measurements, 9,098 pairs) ν = 1.81 ± 0.15. Individual measurements are compared, whereas this site compares editions of recommended values. Data on Dryad (doi:10.5061/dryad.jb3mj, CC0).</p>
 <h2>Shlyakhter (1994)</h2><p>A. I. Shlyakhter, "Uncertainty estimates in scientific models: lessons from trends in physical measurements, population and energy projections", in B. M. Ayyub and M. M. Gupta (eds.), <i>Uncertainty Modelling and Analysis: Theory and Applications</i> (Elsevier, 1994), pp. 477ff. Fitted an exponential distribution to normalised deviations of successive measurements and proposed widening uncertainties by factors drawn from past errors.</p>
@@ -709,6 +791,7 @@ def prior_page(lang):
 def method_page(lang, N):
     if lang == "ko":
         return f"""<div class="prose"><h1>방법·한계</h1>
+<div class="takeaway"><b>핵심</b><ul><li>1969·1973·1986 판은 원 논문 쪽 이미지에서 손으로, 1998 판 이후는 NIST 표에서 옮겼고, 쓰는 값 전부를 별도 조판본과 대조했다.</li><li>대조 중 NIST 2002 판 ASCII 보관본의 오기 3행을 찾아 출판본 값으로 고쳤다.</li><li>판은 서로 독립이 아니고 2022 판도 참값이 아니다 — 모든 수치는 이 두 조건 아래에서 읽는다.</li></ul></div>
 <h2>자료</h2><p>{esc(SOURCES['codata']['ko'])} {esc(SOURCES['tpl1969']['ko'])}</p>
 <ul><li>1998~2022 판: NIST ASCII 표를 파싱했다. 1998~2006 판은 「값(불확도)」 괄호 표기(괄호 안 숫자는 마지막 자리 기준), 2010 판부터는 값과 불확도가 따로 적혀 있다. 「...」로 끝나는 값과 「(exact)」는 정의값이다.</li>
 <li>1969·1973·1986 판: 이 사이트가 쓰는 양을 원 논문 표의 쪽 이미지에서 손으로 옮겼다. 66개(측정값 63, 정의값 3) 전부를 PDF 문자층과 자동 대조해 64개가 같았고, 나머지 2개는 문자층의 OCR 오류로 이미지 판독이 맞다. 이 판들의 불확도는 원문에 「표준편차」로 적혀 있다(1969: 표 XXXII 머리말, 1973: 표 33.1 각주 a, 1986: 미주 3).</li>
@@ -729,6 +812,7 @@ def method_page(lang, N):
 <li>한국어 상수 이름 가운데 진공에서의 빛의 속력·플랑크 상수·기본 전하·볼츠만 상수·아보가드로 상수는 국가표준기본법 시행령 별표 1 의 표기다. 나머지는 관행 표기이며 대한물리학회 용어집과 대조하지 않았다.</li></ul>
 <h2>재현</h2><p>모든 표는 저장소의 <code>src/</code> 에서 만든다: <code>fetch_raw.py</code>(원 파일 내려받기·해시) → <code>parse_codata.py</code>(파싱·보정·대응) → <code>handcheck.py</code>(대조) → <code>metrics.py</code>(지표) → <code>build_site.py</code>(사이트).</p></div>"""
     return f"""<div class="prose"><h1>Method & limits</h1>
+<div class="takeaway"><b>Takeaway</b><ul><li>The 1969, 1973 and 1986 values were transcribed by hand from page images of the published tables, later editions from NIST's tables; every value used was checked against a separately typeset version.</li><li>The checks found three rows of NIST's archived 2002 ASCII table that differ from the published report; the published values are used.</li><li>Editions are not independent and the 2022 edition is not the true value; every number should be read with both in mind.</li></ul></div>
 <h2>Data</h2><p>{esc(SOURCES['codata']['en'])} {esc(SOURCES['tpl1969']['en'])}</p>
 <ul><li>1998–2022: NIST ASCII tables, parsed. 1998–2006 use concise notation, value(uncertainty), the bracketed digits referring to the last digits; from 2010 value and uncertainty are in separate columns. Values ending in '...' and '(exact)' are exact.</li>
 <li>1969, 1973, 1986: the quantities used here were transcribed by hand from page images of the published tables. All 66 values (63 measured, 3 exact) were compared automatically with the PDF text layer: 64 are identical, and the other two are OCR errors in the text layer, the image reading being correct. These editions state their uncertainties as standard deviations (1969: heading of table XXXII; 1973: table 33.1, note a; 1986: endnote 3).</li>

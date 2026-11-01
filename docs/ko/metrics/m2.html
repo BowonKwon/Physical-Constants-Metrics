@@ -70,6 +70,9 @@ svg{max-width:100%;height:auto;display:block}svg text{font-family:var(--body);fi
 svg .hit{fill:transparent}svg .hit:hover+.dot,svg .dot:hover{stroke:var(--fg);stroke-width:2}
 .legend{display:flex;gap:1.1rem;font-size:.86rem;color:var(--fg2);flex-wrap:wrap;margin:.2rem 0 .4rem}.legend span::before{content:"";display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:.4rem;vertical-align:-1px;background:var(--c)}
 .legend span.dash::before{height:0;border-top:2px dashed var(--c);border-radius:0;vertical-align:3px}
+.takeaway{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent2);border-radius:10px;padding:.75rem 1.1rem .8rem;margin:.4rem 0 1.4rem;box-shadow:var(--shadow);max-width:80ch}
+.takeaway b{display:block;font-size:.76rem;letter-spacing:.06em;color:var(--accent2);margin-bottom:.2rem}
+.takeaway ul{margin:0;padding-left:1.1rem}.takeaway li{margin:.25rem 0}
 .note{background:color-mix(in srgb,var(--accent) 7%,var(--card));border:1px solid color-mix(in srgb,var(--accent) 25%,var(--line));border-left:4px solid var(--accent);border-radius:8px;padding:.7rem 1rem;margin:1.2rem 0;font-size:.95rem}
 .prose p,.prose ul,.prose ol{max-width:72ch}.prose p{margin:.8rem 0}.prose li{margin:.3rem 0}
 .files a{display:inline-block;font-size:.85rem;background:var(--bg2);border:1px solid var(--line2);border-radius:6px;padding:.15rem .55rem;margin:.2rem .3rem .2rem 0;color:var(--fg2)}
@@ -78,7 +81,7 @@ footer{border-top:1px solid var(--line);color:var(--fg3);font-size:.82rem;paddin
 </style></head><body>
 <header><a class="brand" href="../../ko/index.html">물리 상수 메트릭스</a><nav><a href="../../ko/index.html">홈</a><a href="../../ko/metrics/index.html" class="on">지표</a><a href="../../ko/constants/index.html">상수</a><a href="../../ko/reading.html">읽기</a><a href="../../ko/prior.html">선행 연구</a><a href="../../ko/method.html">방법·한계</a><a href="../../ko/data.html">데이터</a></nav>
 <div class="right"><button id="theme" class="theme" type="button" aria-label="theme">◑</button><a class="lang" href="../../en/index.html">English</a></div></header>
-<main><p><span class="tag k">M2</span></p><h1>판간 이동 초과율</h1><p class="lead">연속한 두 판 사이 이동이 두 불확도로 설명되지 않은 비율</p><div class="spec"><dl>
+<main><p><span class="tag k">M2</span></p><h1>판간 이동 초과율</h1><p class="lead">연속한 두 판 사이 이동이 두 불확도로 설명되지 않은 비율</p><div class="takeaway"><b>핵심</b><ul><li>연속한 두 판 사이 이동이 두 불확도의 2배를 넘은 경우가 12.9% 로, 정규분포라면 나올 4.55% 의 2.8배다. 3배를 넘은 경우는 9.1% 로 기대치(0.27%)의 34배다.</li><li>작은 이동은 오히려 기대보다 적다. 값은 대개 거의 그대로 있다가 새 측정이나 이론 수정이 들어올 때 한꺼번에 크게 움직인다.</li></ul></div><div class="spec"><dl>
 <dt>정의</dt><dd>같은 상수의 연속한 두 판(측정값끼리)에서 값의 이동을 두 판의 불확도로 나눈 z 를 구하고, |z| 가 1·2·3 을 넘는 비율을 센다.</dd>
 <dt>공식</dt><dd class="formula">z = (x_새 − x_옛) / √(u_옛² + u_새²).  두 판이 독립이고 정규분포라면 |z|&gt;1 은 31.7%, &gt;2 는 4.55%, &gt;3 은 0.27%.</dd>
 <dt>분모</dt><dd>핵심 상수 17개의 연속 판 쌍 132개. 1998 판 이후 4년 간격 쌍 96개, 그 이전(4~13년 간격) 쌍 36개.</dd>

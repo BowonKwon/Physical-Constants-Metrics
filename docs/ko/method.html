@@ -70,6 +70,9 @@ svg{max-width:100%;height:auto;display:block}svg text{font-family:var(--body);fi
 svg .hit{fill:transparent}svg .hit:hover+.dot,svg .dot:hover{stroke:var(--fg);stroke-width:2}
 .legend{display:flex;gap:1.1rem;font-size:.86rem;color:var(--fg2);flex-wrap:wrap;margin:.2rem 0 .4rem}.legend span::before{content:"";display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:.4rem;vertical-align:-1px;background:var(--c)}
 .legend span.dash::before{height:0;border-top:2px dashed var(--c);border-radius:0;vertical-align:3px}
+.takeaway{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent2);border-radius:10px;padding:.75rem 1.1rem .8rem;margin:.4rem 0 1.4rem;box-shadow:var(--shadow);max-width:80ch}
+.takeaway b{display:block;font-size:.76rem;letter-spacing:.06em;color:var(--accent2);margin-bottom:.2rem}
+.takeaway ul{margin:0;padding-left:1.1rem}.takeaway li{margin:.25rem 0}
 .note{background:color-mix(in srgb,var(--accent) 7%,var(--card));border:1px solid color-mix(in srgb,var(--accent) 25%,var(--line));border-left:4px solid var(--accent);border-radius:8px;padding:.7rem 1rem;margin:1.2rem 0;font-size:.95rem}
 .prose p,.prose ul,.prose ol{max-width:72ch}.prose p{margin:.8rem 0}.prose li{margin:.3rem 0}
 .files a{display:inline-block;font-size:.85rem;background:var(--bg2);border:1px solid var(--line2);border-radius:6px;padding:.15rem .55rem;margin:.2rem .3rem .2rem 0;color:var(--fg2)}
@@ -79,6 +82,7 @@ footer{border-top:1px solid var(--line);color:var(--fg3);font-size:.82rem;paddin
 <header><a class="brand" href="../ko/index.html">물리 상수 메트릭스</a><nav><a href="../ko/index.html">홈</a><a href="../ko/metrics/index.html">지표</a><a href="../ko/constants/index.html">상수</a><a href="../ko/reading.html">읽기</a><a href="../ko/prior.html">선행 연구</a><a href="../ko/method.html" class="on">방법·한계</a><a href="../ko/data.html">데이터</a></nav>
 <div class="right"><button id="theme" class="theme" type="button" aria-label="theme">◑</button><a class="lang" href="../en/index.html">English</a></div></header>
 <main><div class="prose"><h1>방법·한계</h1>
+<div class="takeaway"><b>핵심</b><ul><li>1969·1973·1986 판은 원 논문 쪽 이미지에서 손으로, 1998 판 이후는 NIST 표에서 옮겼고, 쓰는 값 전부를 별도 조판본과 대조했다.</li><li>대조 중 NIST 2002 판 ASCII 보관본의 오기 3행을 찾아 출판본 값으로 고쳤다.</li><li>판은 서로 독립이 아니고 2022 판도 참값이 아니다 — 모든 수치는 이 두 조건 아래에서 읽는다.</li></ul></div>
 <h2>자료</h2><p>CODATA 기본 물리 상수 권고값, 1973·1986·1998·2002·2006·2010·2014·2018·2022 판. 미국 국립표준기술연구원(NIST)이 판별로 공개한 표에서 옮겼다. 1998 판 이후는 NIST의 ASCII 표, 1973·1986 판은 논문의 표(1973: Cohen &amp; Taylor, J. Phys. Chem. Ref. Data 2, 663; 1986: Cohen &amp; Taylor, J. Res. Natl. Bur. Stand. 92(2), 1987). CODATA 이전 조정값 하나를 함께 싣는다: B. N. Taylor, W. H. Parker, D. N. Langenberg (1969), Rev. Mod. Phys. 41, 375, 표 XXXII. NIST가 「역사 참고」로 같은 자리에 제공한다.</p>
 <ul><li>1998~2022 판: NIST ASCII 표를 파싱했다. 1998~2006 판은 「값(불확도)」 괄호 표기(괄호 안 숫자는 마지막 자리 기준), 2010 판부터는 값과 불확도가 따로 적혀 있다. 「...」로 끝나는 값과 「(exact)」는 정의값이다.</li>
 <li>1969·1973·1986 판: 이 사이트가 쓰는 양을 원 논문 표의 쪽 이미지에서 손으로 옮겼다. 66개(측정값 63, 정의값 3) 전부를 PDF 문자층과 자동 대조해 64개가 같았고, 나머지 2개는 문자층의 OCR 오류로 이미지 판독이 맞다. 이 판들의 불확도는 원문에 「표준편차」로 적혀 있다(1969: 표 XXXII 머리말, 1973: 표 33.1 각주 a, 1986: 미주 3).</li>

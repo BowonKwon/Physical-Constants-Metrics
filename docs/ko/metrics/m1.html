@@ -70,6 +70,9 @@ svg{max-width:100%;height:auto;display:block}svg text{font-family:var(--body);fi
 svg .hit{fill:transparent}svg .hit:hover+.dot,svg .dot:hover{stroke:var(--fg);stroke-width:2}
 .legend{display:flex;gap:1.1rem;font-size:.86rem;color:var(--fg2);flex-wrap:wrap;margin:.2rem 0 .4rem}.legend span::before{content:"";display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:.4rem;vertical-align:-1px;background:var(--c)}
 .legend span.dash::before{height:0;border-top:2px dashed var(--c);border-radius:0;vertical-align:3px}
+.takeaway{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent2);border-radius:10px;padding:.75rem 1.1rem .8rem;margin:.4rem 0 1.4rem;box-shadow:var(--shadow);max-width:80ch}
+.takeaway b{display:block;font-size:.76rem;letter-spacing:.06em;color:var(--accent2);margin-bottom:.2rem}
+.takeaway ul{margin:0;padding-left:1.1rem}.takeaway li{margin:.25rem 0}
 .note{background:color-mix(in srgb,var(--accent) 7%,var(--card));border:1px solid color-mix(in srgb,var(--accent) 25%,var(--line));border-left:4px solid var(--accent);border-radius:8px;padding:.7rem 1rem;margin:1.2rem 0;font-size:.95rem}
 .prose p,.prose ul,.prose ol{max-width:72ch}.prose p{margin:.8rem 0}.prose li{margin:.3rem 0}
 .files a{display:inline-block;font-size:.85rem;background:var(--bg2);border:1px solid var(--line2);border-radius:6px;padding:.15rem .55rem;margin:.2rem .3rem .2rem 0;color:var(--fg2)}
@@ -78,7 +81,7 @@ footer{border-top:1px solid var(--line);color:var(--fg3);font-size:.82rem;paddin
 </style></head><body>
 <header><a class="brand" href="../../ko/index.html">물리 상수 메트릭스</a><nav><a href="../../ko/index.html">홈</a><a href="../../ko/metrics/index.html" class="on">지표</a><a href="../../ko/constants/index.html">상수</a><a href="../../ko/reading.html">읽기</a><a href="../../ko/prior.html">선행 연구</a><a href="../../ko/method.html">방법·한계</a><a href="../../ko/data.html">데이터</a></nav>
 <div class="right"><button id="theme" class="theme" type="button" aria-label="theme">◑</button><a class="lang" href="../../en/index.html">English</a></div></header>
-<main><p><span class="tag k">M1</span></p><h1>상대 불확도 반감기</h1><p class="lead">상대 불확도가 절반이 되는 데 걸린 햇수</p><div class="spec"><dl>
+<main><p><span class="tag k">M1</span></p><h1>상대 불확도 반감기</h1><p class="lead">상대 불확도가 절반이 되는 데 걸린 햇수</p><div class="takeaway"><b>핵심</b><ul><li>불확도가 줄어든 핵심 상수 16개의 상대 불확도는 중앙값으로 5.4년마다 절반이 되었다.</li><li>속도는 상수마다 달라 전자의 상대 원자 질량 3.0년부터 뉴턴 중력 상수 12.2년까지 벌어진다.</li></ul></div><div class="spec"><dl>
 <dt>정의</dt><dd>상수마다 판별 상대 표준불확도 u/|x| 의 밑이 2인 로그를 판 연도에 직선 회귀한다. 반감기는 기울기의 역수에 부호를 바꾼 값이다.</dd>
 <dt>공식</dt><dd class="formula">log₂(u/|x|) = a + b·연도,  반감기 = −1/b (년).  95% 구간은 b ± t(0.975, n−2)·SE(b) 를 같은 식에 넣는다(회귀 구간이며 부트스트랩이 아니다). b 가 −0.001/년보다 완만하면(반감기 1,000년 초과) 「감소 없음」으로 적는다.</dd>
 <dt>분모</dt><dd>측정값(정의값 아님)이 있는 판이 4개 이상인 상수. 핵심 상수 17개, 표시용 상수 포함 28개.</dd>

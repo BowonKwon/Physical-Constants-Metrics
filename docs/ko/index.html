@@ -70,6 +70,9 @@ svg{max-width:100%;height:auto;display:block}svg text{font-family:var(--body);fi
 svg .hit{fill:transparent}svg .hit:hover+.dot,svg .dot:hover{stroke:var(--fg);stroke-width:2}
 .legend{display:flex;gap:1.1rem;font-size:.86rem;color:var(--fg2);flex-wrap:wrap;margin:.2rem 0 .4rem}.legend span::before{content:"";display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:.4rem;vertical-align:-1px;background:var(--c)}
 .legend span.dash::before{height:0;border-top:2px dashed var(--c);border-radius:0;vertical-align:3px}
+.takeaway{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent2);border-radius:10px;padding:.75rem 1.1rem .8rem;margin:.4rem 0 1.4rem;box-shadow:var(--shadow);max-width:80ch}
+.takeaway b{display:block;font-size:.76rem;letter-spacing:.06em;color:var(--accent2);margin-bottom:.2rem}
+.takeaway ul{margin:0;padding-left:1.1rem}.takeaway li{margin:.25rem 0}
 .note{background:color-mix(in srgb,var(--accent) 7%,var(--card));border:1px solid color-mix(in srgb,var(--accent) 25%,var(--line));border-left:4px solid var(--accent);border-radius:8px;padding:.7rem 1rem;margin:1.2rem 0;font-size:.95rem}
 .prose p,.prose ul,.prose ol{max-width:72ch}.prose p{margin:.8rem 0}.prose li{margin:.3rem 0}
 .files a{display:inline-block;font-size:.85rem;background:var(--bg2);border:1px solid var(--line2);border-radius:6px;padding:.15rem .55rem;margin:.2rem .3rem .2rem 0;color:var(--fg2)}
@@ -78,7 +81,7 @@ footer{border-top:1px solid var(--line);color:var(--fg3);font-size:.82rem;paddin
 </style></head><body>
 <header><a class="brand" href="../ko/index.html">물리 상수 메트릭스</a><nav><a href="../ko/index.html" class="on">홈</a><a href="../ko/metrics/index.html">지표</a><a href="../ko/constants/index.html">상수</a><a href="../ko/reading.html">읽기</a><a href="../ko/prior.html">선행 연구</a><a href="../ko/method.html">방법·한계</a><a href="../ko/data.html">데이터</a></nav>
 <div class="right"><button id="theme" class="theme" type="button" aria-label="theme">◑</button><a class="lang" href="../en/index.html">English</a></div></header>
-<main><div class="hero"><h1>물리 상수 메트릭스</h1><p class="lead">과학자들이 스스로 밝힌 오차 막대는 다음 판의 값을 얼마나 자주 놓쳤나. 국제과학위원회(ISC) 산하 과학기술데이터위원회(CODATA)가 1973년부터 내 온 기본 물리 상수 권고값 아홉 판과 그 직전의 1969년 조정값을 이어 붙여, 값과 불확도가 판마다 어떻게 바뀌었는지 센다.</p></div><div class="stats">
+<main><div class="hero"><h1>물리 상수 메트릭스</h1><p class="lead">과학자들이 스스로 밝힌 오차 막대는 다음 판의 값을 얼마나 자주 놓쳤나. 국제과학위원회(ISC) 산하 과학기술데이터위원회(CODATA)가 1973년부터 내 온 기본 물리 상수 권고값 아홉 판과 그 직전의 1969년 조정값을 이어 붙여, 값과 불확도가 판마다 어떻게 바뀌었는지 센다.</p></div><div class="takeaway"><b>핵심</b><ul><li>불확도는 반세기 동안 만 배 넘게 줄었지만, 판이 바뀔 때의 이동이 공표된 불확도의 2배를 넘는 일은 정규분포 기대의 2.8배, 3배를 넘는 일은 34배로 잦았다.</li><li>옛 판의 ±2σ 막대 가운데 29% 가 오늘의(2022 판) 값을 담지 못했다. 이 비율은 오래된 판과 최근 판 사이에 뚜렷한 차이가 없다.</li><li>이 숫자는 「보고된 불확도가 판간 이동을 설명하지 못한 비율」이며, 원인(과신·계통 오차·조정 절차)은 이 자료로 가리지 않는다.</li></ul></div><div class="stats">
 <a class="stat" href="metrics/m2.html"><span class="n">12.9%</span><span class="vs">기대 4.6%</span><small>연속한 두 판 사이 이동이 두 불확도의 2배를 넘은 비율 (판 쌍 132개, 핵심 상수 17개, 95% 구간 9.4–16.3%)</small></a>
 <a class="stat" href="metrics/m2.html"><span class="n">9.1%</span><span class="vs">기대 0.27%</span><small>같은 이동이 3배를 넘은 비율 (95% 구간 5.1–13.3%)</small></a>
 <a class="stat" href="metrics/m3.html"><span class="n">29%</span><span class="vs">기대 4.6%</span><small>옛 판의 ±2σ 막대가 2022 판 값을 담지 못한 비율 (134개 조합, 95% 구간 19–40%)</small></a>
