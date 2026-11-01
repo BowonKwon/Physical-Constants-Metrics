@@ -81,7 +81,7 @@ footer{border-top:1px solid var(--line);color:var(--fg3);font-size:.82rem;paddin
 </style></head><body>
 <header><a class="brand" href="../../ko/index.html">물리 상수 메트릭스</a><nav><a href="../../ko/index.html">홈</a><a href="../../ko/metrics/index.html" class="on">지표</a><a href="../../ko/constants/index.html">상수</a><a href="../../ko/reading.html">읽기</a><a href="../../ko/prior.html">선행 연구</a><a href="../../ko/method.html">방법·한계</a><a href="../../ko/data.html">데이터</a></nav>
 <div class="right"><button id="theme" class="theme" type="button" aria-label="theme">◑</button><a class="lang" href="../../en/index.html">English</a></div></header>
-<main><p><span class="tag k">M4</span></p><h1>꼬리 두께</h1><p class="lead">판간 이동 z 분포에 맞춘 Student-t 자유도</p><div class="takeaway"><b>핵심</b><ul><li>판간 이동의 분포는 정규분포보다 꼬리가 훨씬 두껍다. Student-t 자유도가 ν = 1.00 로 코시 분포에 가깝다.</li><li>공표된 σ 의 3배 밖으로 움직이는 일이 드물지 않다 — 판 쌍의 9.1%.</li></ul></div><div class="spec"><dl>
+<main><p><span class="tag k">M4</span></p><h1>꼬리 두께</h1><p class="lead">판간 이동 z 분포에 맞춘 Student-t 자유도</p><div class="takeaway"><b>핵심</b><ul><li>값이 움직인 폭을 모아 보면 종 모양(정규분포)보다 양 끝이 훨씬 두껍다. 아주 크게 빗나가는 일이 종 모양이 예상하는 것보다 훨씬 자주 생긴다는 뜻이다.</li><li>이 두께를 숫자로 나타낸 Student-t 자유도는 ν = 1.00 이다(정규분포라면 무한대, 작을수록 두껍다).</li><li>실무로 옮기면, 발표된 오차의 3배 밖으로 빗나가는 일도 드물지 않다 — 판 쌍의 9.1%.</li></ul></div><div class="spec"><dl>
 <dt>정의</dt><dd>값이 바뀐 연속 판 쌍의 z(M2)에 중심 0인 Student-t 분포를 최대우도로 맞춘다. 자유도 ν 가 작을수록 꼬리가 두껍다(ν=1 이면 코시 분포, ν→∞ 이면 정규분포).</dd>
 <dt>공식</dt><dd class="formula">z ~ s · t_ν,  ν·s 를 최대우도로 추정.  95% 구간은 상수 군집 부트스트랩 2,000회.  값이 한 자리도 바뀌지 않은 쌍(z = 0)은 뺀다.</dd>
 <dt>분모</dt><dd>핵심 상수 17개의 연속 판 쌍 132개 중 값이 바뀐 122개.</dd>
