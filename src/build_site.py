@@ -326,7 +326,7 @@ def chart_tail(pairs, nu, s, lang, W=900, H=360):
 
 def chart_miss(s3, lang, W=900, H=340):
     """G3: miss rate by edition at 1σ and 2σ with CI whiskers and normal reference lines."""
-    L, R, Tp, B = 56, 110, 16, 40
+    L, R, Tp, B = 56, 150, 16, 40
     eds = [r for r in s3 if r["subset"].isdigit()]
 
     def X(i): return L + (i + 0.5) / len(eds) * (W - L - R)
@@ -336,7 +336,7 @@ def chart_miss(s3, lang, W=900, H=340):
     for v in (0, .2, .4, .6, .8, 1.0):
         o.append(f'<line class="grid" x1="{L}" x2="{W-R}" y1="{Y(v):.1f}" y2="{Y(v):.1f}"/><text x="{L-6}" y="{Y(v)+4:.1f}" text-anchor="end">{int(v*100)}%</text>')
     for v, lab in ((0.3173, "1σ 31.7%"), (0.0455, "2σ 4.6%")):
-        o.append(f'<line class="ref" x1="{L}" x2="{W-R}" y1="{Y(v):.1f}" y2="{Y(v):.1f}"/><text x="{W-R+6}" y="{Y(v)+4:.1f}">{("정규 " if lang == "ko" else "normal ") + lab}</text>')
+        o.append(f'<line class="ref" x1="{L}" x2="{W-R}" y1="{Y(v):.1f}" y2="{Y(v):.1f}"/><text x="{W-R+6}" y="{Y(v)+4:.1f}">{("막대대로라면 " if lang == "ko" else "if bars right ") + lab}</text>')
     for i, r in enumerate(eds):
         o.append(f'<text x="{X(i):.1f}" y="{H-14}" text-anchor="middle">{r["subset"]}</text>')
         for col, key, off in ((1, "miss_1sigma", -7), (2, "miss_2sigma", 7)):
@@ -537,19 +537,19 @@ def build():
         if lang == "ko":
             hero = f"""<div class="hero"><h1>{t['site']}</h1><p class="lead">과학자들이 스스로 밝힌 오차 막대는 다음 판의 값을 얼마나 자주 놓쳤나. 국제과학위원회(ISC) 산하 과학기술데이터위원회(CODATA)가 1973년부터 내 온 기본 물리 상수 권고값 아홉 판과 그 직전의 1969년 조정값을 이어 붙여, 값과 불확도가 판마다 어떻게 바뀌었는지 센다.</p></div>"""
             stats_h = f"""<div class="stats">
-<a class="stat" href="metrics/m2.html"><span class="n">{N['m2_r2']}%</span><span class="vs">기대 4.6%</span><small>연속한 두 판 사이 이동이 두 불확도의 2배를 넘은 비율 (판 쌍 {N['m2_n']}개, 핵심 상수 {N['m2_q']}개, 95% 구간 {N['m2_r2_ci']})</small></a>
-<a class="stat" href="metrics/m2.html"><span class="n">{N['m2_r3']}%</span><span class="vs">기대 0.27%</span><small>같은 이동이 3배를 넘은 비율 (95% 구간 {N['m2_r3_ci']})</small></a>
-<a class="stat" href="metrics/m3.html"><span class="n">{N['m3_m2']}%</span><span class="vs">기대 4.6%</span><small>옛 판의 ±2σ 막대가 2022 판 값을 담지 못한 비율 ({N['m3_n']}개 조합, 95% 구간 {N['m3_m2_ci']})</small></a>
-<a class="stat" href="metrics/m1.html"><span class="n">{N['m1_median']}년</span><small>핵심 상수의 상대 불확도가 절반으로 줄어드는 데 걸린 햇수, 중앙값 (상수 {N['m1_n_core']}개 중 불확도가 줄어든 {N['m1_n_dec']}개)</small></a></div>"""
+<a class="stat" href="metrics/m2.html"><span class="n">{N['m2_r2']}%</span><span class="vs">막대대로라면 4.6%</span><small>새 판에서 값이 오차 막대 폭의 2배 넘게 움직인 비율 — 약 {N['m2_1in2']}번에 1번 (판 쌍 {N['m2_n']}개, 핵심 상수 {N['m2_q']}개, 95% 구간 {N['m2_r2_ci']})</small></a>
+<a class="stat" href="metrics/m2.html"><span class="n">{N['m2_r3']}%</span><span class="vs">막대대로라면 0.27%</span><small>3배 넘게 움직인 비율 — 약 {N['m2_1in3']}번에 1번 (95% 구간 {N['m2_r3_ci']})</small></a>
+<a class="stat" href="metrics/m3.html"><span class="n">{N['m3_m2']}%</span><span class="vs">막대대로라면 4.6%</span><small>옛 판의 넉넉한 막대(±2σ)가 오늘의 값을 품지 못한 비율 — 10개 중 약 {N['m3_m2_10']}개 ({N['m3_n']}개 조합, 95% 구간 {N['m3_m2_ci']})</small></a>
+<a class="stat" href="metrics/m1.html"><span class="n">{N['m1_median']}년</span><small>오차 막대가 절반으로 좁아지는 데 걸린 햇수 (막대가 좁아진 핵심 상수 {N['m1_n_dec']}개의 중앙값)</small></a></div>"""
             g1cap = f"점 하나가 (판, 핵심 상수) 하나, 선은 판별 중앙값. 세로축은 로그. 중앙값은 1969 판 {fmt_sci(med[0][1])}(상수 {med[0][2]}개), 2022 판 {fmt_sci(med[-1][1])}({med[-1][2]}개). 판마다 들어간 상수가 달라(예: 양성자 전하 반지름은 2002 판부터) 중앙값이 판 사이에서 거꾸로 오르기도 한다."
             intro2 = """<div class="prose"><p>불확도는 반세기 동안 만 배 이상 줄었다. 그런데 판이 바뀔 때 값이 움직인 폭은 그 불확도로 설명되는 범위를 자주 넘었다. 이 사이트는 그 비율을 상수별·판별로 공개하고, 같은 질문을 먼저 던진 연구(Henrion & Fischhoff 1986, Bailey 2017)와 나란히 둔다. 수치마다 표본 수와 95% 구간을 붙였다. 「과학자가 과신했다」는 해석은 측정 설계를 들여다본 결과가 아니므로 지표 면에는 쓰지 않는다 — <a href="reading.html">읽기</a>에서 유보와 함께 다룬다.</p></div>"""
         else:
             hero = f"""<div class="hero"><h1>{t['site']}</h1><p class="lead">How often did the error bars that scientists published miss the next edition's value? This site joins the nine editions of the CODATA recommended values of the fundamental physical constants (1973–2022) and the 1969 adjustment that preceded them, and counts how values and uncertainties changed from edition to edition.</p></div>"""
             stats_h = f"""<div class="stats">
-<a class="stat" href="metrics/m2.html"><span class="n">{N['m2_r2']}%</span><span class="vs">normal 4.6%</span><small>Moves between consecutive editions larger than twice the combined uncertainty ({N['m2_n']} pairs, {N['m2_q']} core constants, 95% interval {N['m2_r2_ci']})</small></a>
-<a class="stat" href="metrics/m2.html"><span class="n">{N['m2_r3']}%</span><span class="vs">normal 0.27%</span><small>The same, larger than three times (95% interval {N['m2_r3_ci']})</small></a>
-<a class="stat" href="metrics/m3.html"><span class="n">{N['m3_m2']}%</span><span class="vs">normal 4.6%</span><small>Earlier ±2σ error bars that do not contain the 2022 value ({N['m3_n']} combinations, 95% interval {N['m3_m2_ci']})</small></a>
-<a class="stat" href="metrics/m1.html"><span class="n">{N['m1_median']} y</span><small>Median time for a core constant's relative uncertainty to halve (the {N['m1_n_dec']} of {N['m1_n_core']} core constants whose uncertainty declined)</small></a></div>"""
+<a class="stat" href="metrics/m2.html"><span class="n">{N['m2_r2']}%</span><span class="vs">if bars right: 4.6%</span><small>Moves at a new edition larger than twice the error bars, about once in {N['m2_1in2']} ({N['m2_n']} pairs, {N['m2_q']} core constants, 95% interval {N['m2_r2_ci']})</small></a>
+<a class="stat" href="metrics/m2.html"><span class="n">{N['m2_r3']}%</span><span class="vs">if bars right: 0.27%</span><small>Larger than three times the bars, about once in {N['m2_1in3']} (95% interval {N['m2_r3_ci']})</small></a>
+<a class="stat" href="metrics/m3.html"><span class="n">{N['m3_m2']}%</span><span class="vs">if bars right: 4.6%</span><small>Generous earlier bars (±2σ) that miss today's value, about {N['m3_m2_10']} in 10 ({N['m3_n']} combinations, 95% interval {N['m3_m2_ci']})</small></a>
+<a class="stat" href="metrics/m1.html"><span class="n">{N['m1_median']} y</span><small>Years for the error bars to halve (median over the {N['m1_n_dec']} core constants whose bars narrowed)</small></a></div>"""
             g1cap = f"One dot per (edition, core constant); the line is the median per edition. Log scale. Median {fmt_sci(med[0][1])} in 1969 ({med[0][2]} constants), {fmt_sci(med[-1][1])} in 2022 ({med[-1][2]}). The set of constants changes between editions (the proton charge radius enters in 2002, for example), so the median can rise from one edition to the next."
             intro2 = """<div class="prose"><p>Uncertainties shrank by more than four orders of magnitude in half a century. Yet the moves between editions often exceeded what those uncertainties allow. This site publishes those rates by constant and by edition, next to the earlier studies that asked the same question (Henrion & Fischhoff 1986; Bailey 2017). Every number carries its sample size and a 95% interval. "Scientists were overconfident" is an interpretation that would require looking into the measurements themselves, so the metric pages do not use it; the <a href="reading.html">reading edition</a> takes it up with its qualifications.</p></div>"""
         cards = "".join(f'<a class="card" href="metrics/{m["id"]}.html"><b>{m["id"].upper()} · {esc(m[lang]["name"])}</b><small>{esc(m[lang]["short"])}</small></a>' for m in METRICS)
@@ -605,7 +605,7 @@ def build():
                 s = sens
                 parts.append(f'<div class="note">{"민감도 — 1998~2022 ASCII 표에서 이름이 바뀌지 않은 모든 행(서로 환산 관계인 행 포함)으로 같은 계산을 하면" if lang == "ko" else "Sensitivity — repeating the calculation over every 1998–2022 ASCII row whose name did not change (including rows that are conversions of one another):"} |z|>1 {pct(s[0]["rate"])}%, |z|>2 {pct(s[1]["rate"])}%, |z|>3 {pct(s[2]["rate"])}% ({s[0]["n_pairs"]} {t["pairs"]}). {"같은 이동이 여러 행에 중복해 세어지므로 표본 수는 부풀어 있다." if lang == "ko" else "The same move is counted in many rows, so the count is inflated."}</div>')
             if m["id"] == "m3":
-                parts.append(f'<figure><div class="legend"><span style="--c:var(--s1)">±1σ {"밖" if lang == "ko" else "missed"}</span><span style="--c:var(--s2)">±2σ {"밖" if lang == "ko" else "missed"}</span><span class="dash" style="--c:var(--ref)">{"정규 기대" if lang == "ko" else "normal expectation"}</span></div>{chart_miss(s3, lang)}<figcaption>{"판별로 그 판과 2022 판에 모두 있는 핵심 상수 중 옛 오차 막대가 2022 판 값을 담지 못한 비율. 세로선은 상수 군집 부트스트랩 95% 구간." if lang == "ko" else "By edition, the share of core constants whose earlier error bar does not contain the 2022 value. Vertical bars: 95% cluster-bootstrap intervals."}</figcaption></figure>')
+                parts.append(f'<figure><div class="legend"><span style="--c:var(--s1)">±1σ {"밖" if lang == "ko" else "missed"}</span><span style="--c:var(--s2)">±2σ {"밖" if lang == "ko" else "missed"}</span><span class="dash" style="--c:var(--ref)">{"막대가 맞을 때 기대" if lang == "ko" else "expected if the bars were right"}</span></div>{chart_miss(s3, lang)}<figcaption>{"판별로 그 판과 2022 판에 모두 있는 핵심 상수 중 옛 오차 막대가 2022 판 값을 담지 못한 비율. 세로선은 상수 군집 부트스트랩 95% 구간." if lang == "ko" else "By edition, the share of core constants whose earlier error bar does not contain the 2022 value. Vertical bars: 95% cluster-bootstrap intervals."}</figcaption></figure>')
                 sub = {"1969-1986": ("1969~1986 묶음", "1969–1986 pooled"), "1998-2018": ("1998~2018 묶음", "1998–2018 pooled"), "all": ("전체", "all")}
                 rows = [[sub.get(r["subset"], (r["subset"], r["subset"]))[0 if lang == "ko" else 1], r["n"], r["n_quantities"], pct(r["miss_1sigma"], 0), cip(r["miss_1sigma_ci"]), pct(r["miss_2sigma"], 0), cip(r["miss_2sigma_ci"]),
                          pct(r["inside_iq"], 0), pct(r["surprise"], 0), r["median_abs_z"]] for r in s3]
