@@ -457,6 +457,9 @@ def numbers(qmap, m1, s2, s3, t4, summ):
     )
 
 
+GLOSS = {"ko": '<div class="note"><b>불확도(uncertainty)</b> — 측정값이 참값에서 벗어나 있을 수 있는 폭을 표준편차로 나타낸 값이다. 그림의 오차 막대(±1σ) 길이가 이것이다. 참값과의 실제 차이인 「오차(error)」와 달리, 불확도는 그 차이가 얼마쯤일지에 대한 추정이다. 계측 분야의 표준 용어로, 한국산업표준 KS Q ISO/IEC GUIDE 98-3 「측정불확도 표현 지침」이 이 말을 쓴다. 이 사이트가 재는 것은 그 추정한 폭이 판이 바뀔 때의 실제 이동을 담았는가이다.</div>', "en": '<div class="note"><b>Uncertainty</b> — the width, expressed as a standard deviation, within which a measured value may differ from the true value; the length of the ±1σ error bars in the plots. Unlike the error, the actual difference from the true value, the uncertainty is an estimate of how large that difference may be. It is the standard term in metrology (ISO/IEC Guide 98-3, the Guide to the Expression of Uncertainty in Measurement). What this site measures is whether that estimated width covered the actual moves between editions.</div>'}
+
+
 def takeaway(lang, items):
     """The page's takeaway box: two or three sentences a reader should leave with."""
     items = [i for i in items if i]
@@ -558,7 +561,8 @@ def build():
             tk = [f"Uncertainties shrank more than ten-thousand-fold in half a century, yet moves between editions exceeded twice the published uncertainty {N['m2_x2']} times as often as a normal distribution allows, and three times {N['m2_x3']} times as often.",
                   f"{N['m3_m2']}% of earlier ±2σ error bars do not contain today's (2022) value, with no clear difference between older and recent editions.",
                   "These numbers are the share of moves the reported uncertainties did not cover; the cause (overconfidence, systematic error, adjustment procedure) is not identified by these data."]
-        body = hero + takeaway(lang, tk) + stats_h + f'<figure>{g1}<figcaption>{esc(g1cap)}</figcaption></figure>' + intro2 + f'<h2>{t["metrics"]}</h2><div class="cards">{cards}</div>'
+        gloss = GLOSS[lang]
+        body = hero + takeaway(lang, tk) + stats_h + f'<figure>{g1}<figcaption>{esc(g1cap)}</figcaption></figure>' + intro2 + gloss + f'<h2>{t["metrics"]}</h2><div class="cards">{cards}</div>'
         (base / "index.html").write_text(page(lang, t["home"], body, 1, "home"), encoding="utf-8")
 
         # ---------- metric pages
@@ -792,7 +796,7 @@ def method_page(lang, N):
     if lang == "ko":
         return f"""<div class="prose"><h1>방법·한계</h1>
 <div class="takeaway"><b>핵심</b><ul><li>1969·1973·1986 판은 원 논문 쪽 이미지에서 손으로, 1998 판 이후는 NIST 표에서 옮겼고, 쓰는 값 전부를 별도 조판본과 대조했다.</li><li>대조 중 NIST 2002 판 ASCII 보관본의 오기 3행을 찾아 출판본 값으로 고쳤다.</li><li>판은 서로 독립이 아니고 2022 판도 참값이 아니다 — 모든 수치는 이 두 조건 아래에서 읽는다.</li></ul></div>
-<h2>자료</h2><p>{esc(SOURCES['codata']['ko'])} {esc(SOURCES['tpl1969']['ko'])}</p>
+{GLOSS["ko"]}<h2>자료</h2><p>{esc(SOURCES['codata']['ko'])} {esc(SOURCES['tpl1969']['ko'])}</p>
 <ul><li>1998~2022 판: NIST ASCII 표를 파싱했다. 1998~2006 판은 「값(불확도)」 괄호 표기(괄호 안 숫자는 마지막 자리 기준), 2010 판부터는 값과 불확도가 따로 적혀 있다. 「...」로 끝나는 값과 「(exact)」는 정의값이다.</li>
 <li>1969·1973·1986 판: 이 사이트가 쓰는 양을 원 논문 표의 쪽 이미지에서 손으로 옮겼다. 66개(측정값 63, 정의값 3) 전부를 PDF 문자층과 자동 대조해 64개가 같았고, 나머지 2개는 문자층의 OCR 오류로 이미지 판독이 맞다. 이 판들의 불확도는 원문에 「표준편차」로 적혀 있다(1969: 표 XXXII 머리말, 1973: 표 33.1 각주 a, 1986: 미주 3).</li>
 <li>1998~2022 판의 사용 행 213개 전부를 NIST 가 따로 조판한 「all values」 PDF 표와 대조했다. 판별 무작위 10행 표본도 같은 PDF 와 대조했다.</li></ul>
@@ -813,7 +817,7 @@ def method_page(lang, N):
 <h2>재현</h2><p>모든 표는 저장소의 <code>src/</code> 에서 만든다: <code>fetch_raw.py</code>(원 파일 내려받기·해시) → <code>parse_codata.py</code>(파싱·보정·대응) → <code>handcheck.py</code>(대조) → <code>metrics.py</code>(지표) → <code>build_site.py</code>(사이트).</p></div>"""
     return f"""<div class="prose"><h1>Method & limits</h1>
 <div class="takeaway"><b>Takeaway</b><ul><li>The 1969, 1973 and 1986 values were transcribed by hand from page images of the published tables, later editions from NIST's tables; every value used was checked against a separately typeset version.</li><li>The checks found three rows of NIST's archived 2002 ASCII table that differ from the published report; the published values are used.</li><li>Editions are not independent and the 2022 edition is not the true value; every number should be read with both in mind.</li></ul></div>
-<h2>Data</h2><p>{esc(SOURCES['codata']['en'])} {esc(SOURCES['tpl1969']['en'])}</p>
+{GLOSS["en"]}<h2>Data</h2><p>{esc(SOURCES['codata']['en'])} {esc(SOURCES['tpl1969']['en'])}</p>
 <ul><li>1998–2022: NIST ASCII tables, parsed. 1998–2006 use concise notation, value(uncertainty), the bracketed digits referring to the last digits; from 2010 value and uncertainty are in separate columns. Values ending in '...' and '(exact)' are exact.</li>
 <li>1969, 1973, 1986: the quantities used here were transcribed by hand from page images of the published tables. All 66 values (63 measured, 3 exact) were compared automatically with the PDF text layer: 64 are identical, and the other two are OCR errors in the text layer, the image reading being correct. These editions state their uncertainties as standard deviations (1969: heading of table XXXII; 1973: table 33.1, note a; 1986: endnote 3).</li>
 <li>All 213 rows used from 1998–2022 were checked against NIST's separately typeset 'all values' PDF tables, as was a random sample of 10 rows per edition.</li></ul>
