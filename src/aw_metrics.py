@@ -147,17 +147,18 @@ def main():
             if p["kind"] != "unc" or n["kind"] not in ("unc", "none"):
                 continue
             pv, nv = on_12c(p), on_12c(n)
+            pu = p["u"] * f if p["year"] < SCALE_YEAR else p["u"]   # convert the range too
             d = nv - pv
-            z = d / p["u"]
-            nu = n.get("u") or Decimal(0)
-            disjoint = (pv + p["u"] < nv - nu) or (nv + nu < pv - p["u"])
+            z = d / pu
+            nu = n.get("u") or Decimal(0)   # a new value without an uncertainty is treated as a point
+            disjoint = (pv + pu < nv - nu) or (nv + nu < pv - pu)
             pairs.append(dict(symbol=s, element=p["element"], year_prev=p["year"], prev=p["value_text"], year_new=n["year"], new=n["value_text"],
-                              diff=f"{d:.8f}", u_prev=str(p["u"]), z_prev=f"{float(z):.3f}", outside_prev_range=int(abs(d) > p["u"]),
+                              diff=f"{d:.8f}", u_prev=str(p["u"]), z_prev=f"{float(z):.3f}", z_exact=float(z), outside_prev_range=int(abs(d) > pu),
                               ranges_disjoint=int(disjoint),
                               scale_change=int(p["year"] < SCALE_YEAR <= n["year"])))
     pairs.sort(key=lambda x: (x["year_new"], x["symbol"]))
     with open(DER / "aw_a2_pairs.csv", "w", newline="", encoding="utf-8") as fh:
-        w = csv.DictWriter(fh, fieldnames=list(pairs[0].keys()))
+        w = csv.DictWriter(fh, fieldnames=[k for k in pairs[0].keys() if k != "z_exact"], extrasaction="ignore")
         w.writeheader()
         w.writerows(pairs)
 
@@ -170,17 +171,21 @@ def main():
                 iv.append(dict(symbol=s, element=p["element"], year_prev=p["year"], prev=p["value_text"], year_interval=n["year"], interval=n["value_text"],
                                interval_width=str(n["hi"] - n["lo"]), prev_range_width=str(2 * pu) if pu else "",
                                width_ratio=f"{float((n['hi'] - n['lo']) / (2 * pu)):.1f}" if pu else "",
+                               width_ratio_exact=float((n['hi'] - n['lo']) / (2 * pu)) if pu else None,
                                interval_contains_prev_value=int(n["lo"] <= on_12c(p) <= n["hi"])))
     iv.sort(key=lambda x: (x["year_interval"], x["symbol"]))
     with open(DER / "aw_a5_intervals.csv", "w", newline="", encoding="utf-8") as fh:
-        w = csv.DictWriter(fh, fieldnames=list(iv[0].keys()))
+        w = csv.DictWriter(fh, fieldnames=[k for k in iv[0].keys() if k != "width_ratio_exact"], extrasaction="ignore")
         w.writeheader()
         w.writerows(iv)
 
+    import statistics
     saw = [e for e in el_rows if e["has_standard_atomic_weight"]]
     nrev = sorted(e["n_revisions"] for e in saw)
     outside = [p for p in pairs if p["outside_prev_range"]]
-    zs = sorted(abs(float(p["z_prev"])) for p in pairs)
+    import statistics
+    zs = sorted(abs(p["z_exact"]) for p in pairs)
+    ratios = [i["width_ratio_exact"] for i in iv if i["width_ratio_exact"] is not None]
     summary = dict(
         rows=len(recs), elements=len(by), elements_with_saw=len(saw), report_years=len(report_years), first=min(report_years), last=max(report_years),
         scale_factor=str(f), revisions_mean=sum(nrev) / len(nrev), revisions_median=nrev[len(nrev) // 2], revisions_max=max(nrev),
@@ -189,7 +194,8 @@ def main():
         a2_disjoint=sum(p["ranges_disjoint"] for p in pairs),
         a2_disjoint_list=[(p["symbol"], p["year_prev"], p["prev"], p["year_new"], p["new"]) for p in pairs if p["ranges_disjoint"]],
         a2_outside_since_1971=[(p["symbol"], p["year_new"]) for p in outside if p["year_new"] >= 1971],
-        a3_median_abs_z=zs[len(zs) // 2], a3_share_le_half=sum(1 for z in zs if z <= 0.5) / len(zs),
+        a3_median_abs_z=statistics.median(zs), a3_share_le_half=sum(1 for z in zs if z <= 0.5) / len(zs),
+        a5_ratio_median=statistics.median(ratios), a5_ratio_max=max(ratios),
         a4_unchanged_since_1969=sorted(e["symbol"] for e in saw if e["last"] <= 1969),
         a5_intervals=len(iv), a5_contains_prev=sum(i["interval_contains_prev_value"] for i in iv),
         eras=era_rows,

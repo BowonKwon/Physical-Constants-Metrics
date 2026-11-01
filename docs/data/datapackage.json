@@ -20,103 +20,103 @@
  ],
  "resources": [
   {
-   "path": "data/constants_long.csv",
+   "path": "constants_long.csv",
    "description": "Constant × edition long table: value, standard uncertainty, relative uncertainty, unit, exact flag, printed form, source location",
    "format": "csv"
   },
   {
-   "path": "data/quantity_map.csv",
+   "path": "quantity_map.csv",
    "description": "Map of the 27 quantities: symbol, names, source names by edition, exact-from edition, layer, basis of the Korean name",
    "format": "csv"
   },
   {
-   "path": "data/m1_halflife.csv",
+   "path": "m1_halflife.csv",
    "description": "M1 relative-uncertainty half-life",
    "format": "csv"
   },
   {
-   "path": "data/m2_pairs.csv",
+   "path": "m2_pairs.csv",
    "description": "M2 every consecutive-edition pair (z, z_old)",
    "format": "csv"
   },
   {
-   "path": "data/m2_summary.csv",
+   "path": "m2_summary.csv",
    "description": "M2 exceedance rates and intervals",
    "format": "csv"
   },
   {
-   "path": "data/m3_vs_latest.csv",
+   "path": "m3_vs_latest.csv",
    "description": "M3 every (edition, constant) against 2022",
    "format": "csv"
   },
   {
-   "path": "data/m3_summary.csv",
+   "path": "m3_summary.csv",
    "description": "M3 miss rates, interquartile and surprise indices by edition and group",
    "format": "csv"
   },
   {
-   "path": "data/m4_tail.csv",
+   "path": "m4_tail.csv",
    "description": "M4 Student-t fits",
    "format": "csv"
   },
   {
-   "path": "data/m5_funnel.csv",
+   "path": "m5_funnel.csv",
    "description": "M5 convergence-plot data",
    "format": "csv"
   },
   {
-   "path": "data/m6_events.csv",
+   "path": "m6_events.csv",
    "description": "M6 exact-value transitions",
    "format": "csv"
   },
   {
-   "path": "data/hf_repro.csv",
+   "path": "hf_repro.csv",
    "description": "Henrion & Fischhoff-style recalculation (five constants)",
    "format": "csv"
   },
   {
-   "path": "data/sens_all_rows.csv",
+   "path": "sens_all_rows.csv",
    "description": "Sensitivity: every 1998–2022 ASCII row with an unchanged name",
    "format": "csv"
   },
   {
-   "path": "data/sens_candidates.csv",
+   "path": "sens_candidates.csv",
    "description": "Sensitivity: M2 and M3 recomputed with three candidates meeting the same rule added (20 constants)",
    "format": "csv"
   },
   {
-   "path": "data/handcheck_mapped.csv",
+   "path": "handcheck_mapped.csv",
    "description": "Check: every 1998–2022 row used here against NIST's PDF tables",
    "format": "csv"
   },
   {
-   "path": "data/handcheck_early.csv",
+   "path": "handcheck_early.csv",
    "description": "Check: every 1969/1973/1986 hand-entered value against page images and text layer",
    "format": "csv"
   },
   {
-   "path": "data/aw_long.csv",
-   "description": "Every atomic-weight revision, parsed (with pre-1961 values converted to the ¹²C scale). Values © IUPAC/CIAAW; republication conditions: full reference, ©, IUPAC/CIAAW, year.",
+   "path": "aw_long.csv",
+   "description": "Every atomic-weight revision, parsed (with pre-1961 values converted to the ¹²C scale). Atomic-weight values © IUPAC/CIAAW (not covered by CC BY 4.0): republication with full reference, ©, IUPAC or CIAAW and year; translations need prior approval from the relevant IUPAC National Adhering Organization; commercial use by arrangement with the CIAAW Secretariat. CC BY 4.0 covers only the editor's computations (z, aggregates, conversions).",
    "format": "csv"
   },
   {
-   "path": "data/aw_a1_elements.csv",
-   "description": "Revisions, first/last year and mean spacing per element (A1, A4). Values © IUPAC/CIAAW; republication conditions: full reference, ©, IUPAC/CIAAW, year.",
+   "path": "aw_a1_elements.csv",
+   "description": "Revisions, first/last year and mean spacing per element (A1, A4). Atomic-weight values © IUPAC/CIAAW (not covered by CC BY 4.0): republication with full reference, ©, IUPAC or CIAAW and year; translations need prior approval from the relevant IUPAC National Adhering Organization; commercial use by arrangement with the CIAAW Secretariat. CC BY 4.0 covers only the editor's computations (z, aggregates, conversions).",
    "format": "csv"
   },
   {
-   "path": "data/aw_a1_eras.csv",
-   "description": "Revisions per era (A1). Values © IUPAC/CIAAW; republication conditions: full reference, ©, IUPAC/CIAAW, year.",
+   "path": "aw_a1_eras.csv",
+   "description": "Revisions per era (A1). Atomic-weight values © IUPAC/CIAAW (not covered by CC BY 4.0): republication with full reference, ©, IUPAC or CIAAW and year; translations need prior approval from the relevant IUPAC National Adhering Organization; commercial use by arrangement with the CIAAW Secretariat. CC BY 4.0 covers only the editor's computations (z, aggregates, conversions).",
    "format": "csv"
   },
   {
-   "path": "data/aw_a2_pairs.csv",
-   "description": "Every revision whose predecessor had an uncertainty: outside range, overlap, z (A2, A3). Values © IUPAC/CIAAW; republication conditions: full reference, ©, IUPAC/CIAAW, year.",
+   "path": "aw_a2_pairs.csv",
+   "description": "Every revision whose predecessor had an uncertainty: outside range, overlap, z (A2, A3). Atomic-weight values © IUPAC/CIAAW (not covered by CC BY 4.0): republication with full reference, ©, IUPAC or CIAAW and year; translations need prior approval from the relevant IUPAC National Adhering Organization; commercial use by arrangement with the CIAAW Secretariat. CC BY 4.0 covers only the editor's computations (z, aggregates, conversions).",
    "format": "csv"
   },
   {
-   "path": "data/aw_a5_intervals.csv",
-   "description": "Switches to interval notation (A5). Values © IUPAC/CIAAW; republication conditions: full reference, ©, IUPAC/CIAAW, year.",
+   "path": "aw_a5_intervals.csv",
+   "description": "Switches to interval notation (A5). Atomic-weight values © IUPAC/CIAAW (not covered by CC BY 4.0): republication with full reference, ©, IUPAC or CIAAW and year; translations need prior approval from the relevant IUPAC National Adhering Organization; commercial use by arrangement with the CIAAW Secretariat. CC BY 4.0 covers only the editor's computations (z, aggregates, conversions).",
    "format": "csv"
   }
  ]

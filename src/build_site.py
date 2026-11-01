@@ -197,7 +197,31 @@ def ci_pct(lo, hi, d=1) -> str:
     return f"{float(lo) * 100:.{d}f}–{float(hi) * 100:.{d}f}%"
 
 
+_SPLIT = __import__("re").compile(r"(<script.*?</script>|<style.*?</style>|<code.*?</code>|<pre.*?</pre>|<math.*?</math>)", __import__("re").S)
+# Korean particles that follow a Latin letter, digit, symbol or closing bracket: written attached (CIAAW는, 1.00으로)
+_PART = "에서는|에서|으로는|으로|로는|로|까지|부터|보다|처럼|이다|이며|이고|이면|이나|와|과|은|는|이|가|을|를|의|에|도|만|인|다"
+_PART_RE = __import__("re").compile(r"([A-Za-z0-9²³⁰-⁹₀-₉σν%)|①-⑳])((?:</(?:a|b|i|em|strong|span|sub|sup)>)*) (" + _PART + r")(?=[\s,.;:!?·)\]」』<]|$)")
+_RE = __import__("re")
+
+
+def text_fix(html, lang):
+    """Escape a bare < or > used as an inequality in text (e.g. |z|>2, |z| < 0.1) and, in Korean,
+    pick 로/으로 after a number by its last digit as read aloud (0 영·3 삼·6 육 end in a final consonant) and
+    attach a particle to a preceding Latin letter, digit or symbol (CIAAW 는 -> CIAAW는). Code, pre, math untouched."""
+    out = []
+    for i, chunk in enumerate(_SPLIT.split(html)):
+        if i % 2 == 0:
+            chunk = _RE.sub(r"(?<=[\s|=])<(?=[\s\d.=−-])", "&lt;", chunk)
+            chunk = _RE.sub(r"(?<=[\s|=])>(?=[\s\d.=−-])", "&gt;", chunk)
+            if lang == "ko":
+                chunk = _RE.sub(r"(\d) ?(으로|로)(?=[\s,.)])", lambda m: m.group(1) + " " + ("으로" if m.group(1) in "036" else "로"), chunk)
+                chunk = _PART_RE.sub(lambda m: m.group(1) + m.group(2) + m.group(3), chunk)
+        out.append(chunk)
+    return "".join(out)
+
+
 def page(lang, title, body, depth=1, active=""):
+    body = text_fix(body, lang)
     t = T[lang]
     root = "../" * depth
     other = "en" if lang == "ko" else "ko"
@@ -343,7 +367,7 @@ def chart_miss(s3, lang, W=900, H=340):
     for v in (0, .2, .4, .6, .8, 1.0):
         o.append(f'<line class="grid" x1="{L}" x2="{W-R}" y1="{Y(v):.1f}" y2="{Y(v):.1f}"/><text x="{L-6}" y="{Y(v)+4:.1f}" text-anchor="end">{int(v*100)}%</text>')
     for v, lab in ((0.3173, "1σ 31.7%"), (0.0455, "2σ 4.6%")):
-        o.append(f'<line class="ref" x1="{L}" x2="{W-R}" y1="{Y(v):.1f}" y2="{Y(v):.1f}"/><text x="{W-R+6}" y="{Y(v)+4:.1f}">{("정규분포 기대 " if lang == "ko" else "normal ") + lab}</text>')
+        o.append(f'<line class="ref" x1="{L}" x2="{W-R}" y1="{Y(v):.1f}" y2="{Y(v):.1f}"/><text x="{W-R+6}" y="{Y(v)-3:.1f}"><tspan x="{W-R+6}">{"정규분포 기대" if lang == "ko" else "normal"}</tspan><tspan x="{W-R+6}" dy="1.15em">{lab}</tspan></text>')
     for i, r in enumerate(eds):
         o.append(f'<text x="{X(i):.1f}" y="{H-14}" text-anchor="middle">{r["subset"]}</text>')
         for col, key, off in ((1, "miss_1sigma", -7), (2, "miss_2sigma", 7)):
@@ -538,8 +562,8 @@ def build():
                        licenses=[dict(name="CC-BY-4.0", path="https://creativecommons.org/licenses/by/4.0/")],
                        sources=[dict(title="CODATA recommended values (NIST)", path=SOURCES["codata"]["url"]),
                                 dict(title="Taylor, Parker & Langenberg 1969", path=SOURCES["tpl1969"]["url"])],
-                       resources=[dict(path=f"data/{f}", description=DATA_DESC[f][1], format="csv") for f in PUBLIC_DATA] +
-                       [dict(path=f"data/{f}", description=__import__("aw_site").DESC[f][1] + ". Values © IUPAC/CIAAW; republication conditions: full reference, ©, IUPAC/CIAAW, year.",
+                       resources=[dict(path=f, description=DATA_DESC[f][1], format="csv") for f in PUBLIC_DATA] +
+                       [dict(path=f, description=__import__("aw_site").DESC[f][1] + ". Atomic-weight values © IUPAC/CIAAW (not covered by CC BY 4.0): republication with full reference, ©, IUPAC or CIAAW and year; translations need prior approval from the relevant IUPAC National Adhering Organization; commercial use by arrangement with the CIAAW Secretariat. CC BY 4.0 covers only the editor's computations (z, aggregates, conversions).",
                              format="csv") for f in __import__("aw_site").PUBLIC])
     shutil.copy(ROOT / "data" / "raw" / "manifest.json", OUT / "data" / "raw_manifest.json")
     (OUT / "data" / "datapackage.json").write_text(json.dumps(datapackage, indent=1, ensure_ascii=False), encoding="utf-8")
@@ -719,16 +743,17 @@ def build():
         rows = [[f'<a href="../data/{f}">{f}</a>', esc(DATA_DESC[f][0 if lang == "ko" else 1])] for f in PUBLIC_DATA]
         lic = ("<p>파생 표(아래 CSV)는 CC BY 4.0. 원 수치는 NIST가 공개한 CODATA 권고값과 1969년 논문의 표에서 옮겼고, 각 행에 원자료 위치를 적었다. NIST의 원 파일(ASCII 표·PDF)은 이 저장소에 싣지 않는다 — NIST는 표준참조자료(SRD)의 복제에 사전 허락을 요구한다고 밝힌다. 원 파일의 주소·내려받은 날짜·SHA-256 은 <a href='../data/raw_manifest.json'>raw_manifest.json</a> 에 있다.</p>" if lang == "ko"
                else "<p>The derived tables below are CC BY 4.0. The underlying values were taken from the CODATA recommended values published by NIST and from the 1969 paper's table; every row records its source location. NIST's original files (ASCII tables, PDFs) are not included: NIST states that its Standard Reference Data may not be reproduced without prior permission. Their URLs, retrieval dates and SHA-256 hashes are in <a href='../data/raw_manifest.json'>raw_manifest.json</a>.</p>")
-        dtk = (["파생 CSV 15개와 datapackage.json 을 내려받을 수 있다. 파생 데이터는 CC BY 4.0 이다.", "NIST 원 파일은 싣지 않는다. 주소·날짜·해시로 같은 파일을 다시 받을 수 있다."] if lang == "ko" else
-               ["Fifteen derived CSV files and datapackage.json can be downloaded; the derived data are CC BY 4.0.", "NIST's original files are not included; their URLs, dates and hashes let anyone fetch the same files."])
+        ncsv = len(PUBLIC_DATA) + len(__import__("aw_site").PUBLIC)
+        dtk = ([f"파생 CSV {ncsv}개와 datapackage.json 을 내려받을 수 있다. 엮은이가 계산한 부분은 CC BY 4.0 이다(원자량 값 자체는 IUPAC/CIAAW 조건을 따른다).", "NIST 원 파일은 싣지 않는다. 주소·날짜·해시로 같은 파일을 다시 받을 수 있다."] if lang == "ko" else
+               [f"{ncsv} derived CSV files and datapackage.json can be downloaded; the editor's computations are CC BY 4.0 (atomic-weight values themselves follow IUPAC/CIAAW's conditions).", "NIST's original files are not included; their URLs, dates and hashes let anyone fetch the same files."])
         import aw_site as _aw
-        awlic = ("<h2>원자량 장</h2><p>원자량 값은 CIAAW 의 역사 표준 원자량 표에서 옮겼다. CIAAW·IUPAC 는 출처 전체와 © 표시·IUPAC 또는 CIAAW·발행 연도를 눈에 띄게 적는 조건으로 별도 허락 없는 재게시를 허용한다. 출처: " + esc(_aw.AW_SOURCE["credit"]) + "</p>" if lang == "ko" else
-                 "<h2>Atomic-weights chapter</h2><p>Atomic-weight values are taken from CIAAW's table of historical standard atomic weights. CIAAW and IUPAC permit republication without formal permission provided the full reference, the © symbol, the name IUPAC or CIAAW and the year are prominently visible. Source: " + esc(_aw.AW_SOURCE["credit"]) + "</p>")
+        awlic = ("<h2>원자량 장</h2><p>원자량 값은 CIAAW 의 역사 표준 원자량 표에서 옮겼다. CIAAW·IUPAC 는 출처 전체와 © 표시·IUPAC 또는 CIAAW·발행 연도를 눈에 띄게 적는 조건으로 별도 허락 없는 재게시를 허용한다. 다른 언어로 옮겨 싣는 것은 해당 국가 IUPAC 회원 기구의 사전 승인 대상이고, 상업적 이용은 CIAAW 사무국에 문의해야 한다. 이 사이트는 원자량 값(숫자)과 원 표기만 옮기고, 설명문은 따로 썼다. 원자량 값의 권리와 조건은 CIAAW·IUPAC 의 것이며, 이 사이트의 CC BY 4.0 은 엮은이가 계산한 부분(z·집계·환산)에만 미친다. 출처: " + esc(_aw.AW_SOURCE["credit"]) + "</p>" if lang == "ko" else
+                 "<h2>Atomic-weights chapter</h2><p>Atomic-weight values are taken from CIAAW's table of historical standard atomic weights. CIAAW and IUPAC permit republication without formal permission provided the full reference, the © symbol, the name IUPAC or CIAAW and the year are prominently visible. Publication of a translation requires prior approval from the relevant IUPAC National Adhering Organization, and commercial use requires contacting the CIAAW Secretariat. This site reproduces only the atomic-weight values (numbers) and their printed notation and writes its own explanations. Rights and conditions for the atomic-weight values remain with CIAAW/IUPAC; the site's CC BY 4.0 covers only the editor's computations (z, aggregates, conversions). Source: " + esc(_aw.AW_SOURCE["credit"]) + "</p>")
         awtab = table([t["file"], t["desc"]], _aw.data_rows(lang, esc), cls="")
         body = f"<h1>{t['data']}</h1>{takeaway(lang, dtk)}{lic}" + table([t["file"], t["desc"]], rows, cls="") + awlic + awtab + '<p class="files"><a href="../data/datapackage.json">datapackage.json</a></p>'
         (base / "data.html").write_text(page(lang, t["data"], body, 1, "data"), encoding="utf-8")
 
-    (OUT / "index.html").write_text('<!DOCTYPE html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=ko/index.html"><link rel="canonical" href="ko/index.html"><title>Physical Constants Metrics</title><a href="ko/index.html">한국어</a> · <a href="en/index.html">English</a>', encoding="utf-8")
+    (OUT / "index.html").write_text('<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="refresh" content="0; url=ko/index.html"><link rel="canonical" href="ko/index.html"><title>물리 상수 메트릭스 · Physical Constants Metrics</title></head><body><p><a href="ko/index.html">한국어</a> · <a href="en/index.html" lang="en">English</a></p></body></html>', encoding="utf-8")
     (OUT / ".nojekyll").write_text("", encoding="utf-8")
     print("pages:", sum(1 for _ in OUT.rglob("*.html")))
 
@@ -839,7 +864,7 @@ def method_page(lang, N):
 <li>1969·1973·1986 판: 이 사이트가 쓰는 양을 원 논문 표의 쪽 이미지에서 손으로 옮겼다. 66개(측정값 63, 정의값 3) 전부를 PDF 문자층과 자동 대조해 64개가 같았고, 나머지 2개는 문자층의 OCR 오류로 이미지 판독이 맞다. 이 판들의 불확도는 원문에 「표준편차」로 적혀 있다(1969: 표 XXXII 머리말, 1973: 표 33.1 각주 a, 1986: 미주 3).</li>
 <li>1998~2022 판의 사용 행 213개 전부를 NIST 가 따로 조판한 「all values」 PDF 표와 대조했다. 판별 무작위 10행 표본도 같은 PDF 와 대조했다.</li></ul>
 <h2>원자료 보정</h2><ul>
-<li>2002 판 ASCII 보관본은 볼츠만 상수를 1.380 6504(24)×10⁻²³ 로 적었으나, 같은 판의 PDF 표와 출판된 보고서(Rev. Mod. Phys. 77, 1)는 1.380 6505(24)×10⁻²³ 다. 출판본 값을 쓴다. 같은 보관본의 전자 자기 모멘트와 양성자 비전하도 마지막 자리가 출판본과 달라 함께 보정했다(통계에는 쓰지 않는 행).</li>
+<li>2002 판 ASCII 보관본은 볼츠만 상수를 1.380 6504(24)×10⁻²³ 으로 적었으나, 같은 판의 PDF 표와 출판된 보고서(Rev. Mod. Phys. 77, 1)는 1.380 6505(24)×10⁻²³ 이다. 출판본 값을 쓴다. 같은 보관본의 전자 자기 모멘트와 양성자 비전하도 마지막 자리가 출판본과 달라 함께 보정했다(통계에는 쓰지 않는 행).</li>
 <li>1998~2006 ASCII 표에는 기본 전하 행이 없다. 같은 수치인 전자볼트(J) 행을 썼다.</li>
 <li>1998 판 ASCII 의 진공 투자율 행은 지수가 빠져 있어(정의값 4π×10⁻⁷) 복원했다.</li></ul>
 <h2>상수 선정</h2><p>통계의 분모인 핵심 상수 17개는 서로 정확한 환산 관계가 없도록 골랐다. 예컨대 2019년 이전에는 e = √(2αh/μ₀c), mₑ = 2R∞h/(cα²) 이므로 α·h·R∞ 를 넣으면 e·mₑ 는 뺀다. 아보가드로 상수는 몰 플랑크 상수 관계로 h 와 묶여 있어 뺐다. 상대 원자 질량(전자·양성자·중성자·중양성자·알파 입자)을 넣고, 그 비인 양성자–전자 질량비는 뺐다. PDG 에서 받아 쓰는 양(타우 질량, 페르미 결합 상수, 약한 혼합각)은 넣지 않았다. 빛의 속력은 1969·1973 판에서 측정값이었으므로 그 두 판의 관계식에는 c 가 측정값으로 더 들어가지만, 측정값인 판이 둘뿐이라 핵심 상수에 넣지 않았다. μ₀·M_u 는 2014 판까지 정의값이었다.</p>

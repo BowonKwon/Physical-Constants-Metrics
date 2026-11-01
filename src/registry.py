@@ -39,7 +39,7 @@ METRICS = [{'id': 'm1',
                     '{m1_median_all}년). 반감기가 가장 짧은 상수는 {m1_min_name}({m1_min}년), 가장 긴 상수는 {m1_max_name}({m1_max}년)이다. 중성자 자기 모멘트는 1986 판부터 불확도가 거의 '
                     '그대로여서(기울기 −7×10⁻¹¹/년, 95% 구간이 0을 포함) 「감소 없음」으로 적었다.',
          'caveat': '판 사이 간격이 4년에서 13년까지 고르지 않다. 플랑크 상수·볼츠만 상수처럼 도중에 정의값(측정하지 않고 약속으로 정한 값)이 된 상수는 그 뒤 판을 빼고 계산한다. 직선은 요약일 뿐이어서, 새 측정법이 들어온 판에서 불확도가 '
-                   '계단처럼 확 줄어든 상수는 직선에 잘 맞지 않는다(결정계수 R² 가 낮다).'},
+                   '계단처럼 확 줄어든 상수는 직선에 잘 맞지 않는다(결정계수 R² 이 낮다).'},
   'en': {'name': 'Relative-uncertainty half-life',
          'short': 'Years for the relative uncertainty to halve',
          'definition': 'For each constant, how fast the relative standard uncertainty (u/|x| — the error-bar width relative to the value) fell. log₂ '

@@ -51,10 +51,10 @@ L = {
 
 GLOSS = {
     "ko": ('<div class="note"><b>표준 원자량(standard atomic weight)</b> — 지구의 정상 물질에서 그 원소 원자들의 평균 질량을 ¹²C 원자 질량의 1/12 로 나눈 값. 동위원소가 섞인 비율의 평균이라, 물리 상수와 달리 시료에 따라 실제로 조금씩 다르다.</div>'
-           '<div class="note"><b>CIAAW 의 불확도 = 확장 범위</b> — CIAAW 가 원자량 뒤에 붙이는 불확도(예: 65.38(2) 의 0.02)는 표준불확도(1σ)가 아니다. 정상 물질의 원자량이 「매우 확실하게」 그 범위 안에 들어갈 것으로 기대되는 넓은 범위다. 그래서 물리 상수 장의 ±1σ 와 같은 눈금으로 읽지 않는다.</div>'
+           '<div class="note"><b>CIAAW 의 불확도 = 확장 범위</b> — CIAAW 가 원자량 뒤에 붙이는 불확도(예: 65.38(2) 의 0.02)는 표준불확도(1σ)가 아니다. 정상 물질의 원자량이 「매우 확실하게」 그 범위 안에 들어갈 것으로 기대되는 넓은 범위다(포함인자나 신뢰수준이 정해진 확장불확도와도 같지 않다). 그래서 물리 상수 장의 ±1σ 와 같은 눈금으로 읽지 않는다.</div>'
            '<div class="note"><b>구간(interval)</b> — 2009년부터 동위원소 조성의 자연 변동이 큰 원소는 하나의 값 대신 [하한, 상한] 으로 적는다(예: 수소 [1.007 84, 1.008 11]). 구간은 불확도가 아니라 실제로 나타나는 값의 범위다.</div>'),
     "en": ('<div class="note"><b>Standard atomic weight</b> — the mean mass of an element\'s atoms in normal terrestrial material, relative to 1/12 of the mass of a ¹²C atom. Because it averages over isotopic mixtures, unlike a physical constant it genuinely varies a little from sample to sample.</div>'
-           '<div class="note"><b>CIAAW uncertainty = expanded range</b> — the uncertainty CIAAW attaches to an atomic weight (the 0.02 in 65.38(2)) is not a standard uncertainty (1σ) but a wide range within which the atomic weight of normal materials is expected to lie "with great certitude". It is not read on the same scale as the ±1σ of the physical-constants chapter.</div>'
+           '<div class="note"><b>CIAAW uncertainty = expanded range</b> — the uncertainty CIAAW attaches to an atomic weight (the 0.02 in 65.38(2)) is not a standard uncertainty (1σ) but a wide range within which the atomic weight of normal materials is expected to lie "with great certitude" (nor is it an expanded uncertainty with a stated coverage factor or confidence level). It is not read on the same scale as the ±1σ of the physical-constants chapter.</div>'
            '<div class="note"><b>Interval</b> — since 2009, elements whose isotopic composition varies widely in nature are given as [lower, upper] rather than a single value (hydrogen: [1.007 84, 1.008 11]). An interval is not an uncertainty but the range of values actually found.</div>'),
 }
 
@@ -74,7 +74,7 @@ def numbers():
     dis = [p for p in pairs if p["ranges_disjoint"] == "1"]
     return dict(
         aw_rows=s["rows"], aw_elements=s["elements"], aw_saw=s["elements_with_saw"], aw_report_years=s["report_years"],
-        aw_rev_mean=f"{s['revisions_mean']:.1f}", aw_rev_median=s["revisions_median"], aw_rev_max=s["revisions_max"],
+        aw_rev_mean=f"{s['revisions_mean']:.1f}", aw_rev_median=f"{s['revisions_median']:g}", aw_rev_max=s["revisions_max"],
         aw_era1=eras["1902-1960"]["revisions_per_year"], aw_era2=eras["1961-2008"]["revisions_per_year"], aw_era3=eras["2009-2024"]["revisions_per_year"],
         aw_a2_n=s["a2_pairs"], aw_a2_out=s["a2_outside"], aw_a2_out_pct=f"{100 * s['a2_outside'] / s['a2_pairs']:.1f}",
         aw_a2_dis=len(dis), aw_a2_dis_list=", ".join(f"{p['symbol']} {p['year_new']}" for p in dis),
@@ -82,7 +82,7 @@ def numbers():
         aw_a3_med=f"{s['a3_median_abs_z']:.2f}", aw_a3_half=f"{100 * s['a3_share_le_half']:.0f}",
         aw_a4_n=len(s["a4_unchanged_since_1969"]), aw_a4_list="·".join(s["a4_unchanged_since_1969"]),
         aw_a4_2000=sum(1 for e in saw if int(e["last"]) >= 2000),
-        aw_a5_n=len(iv), aw_a5_ratio=f"{ratios[len(ratios) // 2]:.1f}" if len(ratios) % 2 else f"{(ratios[len(ratios) // 2 - 1] + ratios[len(ratios) // 2]) / 2:.1f}",
+        aw_a5_n=len(iv), aw_a5_ratio=f"{s['a5_ratio_median']:.1f}", aw_a5_max=f"{s['a5_ratio_max']:.1f}",
     )
 
 
@@ -99,9 +99,10 @@ def chart_z(pairs, lang, H, W=900, Hh=340):
     o = [f'<svg viewBox="0 0 {W} {Hh}" role="img" aria-label="revision z by year">']
     for v in (-8, -4, -1, 0, 1, 4, 8):
         cls = "ref" if abs(v) == 1 else "grid"
-        o.append(f'<line class="{cls}" x1="{Lm}" x2="{W-R}" y1="{Y(v):.1f}" y2="{Y(v):.1f}"/><text x="{Lm-6}" y="{Y(v)+4:.1f}" text-anchor="end">{v:+d}</text>')
-    lab = ("직전 범위 경계 (z = ±1)" if lang == "ko" else "edge of previous range (z = ±1)")
-    o.append(f'<text x="{W-R+6}" y="{Y(1)+4:.1f}">{lab}</text>')
+        o.append(f'<line class="{cls}" x1="{Lm}" x2="{W-R}" y1="{Y(v):.1f}" y2="{Y(v):.1f}"/><text x="{Lm-6}" y="{Y(v)+4:.1f}" text-anchor="end">{v:+d}</text>'.replace(">+0<", ">0<"))
+    l1, l2 = (("직전 범위 경계", "(z = ±1)") if lang == "ko" else ("edge of previous", "range (z = ±1)"))
+    # one two-line label between the dashed lines at +1 and -1
+    o.append(f'<text x="{W-R+6}" y="{Y(0)-3:.1f}"><tspan x="{W-R+6}">{l1}</tspan><tspan x="{W-R+6}" dy="1.15em">{l2}</tspan></text>')
     for yv in range(1950, 2030, 10):
         o.append(f'<text x="{X(yv):.1f}" y="{Hh-14}" text-anchor="middle">{yv}</text>')
     for p in pairs:
@@ -313,8 +314,25 @@ def build(lang, base, H, out_root):
     for s in els:
         rs = [r for r in long if r["symbol"] == s]
         el = els[s]
-        tab = [[r["year"], esc(r["value_text"]), t["kinds"][r["kind"]], r["scale"], r["value_12C"].rstrip("0").rstrip(".") if r["value_12C"] else "",
-                zmap.get((s, r["year"]), ""), f'<a href="https://doi.org/{esc(r["doi"])}">{esc(r["doi"])}</a>' if r["doi"] else ""] for r in rs]
+        corr = {(c["symbol"], c["year"]): c for c in csv.DictReader(open(ROOT / "data" / "transcribed" / "aw_corrections.csv", encoding="utf-8"))}
+
+        def vt(r):
+            c = corr.get((s, r["year"]))
+            if not c:
+                return esc(r["value_text"])
+            return esc(r["value_text"]) + (f' <small>(보정 — 원 CSV {esc(c["csv_value"])}; 데이터 면 보정표)</small>' if lang == "ko" else f' <small>(corrected; source CSV {esc(c["csv_value"])}; see corrections file)</small>')
+
+        def v12(r):
+            if not r["value_12C"]:
+                return ""
+            x = r["value_12C"].rstrip("0").rstrip(".")
+            return x + (" <small>(구간 중점, 계산용)</small>" if lang == "ko" else " <small>(interval midpoint, for calculation)</small>") if r["kind"] == "interval" else x
+
+        def doi(r):
+            if not r["doi"] or r["doi"] == "n/a":
+                return "DOI 미제공" if lang == "ko" else "no DOI yet"
+            return f'<a href="https://doi.org/{esc(r["doi"])}">{esc(r["doi"])}</a>'
+        tab = [[r["year"], vt(r), t["kinds"][r["kind"]], r["scale"], v12(r), zmap.get((s, r["year"]), ""), doi(r)] for r in rs]
         tag = "" if el["has_standard_atomic_weight"] == "1" else f'<span class="tag">{t["no_saw"]}</span>'
         cap2 = ("현재 값(또는 마지막 값)에서의 상대 편차, 대칭 로그 축. 막대는 불확도(확장 범위), 빈 원은 불확도 없는 값, 주황 사각은 구간." if lang == "ko"
                 else "Relative deviation from the current (or last) value, symmetric-log axis. Bars: uncertainty (expanded range); open circles: no uncertainty; orange boxes: intervals.")
