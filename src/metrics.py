@@ -229,7 +229,7 @@ def m4(pairs, rng, label):
 
 
 # ---------------------------------------------------------------- Henrion & Fischhoff style
-HF_QUANTITIES = ["alpha", "e", "h", "me", "NA"]
+HF_QUANTITIES = ["alpha_inv", "e", "h", "me", "NA"]  # alpha^-1, as in their table and the 1973 report
 
 
 def hf_repro(data):
@@ -318,11 +318,24 @@ def main():
     s3 = m3_summary(r3, rng)
     write("m3_summary.csv", s3)
 
-    t_all = m4(kp, rng, "core: all consecutive pairs")
-    t_new = m4([p for p in kp if p["ed_from"] >= 1998], rng, "core: 1998-2022")
-    t_nz = m4([p for p in kp if float(p["z"]) != 0], rng, "core: pairs with a nonzero change")
-    write("m4_tail.csv", [t_all, t_new, t_nz])
+    # Pairs whose printed value did not change give z = 0 exactly. With exact zeros the likelihood of a
+    # zero-centred Student-t is unbounded (L ~ s^(n_nonzero*nu - n_zero) as s -> 0 for small nu), so the
+    # maximum-likelihood fit is made on the pairs with a change; the zero pairs are reported separately (M2).
+    t_nz = m4([p for p in kp if float(p["z"]) != 0], rng, "core: pairs with a change")
+    t_new = m4([p for p in kp if float(p["z"]) != 0 and p["ed_from"] >= 1998], rng, "core: pairs with a change, 1998-2022")
+    write("m4_tail.csv", [t_nz, t_new])
     write("hf_repro.csv", hf_repro(data))
+
+    # sensitivity: core + three candidates that meet the same rule (helion, triton, deuteron moment)
+    ks = [p for p in pairs if p["layer"] in ("K", "S")]
+    sens_k = rate_table(ks, "core + candidates (20)", rng)
+    r3s = [r for r in m3(qmap, data) if r["layer"] in ("K", "S")]
+    s3s = [r for r in m3_summary(r3s, rng) if r["subset"] == "all"]
+    for r in s3s:
+        r["subset"] = "core + candidates (20): all"
+    write("sens_candidates.csv", sens_k + [dict(subset=r["subset"], measure="m3", threshold="1/2 sigma", n_pairs=r["n"], n_quantities=r["n_quantities"],
+                                                exceed="", rate=f'{r["miss_1sigma"]}/{r["miss_2sigma"]}', ci_low=r["miss_1sigma_ci"], ci_high=r["miss_2sigma_ci"],
+                                                normal="0.317/0.046", ratio_to_normal="") for r in s3s])
 
     write("m5_funnel.csv", m5(qmap, data))
     write("m6_events.csv", m6(qmap, data))
@@ -336,7 +349,7 @@ def main():
         n_quantities_core=len(core),
         editions=sorted({y for v in data.values() for y in v}),
         m1_median_halflife_core=float(np.median(hl)), m1_n=len(hl),
-        m2=summ, m3=s3, m4=[t_all, t_new, t_nz], sensitivity=ss,
+        m2=summ, m3=s3, m4=[t_nz, t_new], sensitivity=ss, sensitivity_candidates=sens_k,
         n_zero_change_pairs=sum(1 for p in kp if float(p["z"]) == 0), n_core_pairs=len(kp),
     )
     (DER / "summary.json").write_text(json.dumps(summary, indent=1, ensure_ascii=False), encoding="utf-8")
@@ -349,9 +362,11 @@ def main():
     for s in s3:
         print("M3", s["subset"], "n", s["n"], "miss1", s["miss_1sigma"], s["miss_1sigma_ci"], "miss2", s["miss_2sigma"],
               "IQ", s["inside_iq"], "SI", s["surprise"])
-    print("M4", t_all)
-    print("M4", t_new)
     print("M4", t_nz)
+    print("M4", t_new)
+    for s_ in sens_k:
+        print("SENS-K20", s_["threshold"], s_["rate"], s_["ci_low"], s_["ci_high"], s_["n_pairs"], s_["n_quantities"])
+    print("SENS-K20 M3", s3s)
     for s in ss:
         print("SENS", s["threshold"], s["rate"], s["n_pairs"], s["n_quantities"])
 

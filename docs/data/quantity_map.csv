@@ -26,3 +26,7 @@ R,D,R,molar gas constant,몰 기체 상수,J mol^-1 K^-1,1998,molar gas constant
 sigma,D,σ,Stefan-Boltzmann constant,슈테판-볼츠만 상수,W m^-2 K^-4,1998,Stefan-Boltzmann constant,2018,= (π²/60)k⁴/ħ³c²,관행 표기 — 대한물리학회 용어집 미대조
 mu0,D,μ₀,vacuum magnetic permeability,진공 투자율,N A^-2,1998,magnetic constant|mag. constant|vacuum mag. permeability,,exact (4π×10^-7) until 2014; measured from 2018,관행 표기 — 대한물리학회 용어집 미대조
 Mu,D,M_u,molar mass constant,몰질량 상수,kg mol^-1,1998,molar mass constant,,exact (1 g/mol) until 2014; measured from 2018,관행 표기 — 대한물리학회 용어집 미대조
+alpha_inv,D,α⁻¹,inverse fine-structure constant,미세 구조 상수의 역수,1,1998,inverse fine-structure constant,,= 1/α. Shown because Henrion & Fischhoff (1986) and the 1973 report compare α⁻¹.,관행 표기 — 대한물리학회 용어집 미대조
+Ar_h,S,Ar(h),helion relative atomic mass,헬리온의 상대 원자 질량,1,1998,helion mass in u,,Sensitivity candidate. Listed as 'helion mass in u'.,관행 표기 — 대한물리학회 용어집 미대조
+Ar_t,S,Ar(t),triton relative atomic mass,삼중수소핵의 상대 원자 질량,1,2006,triton mass in u,,Sensitivity candidate. Listed as 'triton mass in u' from 2006.,관행 표기 — 대한물리학회 용어집 미대조
+mud_muN,S,μ_d/μ_N,deuteron magnetic moment to nuclear magneton ratio,중양성자 자기 모멘트(핵 마그네톤 단위),1,1998,deuteron magnetic moment to nuclear magneton ratio|deuteron mag. mom. to nuclear magneton ratio,,Sensitivity candidate.,관행 표기 — 대한물리학회 용어집 미대조

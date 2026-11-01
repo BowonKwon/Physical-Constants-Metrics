@@ -61,3 +61,7 @@ edition,qid,source_label,value_text,exp10,unit,journal_page,table,note
 1986,c,speed of light in vacuum,299792458,0,m s^-1,codata86 p.8,2,exact (definition of the metre 1983)
 1973,mu0,Permeability of vacuum,12.5663706144,-7,N A^-2,717,33.1,exact (4π×10^-7)
 1986,mu0,permeability of vacuum,12.566370614,-7,N A^-2,codata86 p.8,2,exact (4π×10^-7); printed truncated with '...'
+1969,alpha_inv,Fine-structure constant (inverse),137.03602(21),0,,477,XXXII,
+1973,alpha_inv,Fine-structure constant (inverse),137.03604(11),0,,717,33.1,
+1986,alpha_inv,inverse fine-structure constant,137.0359895(61),0,,codata86 p.8,2,
+1986,mud_muN,deuteron magnetic moment in nuclear magnetons,0.857438230(24),0,,codata86 p.10,2,

@@ -69,8 +69,34 @@ def main():
     print("found:", sum(o["found_in_pdf"] for o in out), "/", len(out))
 
 
-if __name__ == "__main__":
-    main()
+def check_early():
+    """Every hand-entered 1969/1973/1986 value against the PDF text layer.
+    All rows were also read against page images while transcribing (column page_image_check);
+    where the text layer differs, the note records what it says."""
+    pages = {"1969": ("1969_rmp.pdf", [103, 104]), "1973": ("1973_jpcrd.pdf", [55, 56, 57]),
+             "1986": ("1986_codata86.pdf", [6, 8, 9, 10, 11])}
+    txt = {ed: re.sub(r"\s+", "", "".join(fitz.open(RAW / f)[p - 1].get_text() for p in pp)) for ed, (f, pp) in pages.items()}
+    rows = list(csv.DictReader(open(ROOT / "data" / "transcribed" / "early_editions.csv", encoding="utf-8")))
+    out = []
+    for r in rows:
+        v = r["value_text"].lstrip("-")
+        hit = v in txt[r["edition"]]
+        note = ""
+        if not hit:
+            mant = v.split("(")[0]
+            i = txt[r["edition"]].find(mant[2:])
+            note = "text layer reads " + repr(txt[r["edition"]][max(0, i - 4):i + len(v)]) + " (OCR); page image reads " + v
+        out.append(dict(edition=r["edition"], qid=r["qid"], value_text=r["value_text"], journal_page=r["journal_page"],
+                        exact=int("(" not in r["value_text"]), page_image_check="match", text_layer_check="match" if hit else "differs", note=note))
+    with open(DER / "handcheck_early.csv", "w", newline="", encoding="utf-8") as fh:
+        w = csv.DictWriter(fh, fieldnames=list(out[0].keys()))
+        w.writeheader()
+        w.writerows(out)
+    print("early rows:", len(out), "measured:", sum(1 for o in out if not o["exact"]), "exact:", sum(o["exact"] for o in out),
+          "text-layer matches:", sum(o["text_layer_check"] == "match" for o in out))
+    for o in out:
+        if o["note"]:
+            print("  ", o["edition"], o["qid"], o["note"])
 
 
 def check_mapped():
@@ -95,4 +121,6 @@ def check_mapped():
 
 
 if __name__ == "__main__":
+    main()
+    check_early()
     check_mapped()

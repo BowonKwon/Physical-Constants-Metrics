@@ -80,6 +80,11 @@
    "format": "csv"
   },
   {
+   "path": "data/sens_candidates.csv",
+   "description": "Sensitivity: M2 and M3 recomputed with three candidates meeting the same rule added (20 constants)",
+   "format": "csv"
+  },
+  {
    "path": "data/handcheck_mapped.csv",
    "description": "Check: every 1998–2022 row used here against NIST's PDF tables",
    "format": "csv"

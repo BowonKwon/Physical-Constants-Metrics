@@ -24,6 +24,13 @@ Ar_e,2010,0.00054857990946,2.2E-13,4.0104e-10,1,0,electron mass in u,u,5.485 799
 Ar_e,2014,0.00054857990907,1.6E-14,2.9166e-11,1,0,electron mass in u,u,5.485 799 090 70 e-4,2014_allascii.txt:102
 Ar_e,2018,0.000548579909065,1.6E-14,2.9166e-11,1,0,electron mass in u,u,5.485 799 090 65 e-4,2018_allascii.txt:109
 Ar_e,2022,0.0005485799090441,9.7E-15,1.7682e-11,1,0,electron mass in u,u,5.485 799 090 441 e-4,2022_allascii.txt:110
+Ar_h,1998,3.01493223469,8.6E-10,2.8525e-10,1,0,helion mass in u,u,3.014 932 234 69(86),1998_allascii.txt:136
+Ar_h,2002,3.0149322434,5.8E-9,1.9238e-09,1,0,helion mass in u,u,3.014 932 2434(58),2002_allascii.txt:137
+Ar_h,2006,3.0149322473,2.6E-9,8.6237e-10,1,0,helion mass in u,u,3.014 932 2473(26),2006_allascii.txt:138
+Ar_h,2010,3.0149322468,2.5E-9,8.2921e-10,1,0,helion mass in u,u,3.014 932 2468,2010_allascii.txt:148
+Ar_h,2014,3.01493224673,1.2E-10,3.9802e-11,1,0,helion mass in u,u,3.014 932 246 73,2014_allascii.txt:148
+Ar_h,2018,3.014932247175,9.7E-11,3.2173e-11,1,0,helion mass in u,u,3.014 932 247 175,2018_allascii.txt:155
+Ar_h,2022,3.014932246932,7.4E-11,2.4544e-11,1,0,helion mass in u,u,3.014 932 246 932,2022_allascii.txt:156
 Ar_n,1969,1.0086652,1E-7,9.9141e-08,1,0,Neutron rest mass (amu),u,1.00866520(10),477 table XXXII
 Ar_n,1973,1.008665012,3.7E-8,3.6682e-08,1,0,Neutron rest mass (u),u,1.008665012(37),718 table 33.1
 Ar_n,1986,1.008664904,1.4E-8,1.3880e-08,1,0,neutron mass (in u),u,1.008664904(14),codata86 p.10 table 2
@@ -44,6 +51,11 @@ Ar_p,2010,1.007276466812,9E-11,8.9350e-11,1,0,proton mass in u,u,1.007 276 466 8
 Ar_p,2014,1.007276466879,9.1E-11,9.0343e-11,1,0,proton mass in u,u,1.007 276 466 879,2014_allascii.txt:285
 Ar_p,2018,1.007276466621,5.3E-11,5.2617e-11,1,0,proton mass in u,u,1.007 276 466 621,2018_allascii.txt:290
 Ar_p,2022,1.0072764665789,8.3E-12,8.2400e-12,1,0,proton mass in u,u,1.007 276 466 5789,2022_allascii.txt:291
+Ar_t,2006,3.0155007134,2.5E-9,8.2905e-10,1,0,triton mass in u,u,3.015 500 7134(25),2006_allascii.txt:323
+Ar_t,2010,3.0155007134,2.5E-9,8.2905e-10,1,0,triton mass in u,u,3.015 500 7134,2010_allascii.txt:338
+Ar_t,2014,3.01550071632,1.1E-10,3.6478e-11,1,0,triton mass in u,u,3.015 500 716 32,2014_allascii.txt:338
+Ar_t,2018,3.01550071621,1.2E-10,3.9794e-11,1,0,triton mass in u,u,3.015 500 716 21,2018_allascii.txt:353
+Ar_t,2022,3.01550071597,1E-10,3.3162e-11,1,0,triton mass in u,u,3.015 500 715 97,2022_allascii.txt:354
 F,1969,96486.7,0.54,5.5966e-06,C mol^-1,0,Faraday constant,C mol^-1,9.648670(54) e4,477 table XXXII
 F,1973,96484.56,0.27,2.7984e-06,C mol^-1,0,Faraday constant,C mol^-1,9.648456(27) e4,718 table 33.1
 F,1986,96485.309,0.029,3.0056e-07,C mol^-1,0,Faraday constant,C mol^-1,96485.309(29),codata86 p.11 table 2
@@ -130,6 +142,16 @@ alpha,2010,0.0072973525698,2.4E-12,3.2889e-10,1,0,fine-structure constant,,7.297
 alpha,2014,0.0072973525664,1.7E-12,2.3296e-10,1,0,fine-structure constant,,7.297 352 5664 e-3,2014_allascii.txt:128
 alpha,2018,0.0072973525693,1.1E-12,1.5074e-10,1,0,fine-structure constant,,7.297 352 5693 e-3,2018_allascii.txt:135
 alpha,2022,0.0072973525643,1.1E-12,1.5074e-10,1,0,fine-structure constant,,7.297 352 5643 e-3,2022_allascii.txt:136
+alpha_inv,1969,137.03602,0.00021,1.5324e-06,1,0,Fine-structure constant (inverse),,137.03602(21),477 table XXXII
+alpha_inv,1973,137.03604,0.00011,8.0271e-07,1,0,Fine-structure constant (inverse),,137.03604(11),717 table 33.1
+alpha_inv,1986,137.0359895,0.0000061,4.4514e-08,1,0,inverse fine-structure constant,,137.0359895(61),codata86 p.8 table 2
+alpha_inv,1998,137.03599976,5E-7,3.6487e-09,1,0,inverse fine-structure constant,,137.035 999 76(50),1998_allascii.txt:147
+alpha_inv,2002,137.03599911,4.6E-7,3.3568e-09,1,0,inverse fine-structure constant,,137.035 999 11(46),2002_allascii.txt:148
+alpha_inv,2006,137.035999679,9.4E-8,6.8595e-10,1,0,inverse fine-structure constant,,137.035 999 679(94),2006_allascii.txt:149
+alpha_inv,2010,137.035999074,4.4E-8,3.2108e-10,1,0,inverse fine-structure constant,,137.035 999 074,2010_allascii.txt:158
+alpha_inv,2014,137.035999139,3.1E-8,2.2622e-10,1,0,inverse fine-structure constant,,137.035 999 139,2014_allascii.txt:158
+alpha_inv,2018,137.035999084,2.1E-8,1.5324e-10,1,0,inverse fine-structure constant,,137.035 999 084,2018_allascii.txt:168
+alpha_inv,2022,137.035999177,2.1E-8,1.5324e-10,1,0,inverse fine-structure constant,,137.035 999 177,2022_allascii.txt:169
 c,1969,2.997925E+8,1E+2,3.3356e-07,m s^-1,0,Velocity of light,m s^-1,2.9979250(10) e8,477 table XXXII
 c,1973,299792458,1.2,4.0028e-09,m s^-1,0,Speed of light in vacuum,m s^-1,299792458(1.2),717 table 33.1
 c,1986,299792458,0,0.0000e+00,m s^-1,1,speed of light in vacuum,m s^-1,299792458,codata86 p.8 table 2
@@ -208,6 +230,14 @@ mu0,2010,0.0000012566370614,0,0.0000e+00,N A^-2,1,mag. constant,N A^-2,12.566 37
 mu0,2014,0.0000012566370614,0,0.0000e+00,N A^-2,1,mag. constant,N A^-2,12.566 370 614... e-7,2014_allascii.txt:192
 mu0,2018,0.00000125663706212,1.9E-16,1.5120e-10,N A^-2,0,vacuum mag. permeability,N A^-2,1.256 637 062 12 e-6,2018_allascii.txt:360
 mu0,2022,0.00000125663706127,2E-16,1.5915e-10,N A^-2,0,vacuum mag. permeability,N A^-2,1.256 637 061 27 e-6,2022_allascii.txt:361
+mud_muN,1986,0.85743823,2.4E-8,2.7990e-08,1,0,deuteron magnetic moment in nuclear magnetons,,0.857438230(24),codata86 p.10 table 2
+mud_muN,1998,0.8574382284,9.4E-9,1.0963e-08,1,0,deuteron magnetic moment to nuclear magneton ratio,,0.857 438 2284(94),1998_allascii.txt:72
+mud_muN,2002,0.8574382329,9.2E-9,1.0730e-08,1,0,deuteron magnetic moment to nuclear magneton ratio,,0.857 438 2329(92),2002_allascii.txt:72
+mud_muN,2006,0.8574382308,7.2E-9,8.3971e-09,1,0,deuteron magnetic moment to nuclear magneton ratio,,0.857 438 2308(72),2006_allascii.txt:73
+mud_muN,2010,0.8574382308,7.2E-9,8.3971e-09,1,0,deuteron mag. mom. to nuclear magneton ratio,,0.857 438 2308,2010_allascii.txt:77
+mud_muN,2014,0.8574382311,4.8E-9,5.5981e-09,1,0,deuteron mag. mom. to nuclear magneton ratio,,0.857 438 2311,2014_allascii.txt:77
+mud_muN,2018,0.8574382338,2.2E-9,2.5658e-09,1,0,deuteron mag. mom. to nuclear magneton ratio,,0.857 438 2338,2018_allascii.txt:84
+mud_muN,2022,0.8574382335,2.2E-9,2.5658e-09,1,0,deuteron mag. mom. to nuclear magneton ratio,,0.857 438 2335,2022_allascii.txt:85
 mun_muN,1986,-1.91304275,4.5E-7,2.3523e-07,1,0,neutron magnetic moment in nuclear magnetons,,-1.91304275(45),codata86 p.10 table 2
 mun_muN,1998,-1.91304272,4.5E-7,2.3523e-07,1,0,neutron magnetic moment to nuclear magneton ratio,,-1.913 042 72(45),1998_allascii.txt:226
 mun_muN,2002,-1.91304273,4.5E-7,2.3523e-07,1,0,neutron magnetic moment to nuclear magneton ratio,,-1.913 042 73(45),2002_allascii.txt:227

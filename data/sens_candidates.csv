@@ -1,0 +1,5 @@
+subset,measure,threshold,n_pairs,n_quantities,exceed,rate,ci_low,ci_high,normal,ratio_to_normal
+core + candidates (20),z,1,149,20,40,0.2685,0.1756,0.3654,0.3173,0.85
+core + candidates (20),z,2,149,20,18,0.1208,0.0867,0.1533,0.0455,2.66
+core + candidates (20),z,3,149,20,12,0.0805,0.0435,0.1192,0.0027,29.83
+core + candidates (20): all,m3,1/2 sigma,151,20,,0.457/0.278,"[0.310, 0.606]","[0.184, 0.384]",0.317/0.046,
