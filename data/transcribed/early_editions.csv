@@ -1,0 +1,63 @@
+edition,qid,source_label,value_text,exp10,unit,journal_page,table,note
+1969,alpha,Fine-structure constant,7.297351(11),-3,,477,XXXII,
+1969,Rinf,Rydberg constant,1.09737312(11),7,m^-1,477,XXXII,
+1969,h,Planck's constant,6.626196(50),-34,J s,477,XXXII,
+1969,k,Boltzmann's constant,1.380622(59),-23,J K^-1,478,XXXII,
+1969,G,Gravitational constant,6.6732(31),-11,N m^2 kg^-2,478,XXXII,
+1969,Ar_e,Electron rest mass (amu),5.485930(34),-4,u,477,XXXII,unified 12C scale (table footnote a)
+1969,Ar_p,Proton rest mass (amu),1.00727661(8),0,u,477,XXXII,
+1969,Ar_n,Neutron rest mass (amu),1.00866520(10),0,u,477,XXXII,
+1969,a_e,Electron magnetic moment in Bohr magnetons,1.0011596389(31),0,,477,XXXII,a_e = mu_e/mu_B - 1
+1969,mup_muN,mu_p'/mu_n corrected for diamagnetism of H2O,2.792782(17),0,,478,XXXII,free proton (not the H2O value 2.792709)
+1969,c,Velocity of light,2.9979250(10),8,m s^-1,477,XXXII,measured before the 1983 definition
+1969,e,Electron charge,1.6021917(70),-19,C,477,XXXII,
+1969,NA,Avogadro's number,6.022169(40),23,mol^-1,477,XXXII,printed as 10^26 kmole^-1
+1969,me,Electron rest mass,9.109558(54),-31,kg,477,XXXII,
+1969,mp_me,Ratio of proton mass to electron mass,1836.109(11),0,,477,XXXII,
+1969,F,Faraday constant,9.648670(54),4,C mol^-1,477,XXXII,printed as 10^7 C kmole^-1
+1969,R,Gas constant,8.31434(35),0,J mol^-1 K^-1,478,XXXII,printed as 10^3 J kmole^-1 K^-1
+1969,sigma,Stefan-Boltzmann constant,5.66961(96),-8,W m^-2 K^-4,478,XXXII,
+1973,alpha,Fine-structure constant,7.2973506(60),-3,,717,33.1,
+1973,Rinf,Rydberg constant,1.097373177(83),7,m^-1,718,33.1,auxiliary constant (not adjusted)
+1973,h,Planck constant,6.626176(36),-34,J s,718,33.1,
+1973,k,"Boltzmann constant, R/N_A",1.380662(44),-23,J K^-1,719,33.1,
+1973,G,Gravitational constant,6.6720(41),-11,m^3 s^-2 kg^-1,719,33.1,
+1973,Ar_e,Electron rest mass (u),5.4858026(21),-4,u,718,33.1,
+1973,Ar_p,Proton rest mass (u),1.007276470(11),0,u,718,33.1,
+1973,Ar_n,Neutron rest mass (u),1.008665012(37),0,u,718,33.1,
+1973,a_e,Free electron g-factor g_e/2 = mu_e/mu_B,1.0011596567(35),0,,718,33.1,a_e = g_e/2 - 1
+1973,a_mu,Free muon g-factor g_mu/2,1.00116616(31),0,,718,33.1,a_mu = g_mu/2 - 1
+1973,mmu_me,Ratio of muon mass to electron mass,206.76865(47),0,,719,33.1,
+1973,mup_muN,mu_p'/mu_N corrected for diamagnetism of H2O,2.7928456(11),0,,719,33.1,free proton (not the H2O value 2.7927740)
+1973,c,Speed of light in vacuum,299792458(1.2),0,m s^-1,717,33.1,auxiliary constant; uncertainty 1.2 m/s
+1973,e,Elementary charge,1.6021892(46),-19,C,718,33.1,
+1973,NA,Avogadro constant,6.022045(31),23,mol^-1,718,33.1,
+1973,me,Electron rest mass,9.109534(47),-31,kg,718,33.1,
+1973,mp_me,Ratio of proton mass to electron mass,1836.15152(70),0,,718,33.1,
+1973,F,Faraday constant,9.648456(27),4,C mol^-1,718,33.1,
+1973,R,Molar gas constant,8.31441(26),0,J mol^-1 K^-1,719,33.1,
+1973,sigma,Stefan-Boltzmann constant,5.67032(71),-8,W m^-2 K^-4,719,33.1,
+1986,alpha,fine-structure constant,7.29735308(33),-3,,codata86 p.8,2,
+1986,Rinf,Rydberg constant,10973731.534(13),0,m^-1,codata86 p.8,2,
+1986,h,Planck constant,6.6260755(40),-34,J s,codata86 p.8,2,
+1986,k,Boltzmann constant,1.380658(12),-23,J K^-1,codata86 p.11,2,
+1986,G,Newtonian constant of gravitation,6.67259(85),-11,m^3 kg^-1 s^-2,codata86 p.8,2,
+1986,Ar_e,electron mass (in u),5.48579903(13),-4,u,codata86 p.9,2,
+1986,Ar_p,proton mass (in u),1.007276470(12),0,u,codata86 p.10,2,
+1986,Ar_n,neutron mass (in u),1.008664904(14),0,u,codata86 p.10,2,
+1986,Ar_d,deuteron mass (in u),2.013553214(24),0,u,codata86 p.10,2,
+1986,a_e,electron magnetic moment anomaly,1.159652193(10),-3,,codata86 p.9,2,
+1986,a_mu,muon magnetic moment anomaly,1.1659230(84),-3,,codata86 p.9,2,
+1986,mmu_me,muon-electron mass ratio,206.768262(30),0,,codata86 p.9,2,
+1986,mup_muN,proton magnetic moment in nuclear magnetons,2.792847386(63),0,,codata86 p.10,2,
+1986,mun_muN,neutron magnetic moment in nuclear magnetons,-1.91304275(45),0,,codata86 p.10,2,printed as magnitude; sign per footnote a (moment opposite to spin)
+1986,e,elementary charge,1.60217733(49),-19,C,codata86 p.8,2,
+1986,NA,Avogadro constant,6.0221367(36),23,mol^-1,codata86 p.11,2,
+1986,me,electron mass,9.1093897(54),-31,kg,codata86 p.9,2,
+1986,mp_me,proton-electron mass ratio,1836.152701(37),0,,codata86 p.10,2,
+1986,F,Faraday constant,96485.309(29),0,C mol^-1,codata86 p.11,2,
+1986,R,molar gas constant,8.314510(70),0,J mol^-1 K^-1,codata86 p.11,2,
+1986,sigma,Stefan-Boltzmann constant,5.67051(19),-8,W m^-2 K^-4,codata86 p.11,2,
+1986,c,speed of light in vacuum,299792458,0,m s^-1,codata86 p.8,2,exact (definition of the metre 1983)
+1973,mu0,Permeability of vacuum,12.5663706144,-7,N A^-2,717,33.1,exact (4π×10^-7)
+1986,mu0,permeability of vacuum,12.566370614,-7,N A^-2,codata86 p.8,2,exact (4π×10^-7); printed truncated with '...'

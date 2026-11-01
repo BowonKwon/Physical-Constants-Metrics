@@ -1,0 +1,212 @@
+{
+ "1969_archive.html": {
+  "bytes": 6742,
+  "retrieved": "2026-11-01",
+  "sha256": "1b7fcfa89a63f9c04207091c100bcd73b74ad7506f8c19dbd8a41f2e10f2ba80",
+  "url": "https://physics.nist.gov/cuu/Constants/archive1969.html"
+ },
+ "1969_rmp.pdf": {
+  "bytes": 13700395,
+  "retrieved": "2026-11-01",
+  "sha256": "6bad423013467ba531cf95fc9fff57ecdd4b5f8bb8c7a82968263696b1601a74",
+  "url": "https://physics.nist.gov/cuu/pdf/1969RMP.pdf"
+ },
+ "1973_archive.html": {
+  "bytes": 6721,
+  "retrieved": "2026-11-01",
+  "sha256": "4999bcbede5786edce1b0808b768061229c7c10a5c6c2d82f1ed09a7413ab581",
+  "url": "https://physics.nist.gov/cuu/Constants/archive1973.html"
+ },
+ "1973_jpcrd.pdf": {
+  "bytes": 7051710,
+  "retrieved": "2026-11-01",
+  "sha256": "c2f646c2a2bc8ff2c655388a069edd3e7cf1ae2502d479fcb0965eb18da68b17",
+  "url": "https://physics.nist.gov/cuu/pdf/1973JPCRD.pdf"
+ },
+ "1986_archive.html": {
+  "bytes": 7140,
+  "retrieved": "2026-11-01",
+  "sha256": "6b3457e38f6b08bd0e3b95a6b024c0f4e98f3e9f20cacac2b0653b3354a82b82",
+  "url": "https://physics.nist.gov/cuu/Constants/archive1986.html"
+ },
+ "1986_codata86.pdf": {
+  "bytes": 116206,
+  "retrieved": "2026-11-01",
+  "sha256": "ca6a1e5e4b0958ab728290a255f472006b1789aba62da73bf47a66a5ef66afef",
+  "url": "https://physics.nist.gov/cuu/pdf/codata86.pdf"
+ },
+ "1986_rmp.pdf": {
+  "bytes": 1733599,
+  "retrieved": "2026-11-01",
+  "sha256": "58b6515681240cb231964d3a618d7e6266db702b2d983f6bc95035577333d633",
+  "url": "https://physics.nist.gov/cuu/pdf/1986RMP.pdf"
+ },
+ "1998_all.pdf": {
+  "bytes": 119090,
+  "retrieved": "2026-11-01",
+  "sha256": "3f637b021fd8633313880eee070a82f6c6f8ffe07d70e1f499db67dc92261839",
+  "url": "https://physics.nist.gov/cuu/pdf/all_1998.pdf"
+ },
+ "1998_allascii.txt": {
+  "bytes": 30786,
+  "retrieved": "2026-11-01",
+  "sha256": "847bee08b633b1f37be41c1c26bf7ddafc40b8d52e300515d49656d339c9523a",
+  "url": "https://physics.nist.gov/cuu/Constants/ArchiveASCII/allascii_1998.txt"
+ },
+ "1998_archive.html": {
+  "bytes": 8185,
+  "retrieved": "2026-11-01",
+  "sha256": "d773449354b9072b2697a1f16c8528a6d8486e0217b8d520c6b9d1e9ea30e231",
+  "url": "https://physics.nist.gov/cuu/Constants/archive1998.html"
+ },
+ "1998_corrcoef.txt": {
+  "bytes": 1913597,
+  "retrieved": "2026-11-01",
+  "sha256": "e9abf0a3f61059671d43b5a25769c48e6a40302e4f05b3c892ab015aceee537e",
+  "url": "https://physics.nist.gov/cuu/Constants/ArchiveASCII/corrcoef1998"
+ },
+ "2002_all.pdf": {
+  "bytes": 116099,
+  "retrieved": "2026-11-01",
+  "sha256": "1b66254269912212eafe698a0da3f7aad0fd8a1af57a69730450dbde09a33a1a",
+  "url": "https://physics.nist.gov/cuu/pdf/all_2002.pdf"
+ },
+ "2002_allascii.txt": {
+  "bytes": 31183,
+  "retrieved": "2026-11-01",
+  "sha256": "9e80262e7f665d5649078e63713d316397b0e0674ba794d7a318230978a62dda",
+  "url": "https://physics.nist.gov/cuu/Constants/ArchiveASCII/allascii_2002.txt"
+ },
+ "2002_archive.html": {
+  "bytes": 8182,
+  "retrieved": "2026-11-01",
+  "sha256": "0b0ccb773d240d9cfdf8992ccde285d6a7b1084d60acb75a50805754c278c2ba",
+  "url": "https://physics.nist.gov/cuu/Constants/archive2002.html"
+ },
+ "2002_corrcoef.txt": {
+  "bytes": 1940615,
+  "retrieved": "2026-11-01",
+  "sha256": "a4309a21dc495ac2e9a08e718341363e9e8fd3c261c68c686c72ebd8260ecdae",
+  "url": "https://physics.nist.gov/cuu/Constants/ArchiveASCII/corrcoef2002"
+ },
+ "2002_rmp.pdf": {
+  "bytes": 875537,
+  "retrieved": "2026-11-01",
+  "sha256": "1e14432a762b7b024f885972da778ebeba90f77523a4b35af1c6e7824f3027cd",
+  "url": "https://physics.nist.gov/cuu/pdf/CODATA_RMP2005.pdf"
+ },
+ "2006_all.pdf": {
+  "bytes": 134659,
+  "retrieved": "2026-11-01",
+  "sha256": "2e0b01f08253d1be4545b5fd41cc71e2a94c9c6c676d4ef03e6ab2e0b88a824a",
+  "url": "https://physics.nist.gov/cuu/pdf/all_2006.pdf"
+ },
+ "2006_allascii.txt": {
+  "bytes": 32861,
+  "retrieved": "2026-11-01",
+  "sha256": "4bd54de1b198718b9144a2d5de69b2f112a0ae2ff1dbdba15b349809df53ccf3",
+  "url": "https://physics.nist.gov/cuu/Constants/ArchiveASCII/allascii_2006.txt"
+ },
+ "2006_archive.html": {
+  "bytes": 8389,
+  "retrieved": "2026-11-01",
+  "sha256": "0435a6f05e4e552041099bedf3fa08156e8ae70914defb3a470e416e14f5a7ac",
+  "url": "https://physics.nist.gov/cuu/Constants/archive2006.html"
+ },
+ "2006_corrcoef.txt": {
+  "bytes": 2264095,
+  "retrieved": "2026-11-01",
+  "sha256": "e8ab254d6d5ff64f4f5aa0a98a3a64c9c5e21fcda4deb32f7fd4d1a40ab94842",
+  "url": "https://physics.nist.gov/cuu/Constants/ArchiveASCII/corrcoef2006"
+ },
+ "2010_all.pdf": {
+  "bytes": 127823,
+  "retrieved": "2026-11-01",
+  "sha256": "91fd11fed628062aa11536e140837148d9b70ad21726f8a042e6f9bda946f008",
+  "url": "https://physics.nist.gov/cuu/pdf/all_2010.pdf"
+ },
+ "2010_allascii.txt": {
+  "bytes": 38878,
+  "retrieved": "2026-11-01",
+  "sha256": "6c9eeedca8693cd2ed772d017c7bb07ba3436cc38143c45f6aa6c0afc0ccebb2",
+  "url": "https://physics.nist.gov/cuu/Constants/ArchiveASCII/allascii_2010.txt"
+ },
+ "2010_archive.html": {
+  "bytes": 8342,
+  "retrieved": "2026-11-01",
+  "sha256": "a18f4a5c7e4710024813711c5dc62c5e9622455214847a36ebe65d8d5f0d4385",
+  "url": "https://physics.nist.gov/cuu/Constants/archive2010.html"
+ },
+ "2010_corrcoef.txt": {
+  "bytes": 2399949,
+  "retrieved": "2026-11-01",
+  "sha256": "8a4976101ce555ec7ced8eb1f32e560bb9e862204b9327dda0edbf3da24c9e1f",
+  "url": "https://physics.nist.gov/cuu/Constants/ArchiveASCII/corrcoef2010"
+ },
+ "2014_all.pdf": {
+  "bytes": 127583,
+  "retrieved": "2026-11-01",
+  "sha256": "48c31408c79d3a9aa7c16efdbf5ef729d8ad162f2b9dbb8029d4d8cdcbef3568",
+  "url": "https://physics.nist.gov/cuu/pdf/all_2014.pdf"
+ },
+ "2014_allascii.txt": {
+  "bytes": 38532,
+  "retrieved": "2026-11-01",
+  "sha256": "c0c95610c9e6f01ffe57cc2e64ebc43ccf4958507ca4e83f0d1bf56843d739e0",
+  "url": "https://physics.nist.gov/cuu/Constants/ArchiveASCII/allascii_2014.txt"
+ },
+ "2014_archive.html": {
+  "bytes": 8482,
+  "retrieved": "2026-11-01",
+  "sha256": "c325ae0e730b462a0b2d32cd02294e87be14c718bc3cdb9c967808a80e2f7384",
+  "url": "https://physics.nist.gov/cuu/Constants/archive2014.html"
+ },
+ "2014_corrcoef.txt": {
+  "bytes": 2400345,
+  "retrieved": "2026-11-01",
+  "sha256": "5d6115072507e7e1c2e71e4bb5540ae77d0d50936874cedd1f435e1108c8c891",
+  "url": "https://physics.nist.gov/cuu/Constants/ArchiveASCII/corrcoef2014"
+ },
+ "2018_all.pdf": {
+  "bytes": 189260,
+  "retrieved": "2026-11-01",
+  "sha256": "0baec5980ef4956f3047fe6b6113a27013483999ceb8078421f4b3acdaa6159a",
+  "url": "https://physics.nist.gov/cuu/pdf/all_2018.pdf"
+ },
+ "2018_allascii.txt": {
+  "bytes": 40689,
+  "retrieved": "2026-11-01",
+  "sha256": "8c47c05db62c4d314a5244db51a47b4831616e55a8d357ced373a8620ff43be1",
+  "url": "https://physics.nist.gov/cuu/Constants/ArchiveASCII/allascii_2018.txt"
+ },
+ "2018_archive.html": {
+  "bytes": 8302,
+  "retrieved": "2026-11-01",
+  "sha256": "aec0c58b2b8cf38d44d2e1a39daa061947adec7f08bce18eb847011f3155b6b8",
+  "url": "https://physics.nist.gov/cuu/Constants/archive2018.html"
+ },
+ "2018_corrcoef.txt": {
+  "bytes": 1466759,
+  "retrieved": "2026-11-01",
+  "sha256": "d2e7ba5a54cfc73e8738578cc95c346e832ae2c4d4ff653266739c9a765d9a03",
+  "url": "https://physics.nist.gov/cuu/Constants/ArchiveASCII/corrcoef2018"
+ },
+ "2022_all.pdf": {
+  "bytes": 193554,
+  "retrieved": "2026-11-01",
+  "sha256": "5c4a2c8127a80698d05f4d682bd4cac200dabcd9c2e9dd783661a0aa60f4bb1c",
+  "url": "https://physics.nist.gov/cuu/pdf/all.pdf"
+ },
+ "2022_allascii.txt": {
+  "bytes": 40801,
+  "retrieved": "2026-11-01",
+  "sha256": "77fb90e66c40db3e6eb16630bc9c88e4c7c8beddbe5e71be406f2f26e3f67e67",
+  "url": "https://physics.nist.gov/cuu/Constants/Table/allascii.txt"
+ },
+ "2022_jpcrd.pdf": {
+  "bytes": 5920363,
+  "retrieved": "2026-11-01",
+  "sha256": "4d7e7f34b98ab2fc4df68b38247f818f6fc8bdf7f25f91abcdfbc329e22d2f32",
+  "url": "https://physics.nist.gov/cuu/pdf/JPCRD2022CODATA.pdf"
+ }
+}

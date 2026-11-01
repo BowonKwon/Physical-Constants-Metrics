@@ -1,0 +1,250 @@
+qid,edition,value,u,u_rel,unit,exact,source_name,source_unit,value_text,source
+Ar_alpha,1998,4.0015061747,1E-9,2.4991e-10,1,0,alpha particle mass in u,u,4.001 506 1747(10),1998_allascii.txt:14
+Ar_alpha,2002,4.001506179149,5.6E-11,1.3995e-11,1,0,alpha particle mass in u,u,4.001 506 179 149(56),2002_allascii.txt:14
+Ar_alpha,2006,4.001506179127,6.2E-11,1.5494e-11,1,0,alpha particle mass in u,u,4.001 506 179 127(62),2006_allascii.txt:14
+Ar_alpha,2010,4.001506179125,6.2E-11,1.5494e-11,1,0,alpha particle mass in u,u,4.001 506 179 125,2010_allascii.txt:16
+Ar_alpha,2014,4.001506179127,6.3E-11,1.5744e-11,1,0,alpha particle mass in u,u,4.001 506 179 127,2014_allascii.txt:16
+Ar_alpha,2018,4.001506179127,6.3E-11,1.5744e-11,1,0,alpha particle mass in u,u,4.001 506 179 127,2018_allascii.txt:16
+Ar_alpha,2022,4.001506179129,6.2E-11,1.5494e-11,1,0,alpha particle mass in u,u,4.001 506 179 129,2022_allascii.txt:16
+Ar_d,1986,2.013553214,2.4E-8,1.1919e-08,1,0,deuteron mass (in u),u,2.013553214(24),codata86 p.10 table 2
+Ar_d,1998,2.01355321271,3.5E-10,1.7382e-10,1,0,deuteron mass in u,u,2.013 553 212 71(35),1998_allascii.txt:76
+Ar_d,2002,2.0135532127,3.5E-10,1.7382e-10,1,0,deuteron mass in u,u,2.013 553 212 70(35),2002_allascii.txt:76
+Ar_d,2006,2.013553212724,7.8E-11,3.8737e-11,1,0,deuteron mass in u,u,2.013 553 212 724(78),2006_allascii.txt:77
+Ar_d,2010,2.013553212712,7.7E-11,3.8241e-11,1,0,deuteron mass in u,u,2.013 553 212 712,2010_allascii.txt:81
+Ar_d,2014,2.013553212745,4E-11,1.9865e-11,1,0,deuteron mass in u,u,2.013 553 212 745,2014_allascii.txt:81
+Ar_d,2018,2.013553212745,4E-11,1.9865e-11,1,0,deuteron mass in u,u,2.013 553 212 745,2018_allascii.txt:88
+Ar_d,2022,2.013553212544,1.5E-11,7.4495e-12,1,0,deuteron mass in u,u,2.013 553 212 544,2022_allascii.txt:89
+Ar_e,1969,0.000548593,3.4E-9,6.1977e-06,1,0,Electron rest mass (amu),u,5.485930(34) e-4,477 table XXXII
+Ar_e,1973,0.00054858026,2.1E-10,3.8281e-07,1,0,Electron rest mass (u),u,5.4858026(21) e-4,718 table 33.1
+Ar_e,1986,0.000548579903,1.3E-11,2.3698e-08,1,0,electron mass (in u),u,5.48579903(13) e-4,codata86 p.9 table 2
+Ar_e,1998,0.000548579911,1.2E-12,2.1875e-09,1,0,electron mass in u,u,5.485 799 110(12) e-4,1998_allascii.txt:95
+Ar_e,2002,0.00054857990945,2.4E-13,4.3749e-10,1,0,electron mass in u,u,5.485 799 0945(24) e-4,2002_allascii.txt:96
+Ar_e,2006,0.00054857990943,2.3E-13,4.1926e-10,1,0,electron mass in u,u,5.485 799 0943(23) e-4,2006_allascii.txt:97
+Ar_e,2010,0.00054857990946,2.2E-13,4.0104e-10,1,0,electron mass in u,u,5.485 799 0946 e-4,2010_allascii.txt:102
+Ar_e,2014,0.00054857990907,1.6E-14,2.9166e-11,1,0,electron mass in u,u,5.485 799 090 70 e-4,2014_allascii.txt:102
+Ar_e,2018,0.000548579909065,1.6E-14,2.9166e-11,1,0,electron mass in u,u,5.485 799 090 65 e-4,2018_allascii.txt:109
+Ar_e,2022,0.0005485799090441,9.7E-15,1.7682e-11,1,0,electron mass in u,u,5.485 799 090 441 e-4,2022_allascii.txt:110
+Ar_n,1969,1.0086652,1E-7,9.9141e-08,1,0,Neutron rest mass (amu),u,1.00866520(10),477 table XXXII
+Ar_n,1973,1.008665012,3.7E-8,3.6682e-08,1,0,Neutron rest mass (u),u,1.008665012(37),718 table 33.1
+Ar_n,1986,1.008664904,1.4E-8,1.3880e-08,1,0,neutron mass (in u),u,1.008664904(14),codata86 p.10 table 2
+Ar_n,1998,1.00866491578,5.5E-10,5.4528e-10,1,0,neutron mass in u,u,1.008 664 915 78(55),1998_allascii.txt:230
+Ar_n,2002,1.0086649156,5.5E-10,5.4528e-10,1,0,neutron mass in u,u,1.008 664 915 60(55),2002_allascii.txt:231
+Ar_n,2006,1.00866491597,4.3E-10,4.2631e-10,1,0,neutron mass in u,u,1.008 664 915 97(43),2006_allascii.txt:232
+Ar_n,2010,1.008664916,4.3E-10,4.2631e-10,1,0,neutron mass in u,u,1.008 664 916 00,2010_allascii.txt:243
+Ar_n,2014,1.00866491588,4.9E-10,4.8579e-10,1,0,neutron mass in u,u,1.008 664 915 88,2014_allascii.txt:243
+Ar_n,2018,1.00866491595,4.9E-10,4.8579e-10,1,0,neutron mass in u,u,1.008 664 915 95,2018_allascii.txt:251
+Ar_n,2022,1.00866491606,4E-10,3.9656e-10,1,0,neutron mass in u,u,1.008 664 916 06,2022_allascii.txt:252
+Ar_p,1969,1.00727661,8E-8,7.9422e-08,1,0,Proton rest mass (amu),u,1.00727661(8),477 table XXXII
+Ar_p,1973,1.00727647,1.1E-8,1.0921e-08,1,0,Proton rest mass (u),u,1.007276470(11),718 table 33.1
+Ar_p,1986,1.00727647,1.2E-8,1.1913e-08,1,0,proton mass (in u),u,1.007276470(12),codata86 p.10 table 2
+Ar_p,1998,1.00727646688,1.3E-10,1.2906e-10,1,0,proton mass in u,u,1.007 276 466 88(13),1998_allascii.txt:266
+Ar_p,2002,1.00727646688,1.3E-10,1.2906e-10,1,0,proton mass in u,u,1.007 276 466 88(13),2002_allascii.txt:269
+Ar_p,2006,1.00727646677,1E-10,9.9278e-11,1,0,proton mass in u,u,1.007 276 466 77(10),2006_allascii.txt:271
+Ar_p,2010,1.007276466812,9E-11,8.9350e-11,1,0,proton mass in u,u,1.007 276 466 812,2010_allascii.txt:285
+Ar_p,2014,1.007276466879,9.1E-11,9.0343e-11,1,0,proton mass in u,u,1.007 276 466 879,2014_allascii.txt:285
+Ar_p,2018,1.007276466621,5.3E-11,5.2617e-11,1,0,proton mass in u,u,1.007 276 466 621,2018_allascii.txt:290
+Ar_p,2022,1.0072764665789,8.3E-12,8.2400e-12,1,0,proton mass in u,u,1.007 276 466 5789,2022_allascii.txt:291
+F,1969,96486.7,0.54,5.5966e-06,C mol^-1,0,Faraday constant,C mol^-1,9.648670(54) e4,477 table XXXII
+F,1973,96484.56,0.27,2.7984e-06,C mol^-1,0,Faraday constant,C mol^-1,9.648456(27) e4,718 table 33.1
+F,1986,96485.309,0.029,3.0056e-07,C mol^-1,0,Faraday constant,C mol^-1,96485.309(29),codata86 p.11 table 2
+F,1998,96485.3415,0.0039,4.0421e-08,C mol^-1,0,Faraday constant,C mol^{-1},96 485.3415(39),1998_allascii.txt:118
+F,2002,96485.3383,0.0083,8.6023e-08,C mol^-1,0,Faraday constant,C mol^{-1},96 485.3383(83),2002_allascii.txt:119
+F,2006,96485.3399,0.0024,2.4874e-08,C mol^-1,0,Faraday constant,C mol^{-1},96 485.3399(24),2006_allascii.txt:120
+F,2010,96485.3365,0.0021,2.1765e-08,C mol^-1,0,Faraday constant,C mol^-1,96 485.3365,2010_allascii.txt:125
+F,2014,96485.33289,0.00059,6.1149e-09,C mol^-1,0,Faraday constant,C mol^-1,96 485.332 89,2014_allascii.txt:125
+F,2018,96485.33212,0,0.0000e+00,C mol^-1,1,Faraday constant,C mol^-1,96 485.332 12...,2018_allascii.txt:133
+F,2022,96485.33212,0,0.0000e+00,C mol^-1,1,Faraday constant,C mol^-1,96 485.332 12...,2022_allascii.txt:134
+G,1969,6.6732E-11,3.1E-14,4.6454e-04,m^3 kg^-1 s^-2,0,Gravitational constant,N m^2 kg^-2,6.6732(31) e-11,478 table XXXII
+G,1973,6.672E-11,4.1E-14,6.1451e-04,m^3 kg^-1 s^-2,0,Gravitational constant,m^3 s^-2 kg^-1,6.6720(41) e-11,719 table 33.1
+G,1986,6.67259E-11,8.5E-15,1.2739e-04,m^3 kg^-1 s^-2,0,Newtonian constant of gravitation,m^3 kg^-1 s^-2,6.67259(85) e-11,codata86 p.8 table 2
+G,1998,6.673E-11,1E-13,1.4986e-03,m^3 kg^-1 s^-2,0,Newtonian constant of gravitation,m^3 kg^{-1} s^{-2},6.673(10) e-11,1998_allascii.txt:239
+G,2002,6.6742E-11,1E-14,1.4983e-04,m^3 kg^-1 s^-2,0,Newtonian constant of gravitation,m^3 kg^{-1} s^{-2},6.6742(10) e-11,2002_allascii.txt:240
+G,2006,6.67428E-11,6.7E-15,1.0039e-04,m^3 kg^-1 s^-2,0,Newtonian constant of gravitation,m^3 kg^{-1} s^{-2},6.674 28(67) e-11,2006_allascii.txt:241
+G,2010,6.67384E-11,8E-15,1.1987e-04,m^3 kg^-1 s^-2,0,Newtonian constant of gravitation,m^3 kg^-1 s^-2,6.673 84 e-11,2010_allascii.txt:254
+G,2014,6.67408E-11,3.1E-15,4.6448e-05,m^3 kg^-1 s^-2,0,Newtonian constant of gravitation,m^3 kg^-1 s^-2,6.674 08 e-11,2014_allascii.txt:254
+G,2018,6.6743E-11,1.5E-15,2.2474e-05,m^3 kg^-1 s^-2,0,Newtonian constant of gravitation,m^3 kg^-1 s^-2,6.674 30 e-11,2018_allascii.txt:263
+G,2022,6.6743E-11,1.5E-15,2.2474e-05,m^3 kg^-1 s^-2,0,Newtonian constant of gravitation,m^3 kg^-1 s^-2,6.674 30 e-11,2022_allascii.txt:264
+Mu,1998,0.001,0,0.0000e+00,kg mol^-1,1,molar mass constant,kg mol^{-1},1 e-3,1998_allascii.txt:187
+Mu,2002,0.001,0,0.0000e+00,kg mol^-1,1,molar mass constant,kg mol^{-1},1 e-3,2002_allascii.txt:188
+Mu,2006,0.001,0,0.0000e+00,kg mol^-1,1,molar mass constant,kg mol^{-1},1 e-3,2006_allascii.txt:189
+Mu,2010,0.001,0,0.0000e+00,kg mol^-1,1,molar mass constant,kg mol^-1,1 e-3,2010_allascii.txt:195
+Mu,2014,0.001,0,0.0000e+00,kg mol^-1,1,molar mass constant,kg mol^-1,1 e-3,2014_allascii.txt:195
+Mu,2018,0.00099999999965,3E-13,3.0000e-10,kg mol^-1,0,molar mass constant,kg mol^-1,0.999 999 999 65 e-3,2018_allascii.txt:206
+Mu,2022,0.00100000000105,3.1E-13,3.1000e-10,kg mol^-1,0,molar mass constant,kg mol^-1,1.000 000 001 05 e-3,2022_allascii.txt:207
+NA,1969,6.022169E+23,4E+18,6.6421e-06,mol^-1,0,Avogadro's number,mol^-1,6.022169(40) e23,477 table XXXII
+NA,1973,6.022045E+23,3.1E+18,5.1478e-06,mol^-1,0,Avogadro constant,mol^-1,6.022045(31) e23,718 table 33.1
+NA,1986,6.0221367E+23,3.6E+17,5.9779e-07,mol^-1,0,Avogadro constant,mol^-1,6.0221367(36) e23,codata86 p.11 table 2
+NA,1998,6.02214199E+23,4.7E+16,7.8045e-08,mol^-1,0,Avogadro constant,mol^{-1},6.022 141 99(47) e23,1998_allascii.txt:51
+NA,2002,6.0221415E+23,1E+17,1.6605e-07,mol^-1,0,Avogadro constant,mol^{-1},6.022 1415(10) e23,2002_allascii.txt:51
+NA,2006,6.02214179E+23,3E+16,4.9816e-08,mol^-1,0,Avogadro constant,mol^{-1},6.022 141 79(30) e23,2006_allascii.txt:51
+NA,2010,6.02214129E+23,2.7E+16,4.4835e-08,mol^-1,0,Avogadro constant,mol^-1,6.022 141 29 e23,2010_allascii.txt:53
+NA,2014,6.022140857E+23,7.4E+15,1.2288e-08,mol^-1,0,Avogadro constant,mol^-1,6.022 140 857 e23,2014_allascii.txt:53
+NA,2018,6.02214076E+23,0,0.0000e+00,mol^-1,1,Avogadro constant,mol^-1,6.022 140 76 e23,2018_allascii.txt:54
+NA,2022,6.02214076E+23,0,0.0000e+00,mol^-1,1,Avogadro constant,mol^-1,6.022 140 76 e23,2022_allascii.txt:55
+R,1969,8.31434,0.00035,4.2096e-05,J mol^-1 K^-1,0,Gas constant,J mol^-1 K^-1,8.31434(35),478 table XXXII
+R,1973,8.31441,0.00026,3.1271e-05,J mol^-1 K^-1,0,Molar gas constant,J mol^-1 K^-1,8.31441(26),719 table 33.1
+R,1986,8.31451,0.00007,8.4190e-06,J mol^-1 K^-1,0,molar gas constant,J mol^-1 K^-1,8.314510(70),codata86 p.11 table 2
+R,1998,8.314472,0.000015,1.8041e-06,J mol^-1 K^-1,0,molar gas constant,J mol^{-1} K^{-1},8.314 472(15),1998_allascii.txt:186
+R,2002,8.314472,0.000015,1.8041e-06,J mol^-1 K^-1,0,molar gas constant,J mol^{-1} K^{-1},8.314 472(15),2002_allascii.txt:187
+R,2006,8.314472,0.000015,1.8041e-06,J mol^-1 K^-1,0,molar gas constant,J mol^{-1} K^{-1},8.314 472(15),2006_allascii.txt:188
+R,2010,8.3144621,0.0000075,9.0204e-07,J mol^-1 K^-1,0,molar gas constant,J mol^-1 K^-1,8.314 4621,2010_allascii.txt:194
+R,2014,8.3144598,0.0000048,5.7731e-07,J mol^-1 K^-1,0,molar gas constant,J mol^-1 K^-1,8.314 4598,2014_allascii.txt:194
+R,2018,8.314462618,0,0.0000e+00,J mol^-1 K^-1,1,molar gas constant,J mol^-1 K^-1,8.314 462 618...,2018_allascii.txt:205
+R,2022,8.314462618,0,0.0000e+00,J mol^-1 K^-1,1,molar gas constant,J mol^-1 K^-1,8.314 462 618...,2022_allascii.txt:206
+Rinf,1969,10973731.2,1.1,1.0024e-07,m^-1,0,Rydberg constant,m^-1,1.09737312(11) e7,477 table XXXII
+Rinf,1973,10973731.77,0.83,7.5635e-08,m^-1,0,Rydberg constant,m^-1,1.097373177(83) e7,718 table 33.1
+Rinf,1986,10973731.534,0.013,1.1846e-09,m^-1,0,Rydberg constant,m^-1,10973731.534(13),codata86 p.8 table 2
+Rinf,1998,10973731.568549,0.000083,7.5635e-12,m^-1,0,Rydberg constant,m^{-1},10 973 731.568 549(83),1998_allascii.txt:275
+Rinf,2002,10973731.568525,0.000073,6.6522e-12,m^-1,0,Rydberg constant,m^{-1},10 973 731.568 525(73),2002_allascii.txt:279
+Rinf,2006,10973731.568527,0.000073,6.6522e-12,m^-1,0,Rydberg constant,m^{-1},10 973 731.568 527(73),2006_allascii.txt:281
+Rinf,2010,10973731.568539,0.000055,5.0120e-12,m^-1,0,Rydberg constant,m^-1,10 973 731.568 539,2010_allascii.txt:294
+Rinf,2014,10973731.568508,0.000065,5.9232e-12,m^-1,0,Rydberg constant,m^-1,10 973 731.568 508,2014_allascii.txt:294
+Rinf,2018,10973731.56816,0.000021,1.9137e-12,m^-1,0,Rydberg constant,m^-1,10 973 731.568 160,2018_allascii.txt:308
+Rinf,2022,10973731.568157,0.000012,1.0935e-12,m^-1,0,Rydberg constant,m^-1,10 973 731.568 157,2022_allascii.txt:309
+a_e,1969,0.0011596389,3.1E-9,2.6732e-06,1,0,Electron magnetic moment in Bohr magnetons,,1.0011596389(31),477 table XXXII
+a_e,1973,0.0011596567,3.5E-9,3.0181e-06,1,0,Free electron g-factor g_e/2 = mu_e/mu_B,,1.0011596567(35),718 table 33.1
+a_e,1986,0.001159652193,1E-11,8.6233e-09,1,0,electron magnetic moment anomaly,,1.159652193(10) e-3,codata86 p.9 table 2
+a_e,1998,0.0011596521869,4.1E-12,3.5355e-09,1,0,electron magnetic moment anomaly,,1.159 652 1869(41) e-3,1998_allascii.txt:89
+a_e,2002,0.0011596521859,3.8E-12,3.2768e-09,1,0,electron magnetic moment anomaly,,1.159 652 1859(38) e-3,2002_allascii.txt:90
+a_e,2006,0.00115965218111,7.4E-13,6.3812e-10,1,0,electron magnetic moment anomaly,,1.159 652 181 11(74) e-3,2006_allascii.txt:91
+a_e,2010,0.00115965218076,2.7E-13,2.3283e-10,1,0,electron mag. mom. anomaly,,1.159 652 180 76 e-3,2010_allascii.txt:96
+a_e,2014,0.00115965218091,2.6E-13,2.2421e-10,1,0,electron mag. mom. anomaly,,1.159 652 180 91 e-3,2014_allascii.txt:96
+a_e,2018,0.00115965218128,1.8E-13,1.5522e-10,1,0,electron mag. mom. anomaly,,1.159 652 181 28 e-3,2018_allascii.txt:103
+a_e,2022,0.00115965218046,1.8E-13,1.5522e-10,1,0,electron mag. mom. anomaly,,1.159 652 180 46 e-3,2022_allascii.txt:104
+a_mu,1973,0.00116616,3.1E-7,2.6583e-04,1,0,Free muon g-factor g_mu/2,,1.00116616(31),718 table 33.1
+a_mu,1986,0.001165923,8.4E-9,7.2046e-06,1,0,muon magnetic moment anomaly,,1.1659230(84) e-3,codata86 p.9 table 2
+a_mu,1998,0.00116591602,6.4E-10,5.4892e-07,1,0,muon magnetic moment anomaly,,1.165 916 02(64) e-3,1998_allascii.txt:196
+a_mu,2002,0.00116591981,6.2E-10,5.3177e-07,1,0,muon magnetic moment anomaly,,1.165 919 81(62) e-3,2002_allascii.txt:197
+a_mu,2006,0.00116592069,6E-10,5.1461e-07,1,0,muon magnetic moment anomaly,,1.165 920 69(60) e-3,2006_allascii.txt:198
+a_mu,2010,0.00116592091,6.3E-10,5.4035e-07,1,0,muon mag. mom. anomaly,,1.165 920 91 e-3,2010_allascii.txt:208
+a_mu,2014,0.00116592089,6.3E-10,5.4035e-07,1,0,muon mag. mom. anomaly,,1.165 920 89 e-3,2014_allascii.txt:208
+a_mu,2018,0.00116592089,6.3E-10,5.4035e-07,1,0,muon mag. mom. anomaly,,1.165 920 89 e-3,2018_allascii.txt:217
+a_mu,2022,0.00116592062,4.1E-10,3.5165e-07,1,0,muon mag. mom. anomaly,,1.165 920 62 e-3,2022_allascii.txt:218
+alpha,1969,0.007297351,1.1E-8,1.5074e-06,1,0,Fine-structure constant,,7.297351(11) e-3,477 table XXXII
+alpha,1973,0.0072973506,6E-9,8.2222e-07,1,0,Fine-structure constant,,7.2973506(60) e-3,717 table 33.1
+alpha,1986,0.00729735308,3.3E-10,4.5222e-08,1,0,fine-structure constant,,7.29735308(33) e-3,codata86 p.8 table 2
+alpha,1998,0.007297352533,2.7E-11,3.7000e-09,1,0,fine-structure constant,,7.297 352 533(27) e-3,1998_allascii.txt:121
+alpha,2002,0.007297352568,2.4E-11,3.2889e-09,1,0,fine-structure constant,,7.297 352 568(24) e-3,2002_allascii.txt:122
+alpha,2006,0.0072973525376,5E-12,6.8518e-10,1,0,fine-structure constant,,7.297 352 5376(50) e-3,2006_allascii.txt:123
+alpha,2010,0.0072973525698,2.4E-12,3.2889e-10,1,0,fine-structure constant,,7.297 352 5698 e-3,2010_allascii.txt:128
+alpha,2014,0.0072973525664,1.7E-12,2.3296e-10,1,0,fine-structure constant,,7.297 352 5664 e-3,2014_allascii.txt:128
+alpha,2018,0.0072973525693,1.1E-12,1.5074e-10,1,0,fine-structure constant,,7.297 352 5693 e-3,2018_allascii.txt:135
+alpha,2022,0.0072973525643,1.1E-12,1.5074e-10,1,0,fine-structure constant,,7.297 352 5643 e-3,2022_allascii.txt:136
+c,1969,2.997925E+8,1E+2,3.3356e-07,m s^-1,0,Velocity of light,m s^-1,2.9979250(10) e8,477 table XXXII
+c,1973,299792458,1.2,4.0028e-09,m s^-1,0,Speed of light in vacuum,m s^-1,299792458(1.2),717 table 33.1
+c,1986,299792458,0,0.0000e+00,m s^-1,1,speed of light in vacuum,m s^-1,299792458,codata86 p.8 table 2
+c,1998,299792458,0,0.0000e+00,m s^-1,1,speed of light in vacuum,m s^{-1},299 792 458,1998_allascii.txt:294
+c,2002,299792458,0,0.0000e+00,m s^-1,1,speed of light in vacuum,m s^{-1},299 792 458,2002_allascii.txt:298
+c,2006,299792458,0,0.0000e+00,m s^-1,1,speed of light in vacuum,m s^{-1},299 792 458,2006_allascii.txt:300
+c,2010,299792458,0,0.0000e+00,m s^-1,1,speed of light in vacuum,m s^-1,299 792 458,2010_allascii.txt:313
+c,2014,299792458,0,0.0000e+00,m s^-1,1,speed of light in vacuum,m s^-1,299 792 458,2014_allascii.txt:313
+c,2018,299792458,0,0.0000e+00,m s^-1,1,speed of light in vacuum,m s^-1,299 792 458,2018_allascii.txt:329
+c,2022,299792458,0,0.0000e+00,m s^-1,1,speed of light in vacuum,m s^-1,299 792 458,2022_allascii.txt:330
+e,1969,1.6021917E-19,7E-25,4.3690e-06,C,0,Electron charge,C,1.6021917(70) e-19,477 table XXXII
+e,1973,1.6021892E-19,4.6E-25,2.8711e-06,C,0,Elementary charge,C,1.6021892(46) e-19,718 table 33.1
+e,1986,1.60217733E-19,4.9E-26,3.0583e-07,C,0,elementary charge,C,1.60217733(49) e-19,codata86 p.8 table 2
+e,1998,1.602176462E-19,6.3E-27,3.9322e-08,C,0,electron volt,J,1.602 176 462(63) e-19,1998_allascii.txt:100
+e,2002,1.60217653E-19,1.4E-26,8.7381e-08,C,0,electron volt,J,1.602 176 53(14) e-19,2002_allascii.txt:101
+e,2006,1.602176487E-19,4E-27,2.4966e-08,C,0,electron volt,J,1.602 176 487(40) e-19,2006_allascii.txt:102
+e,2010,1.602176565E-19,3.5E-27,2.1845e-08,C,0,elementary charge,C,1.602 176 565 e-19,2010_allascii.txt:123
+e,2014,1.6021766208E-19,9.8E-28,6.1167e-09,C,0,elementary charge,C,1.602 176 6208 e-19,2014_allascii.txt:123
+e,2018,1.602176634E-19,0,0.0000e+00,C,1,elementary charge,C,1.602 176 634 e-19,2018_allascii.txt:131
+e,2022,1.602176634E-19,0,0.0000e+00,C,1,elementary charge,C,1.602 176 634 e-19,2022_allascii.txt:132
+h,1969,6.626196E-34,5E-39,7.5458e-06,J s,0,Planck's constant,J s,6.626196(50) e-34,477 table XXXII
+h,1973,6.626176E-34,3.6E-39,5.4330e-06,J s,0,Planck constant,J s,6.626176(36) e-34,718 table 33.1
+h,1986,6.6260755E-34,4E-40,6.0368e-07,J s,0,Planck constant,J s,6.6260755(40) e-34,codata86 p.8 table 2
+h,1998,6.62606876E-34,5.2E-41,7.8478e-08,J s,0,Planck constant,J s,6.626 068 76(52) e-34,1998_allascii.txt:246
+h,2002,6.6260693E-34,1.1E-40,1.6601e-07,J s,0,Planck constant,J s,6.626 0693(11) e-34,2002_allascii.txt:247
+h,2006,6.62606896E-34,3.3E-41,4.9803e-08,J s,0,Planck constant,J s,6.626 068 96(33) e-34,2006_allascii.txt:248
+h,2010,6.62606957E-34,2.9E-41,4.3767e-08,J s,0,Planck constant,J s,6.626 069 57 e-34,2010_allascii.txt:261
+h,2014,6.62607004E-34,8.1E-42,1.2224e-08,J s,0,Planck constant,J s,6.626 070 040 e-34,2014_allascii.txt:261
+h,2018,6.62607015E-34,0,0.0000e+00,J s,1,Planck constant,J Hz^-1,6.626 070 15 e-34,2018_allascii.txt:270
+h,2022,6.62607015E-34,0,0.0000e+00,J s,1,Planck constant,J Hz^-1,6.626 070 15 e-34,2022_allascii.txt:271
+k,1969,1.380622E-23,5.9E-28,4.2734e-05,J K^-1,0,Boltzmann's constant,J K^-1,1.380622(59) e-23,478 table XXXII
+k,1973,1.380662E-23,4.4E-28,3.1869e-05,J K^-1,0,"Boltzmann constant, R/N_A",J K^-1,1.380662(44) e-23,719 table 33.1
+k,1986,1.380658E-23,1.2E-28,8.6915e-06,J K^-1,0,Boltzmann constant,J K^-1,1.380658(12) e-23,codata86 p.11 table 2
+k,1998,1.3806503E-23,2.4E-29,1.7383e-06,J K^-1,0,Boltzmann constant,J K^{-1},1.380 6503(24) e-23,1998_allascii.txt:58
+k,2002,1.3806505E-23,2.4E-29,1.7383e-06,J K^-1,0,Boltzmann constant,J K^{-1},1.380 6505(24) e-23,2002_allascii.txt:58
+k,2006,1.3806504E-23,2.4E-29,1.7383e-06,J K^-1,0,Boltzmann constant,J K^{-1},1.380 6504(24) e-23,2006_allascii.txt:58
+k,2010,1.3806488E-23,1.3E-29,9.4159e-07,J K^-1,0,Boltzmann constant,J K^-1,1.380 6488 e-23,2010_allascii.txt:60
+k,2014,1.38064852E-23,7.9E-30,5.7219e-07,J K^-1,0,Boltzmann constant,J K^-1,1.380 648 52 e-23,2014_allascii.txt:60
+k,2018,1.380649E-23,0,0.0000e+00,J K^-1,1,Boltzmann constant,J K^-1,1.380 649 e-23,2018_allascii.txt:61
+k,2022,1.380649E-23,0,0.0000e+00,J K^-1,1,Boltzmann constant,J K^-1,1.380 649 e-23,2022_allascii.txt:62
+me,1969,9.109558E-31,5.4E-36,5.9278e-06,kg,0,Electron rest mass,kg,9.109558(54) e-31,477 table XXXII
+me,1973,9.109534E-31,4.7E-36,5.1594e-06,kg,0,Electron rest mass,kg,9.109534(47) e-31,718 table 33.1
+me,1986,9.1093897E-31,5.4E-37,5.9279e-07,kg,0,electron mass,kg,9.1093897(54) e-31,codata86 p.9 table 2
+me,1998,9.10938188E-31,7.2E-38,7.9039e-08,kg,0,electron mass,kg,9.109 381 88(72) e-31,1998_allascii.txt:92
+me,2002,9.1093826E-31,1.6E-37,1.7564e-07,kg,0,electron mass,kg,9.109 3826(16) e-31,2002_allascii.txt:93
+me,2006,9.10938215E-31,4.5E-38,4.9400e-08,kg,0,electron mass,kg,9.109 382 15(45) e-31,2006_allascii.txt:94
+me,2010,9.10938291E-31,4E-38,4.3911e-08,kg,0,electron mass,kg,9.109 382 91 e-31,2010_allascii.txt:99
+me,2014,9.10938356E-31,1.1E-38,1.2075e-08,kg,0,electron mass,kg,9.109 383 56 e-31,2014_allascii.txt:99
+me,2018,9.1093837015E-31,2.8E-40,3.0738e-10,kg,0,electron mass,kg,9.109 383 7015 e-31,2018_allascii.txt:106
+me,2022,9.1093837139E-31,2.8E-40,3.0738e-10,kg,0,electron mass,kg,9.109 383 7139 e-31,2022_allascii.txt:107
+mmu_me,1973,206.76865,0.00047,2.2731e-06,1,0,Ratio of muon mass to electron mass,,206.76865(47),719 table 33.1
+mmu_me,1986,206.768262,0.00003,1.4509e-07,1,0,muon-electron mass ratio,,206.768262(30),codata86 p.9 table 2
+mmu_me,1998,206.7682657,0.0000063,3.0469e-08,1,0,muon-electron mass ratio,,206.768 2657(63),1998_allascii.txt:204
+mmu_me,2002,206.7682838,0.0000054,2.6116e-08,1,0,muon-electron mass ratio,,206.768 2838(54),2002_allascii.txt:205
+mmu_me,2006,206.7682823,0.0000052,2.5149e-08,1,0,muon-electron mass ratio,,206.768 2823(52),2006_allascii.txt:206
+mmu_me,2010,206.7682843,0.0000052,2.5149e-08,1,0,muon-electron mass ratio,,206.768 2843,2010_allascii.txt:205
+mmu_me,2014,206.7682826,0.0000046,2.2247e-08,1,0,muon-electron mass ratio,,206.768 2826,2014_allascii.txt:205
+mmu_me,2018,206.768283,0.0000046,2.2247e-08,1,0,muon-electron mass ratio,,206.768 2830,2018_allascii.txt:214
+mmu_me,2022,206.7682827,0.0000046,2.2247e-08,1,0,muon-electron mass ratio,,206.768 2827,2022_allascii.txt:215
+mp_me,1969,1836.109,0.011,5.9909e-06,1,0,Ratio of proton mass to electron mass,,1836.109(11),477 table XXXII
+mp_me,1973,1836.15152,0.0007,3.8123e-07,1,0,Ratio of proton mass to electron mass,,1836.15152(70),718 table 33.1
+mp_me,1986,1836.152701,0.000037,2.0151e-08,1,0,proton-electron mass ratio,,1836.152701(37),codata86 p.10 table 2
+mp_me,1998,1836.1526675,0.0000039,2.1240e-09,1,0,proton-electron mass ratio,,1 836.152 6675(39),1998_allascii.txt:268
+mp_me,2002,1836.15267261,8.5E-7,4.6292e-10,1,0,proton-electron mass ratio,,1836.152 672 61(85),2002_allascii.txt:272
+mp_me,2006,1836.15267247,8E-7,4.3569e-10,1,0,proton-electron mass ratio,,1836.152 672 47(80),2006_allascii.txt:274
+mp_me,2010,1836.15267245,7.5E-7,4.0846e-10,1,0,proton-electron mass ratio,,1836.152 672 45,2010_allascii.txt:274
+mp_me,2014,1836.15267389,1.7E-7,9.2585e-11,1,0,proton-electron mass ratio,,1836.152 673 89,2014_allascii.txt:274
+mp_me,2018,1836.15267343,1.1E-7,5.9908e-11,1,0,proton-electron mass ratio,,1836.152 673 43,2018_allascii.txt:279
+mp_me,2022,1836.152673426,3.2E-8,1.7428e-11,1,0,proton-electron mass ratio,,1836.152 673 426,2022_allascii.txt:280
+mu0,1973,0.00000125663706144,0,0.0000e+00,N A^-2,1,Permeability of vacuum,N A^-2,12.5663706144 e-7,717 table 33.1
+mu0,1986,0.0000012566370614,0,0.0000e+00,N A^-2,1,permeability of vacuum,N A^-2,12.566370614 e-7,codata86 p.8 table 2
+mu0,1998,0.0000012566370614,0,0.0000e+00,N A^-2,1,magnetic constant,N A^{-2},12.566 370 614... e-7,1998_allascii.txt:181
+mu0,2002,0.0000012566370614,0,0.0000e+00,N A^-2,1,magnetic constant,N A^{-2},12.566 370 614... e-7,2002_allascii.txt:182
+mu0,2006,0.0000012566370614,0,0.0000e+00,N A^-2,1,magnetic constant,N A^{-2},12.566 370 614... e-7,2006_allascii.txt:183
+mu0,2010,0.0000012566370614,0,0.0000e+00,N A^-2,1,mag. constant,N A^-2,12.566 370 614... e-7,2010_allascii.txt:192
+mu0,2014,0.0000012566370614,0,0.0000e+00,N A^-2,1,mag. constant,N A^-2,12.566 370 614... e-7,2014_allascii.txt:192
+mu0,2018,0.00000125663706212,1.9E-16,1.5120e-10,N A^-2,0,vacuum mag. permeability,N A^-2,1.256 637 062 12 e-6,2018_allascii.txt:360
+mu0,2022,0.00000125663706127,2E-16,1.5915e-10,N A^-2,0,vacuum mag. permeability,N A^-2,1.256 637 061 27 e-6,2022_allascii.txt:361
+mun_muN,1986,-1.91304275,4.5E-7,2.3523e-07,1,0,neutron magnetic moment in nuclear magnetons,,-1.91304275(45),codata86 p.10 table 2
+mun_muN,1998,-1.91304272,4.5E-7,2.3523e-07,1,0,neutron magnetic moment to nuclear magneton ratio,,-1.913 042 72(45),1998_allascii.txt:226
+mun_muN,2002,-1.91304273,4.5E-7,2.3523e-07,1,0,neutron magnetic moment to nuclear magneton ratio,,-1.913 042 73(45),2002_allascii.txt:227
+mun_muN,2006,-1.91304273,4.5E-7,2.3523e-07,1,0,neutron magnetic moment to nuclear magneton ratio,,-1.913 042 73(45),2006_allascii.txt:228
+mun_muN,2010,-1.91304272,4.5E-7,2.3523e-07,1,0,neutron mag. mom. to nuclear magneton ratio,,-1.913 042 72,2010_allascii.txt:239
+mun_muN,2014,-1.91304273,4.5E-7,2.3523e-07,1,0,neutron mag. mom. to nuclear magneton ratio,,-1.913 042 73,2014_allascii.txt:239
+mun_muN,2018,-1.91304273,4.5E-7,2.3523e-07,1,0,neutron mag. mom. to nuclear magneton ratio,,-1.913 042 73,2018_allascii.txt:247
+mun_muN,2022,-1.91304276,4.5E-7,2.3523e-07,1,0,neutron mag. mom. to nuclear magneton ratio,,-1.913 042 76,2022_allascii.txt:248
+mup_muN,1969,2.792782,0.000017,6.0871e-06,1,0,mu_p'/mu_n corrected for diamagnetism of H2O,,2.792782(17),478 table XXXII
+mup_muN,1973,2.7928456,0.0000011,3.9386e-07,1,0,mu_p'/mu_N corrected for diamagnetism of H2O,,2.7928456(11),719 table 33.1
+mup_muN,1986,2.792847386,6.3E-8,2.2558e-08,1,0,proton magnetic moment in nuclear magnetons,,2.792847386(63),codata86 p.10 table 2
+mup_muN,1998,2.792847337,2.9E-8,1.0384e-08,1,0,proton magnetic moment to nuclear magneton ratio,,2.792 847 337(29),1998_allascii.txt:261
+mup_muN,2002,2.792847351,2.8E-8,1.0026e-08,1,0,proton magnetic moment to nuclear magneton ratio,,2.792 847 351(28),2002_allascii.txt:264
+mup_muN,2006,2.792847356,2.3E-8,8.2353e-09,1,0,proton magnetic moment to nuclear magneton ratio,,2.792 847 356(23),2006_allascii.txt:266
+mup_muN,2010,2.792847356,2.3E-8,8.2353e-09,1,0,proton mag. mom. to nuclear magneton ratio,,2.792 847 356,2010_allascii.txt:280
+mup_muN,2014,2.7928473508,8.5E-9,3.0435e-09,1,0,proton mag. mom. to nuclear magneton ratio,,2.792 847 3508,2014_allascii.txt:280
+mup_muN,2018,2.79284734463,8.2E-10,2.9361e-10,1,0,proton mag. mom. to nuclear magneton ratio,,2.792 847 344 63,2018_allascii.txt:285
+mup_muN,2022,2.79284734463,8.2E-10,2.9361e-10,1,0,proton mag. mom. to nuclear magneton ratio,,2.792 847 344 63,2022_allascii.txt:286
+rd,2002,2.1394E-15,2.8E-18,1.3088e-03,m,0,deuteron rms charge radius,m,2.1394(28) e-15,2002_allascii.txt:78
+rd,2006,2.1402E-15,2.8E-18,1.3083e-03,m,0,deuteron rms charge radius,m,2.1402(28) e-15,2006_allascii.txt:79
+rd,2010,2.1424E-15,2.1E-18,9.8021e-04,m,0,deuteron rms charge radius,m,2.1424 e-15,2010_allascii.txt:86
+rd,2014,2.1413E-15,2.5E-18,1.1675e-03,m,0,deuteron rms charge radius,m,2.1413 e-15,2014_allascii.txt:86
+rd,2018,2.12799E-15,7.4E-19,3.4775e-04,m,0,deuteron rms charge radius,m,2.127 99 e-15,2018_allascii.txt:94
+rd,2022,2.12778E-15,2.7E-19,1.2689e-04,m,0,deuteron rms charge radius,m,2.127 78 e-15,2022_allascii.txt:95
+rp,2002,8.75E-16,6.8E-18,7.7714e-03,m,0,proton rms charge radius,m,0.8750(68) e-15,2002_allascii.txt:271
+rp,2006,8.768E-16,6.9E-18,7.8695e-03,m,0,proton rms charge radius,m,0.8768(69) e-15,2006_allascii.txt:273
+rp,2010,8.775E-16,5.1E-18,5.8120e-03,m,0,proton rms charge radius,m,0.8775 e-15,2010_allascii.txt:290
+rp,2014,8.751E-16,6.1E-18,6.9706e-03,m,0,proton rms charge radius,m,0.8751 e-15,2014_allascii.txt:290
+rp,2018,8.414E-16,1.9E-18,2.2581e-03,m,0,proton rms charge radius,m,8.414 e-16,2018_allascii.txt:296
+rp,2022,8.4075E-16,6.4E-19,7.6123e-04,m,0,proton rms charge radius,m,8.4075 e-16,2022_allascii.txt:297
+sigma,1969,5.66961E-8,9.6E-12,1.6932e-04,W m^-2 K^-4,0,Stefan-Boltzmann constant,W m^-2 K^-4,5.66961(96) e-8,478 table XXXII
+sigma,1973,5.67032E-8,7.1E-12,1.2521e-04,W m^-2 K^-4,0,Stefan-Boltzmann constant,W m^-2 K^-4,5.67032(71) e-8,719 table 33.1
+sigma,1986,5.67051E-8,1.9E-12,3.3507e-05,W m^-2 K^-4,0,Stefan-Boltzmann constant,W m^-2 K^-4,5.67051(19) e-8,codata86 p.11 table 2
+sigma,1998,5.6704E-8,4E-13,7.0542e-06,W m^-2 K^-4,0,Stefan-Boltzmann constant,W m^{-2} K^{-4},5.670 400(40) e-8,1998_allascii.txt:297
+sigma,2002,5.6704E-8,4E-13,7.0542e-06,W m^-2 K^-4,0,Stefan-Boltzmann constant,W m^{-2} K^{-4},5.670 400(40) e-8,2002_allascii.txt:301
+sigma,2006,5.6704E-8,4E-13,7.0542e-06,W m^-2 K^-4,0,Stefan-Boltzmann constant,W m^{-2} K^{-4},5.670 400(40) e-8,2006_allascii.txt:303
+sigma,2010,5.670373E-8,2.1E-13,3.7035e-06,W m^-2 K^-4,0,Stefan-Boltzmann constant,W m^-2 K^-4,5.670 373 e-8,2010_allascii.txt:317
+sigma,2014,5.670367E-8,1.3E-13,2.2926e-06,W m^-2 K^-4,0,Stefan-Boltzmann constant,W m^-2 K^-4,5.670 367 e-8,2014_allascii.txt:317
+sigma,2018,5.670374419E-8,0,0.0000e+00,W m^-2 K^-4,1,Stefan-Boltzmann constant,W m^-2 K^-4,5.670 374 419... e-8,2018_allascii.txt:333
+sigma,2022,5.670374419E-8,0,0.0000e+00,W m^-2 K^-4,1,Stefan-Boltzmann constant,W m^-2 K^-4,5.670 374 419... e-8,2022_allascii.txt:334

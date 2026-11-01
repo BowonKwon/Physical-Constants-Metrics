@@ -1,0 +1,5 @@
+edition,name,corrected_value_text,reason
+1998,magnetic constant,12.566 370 614... e-7,"The 1998 ASCII row prints '1 256 637.061 435 917...' with no exponent (N A^-2); mu0 = 4π×10^-7 N A^-2 by definition until 2019, so the exponent is restored. Exact value; not used in any metric."
+2002,Boltzmann constant,1.380 6505(24) e-23,"The archived 2002 ASCII table gives 1.380 6504(24) e-23 (also in its kelvin-joule row). The 2002 'all values' PDF and the published adjustment (Mohr & Taylor, Rev. Mod. Phys. 77, 1 (2005), tables on pp. 62 and 68 of the NIST PDF) give 1.380 6505(24) e-23. The published value is used."
+2002,electron magnetic moment,-928.476 412(80) e-26,"Archived 2002 ASCII: -928.476 411(80) e-26. The 2002 PDF table and the published adjustment (Rev. Mod. Phys. 77, 1) give -928.476 412(80) e-26. Not used in any metric (not a core quantity)."
+2002,proton charge to mass quotient,9.578 833 76(82) e7,"Archived 2002 ASCII: 9.578 833 77(82) e7. The 2002 PDF table and the published adjustment give 9.578 833 76(82) e7. Not used in any metric."

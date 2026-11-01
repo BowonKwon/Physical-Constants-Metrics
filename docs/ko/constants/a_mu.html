@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>뮤온 이상 자기 모멘트 — 물리 상수 메트릭스</title><meta name="description" content="과학자들이 밝힌 오차 막대는 다음 판의 값을 얼마나 자주 놓쳤나 — CODATA 기본 물리 상수 1969~2022">
+<script>(function(){var q=new URLSearchParams(location.search).get("theme");if(q==="light"||q==="dark"){localStorage.setItem("pcm-theme",q)}else if(q==="auto"){localStorage.removeItem("pcm-theme")}var v=localStorage.getItem("pcm-theme");if(v)document.documentElement.setAttribute("data-theme",v)})();</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light;
+  --bg:#f7f7f5;--bg2:#ecede9;--card:#ffffff;--line:#d9dbd5;--line2:#e7e8e3;
+  --fg:#1c1f22;--fg2:#575c62;--fg3:#868b90;
+  --accent:#2d6b68;--accent2:#a5643c;
+  --s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--grid:#e4e5e0;--ref:#8f9398;
+  --shadow:0 1px 2px rgba(30,34,38,.05),0 6px 18px rgba(30,34,38,.05);
+  --display:"Noto Serif KR","Source Serif 4",Georgia,serif;
+  --body:"Noto Sans KR",-apple-system,"Segoe UI","Apple SD Gothic Neo",Roboto,sans-serif}
+@media(prefers-color-scheme:dark){:root:where(:not([data-theme="light"])){color-scheme:dark;
+  --bg:#1a1c1d;--bg2:#212425;--card:#222526;--line:#33383a;--line2:#2a2e30;
+  --fg:#eaebe8;--fg2:#b2b5b2;--fg3:#7f8381;
+  --accent:#73b3ad;--accent2:#d39467;
+  --s1:#3987e5;--s2:#d95926;--s3:#199e70;--grid:#2c3032;--ref:#8a8e8c;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 20px rgba(0,0,0,.25)}}
+:root[data-theme="dark"]{color-scheme:dark;
+  --bg:#1a1c1d;--bg2:#212425;--card:#222526;--line:#33383a;--line2:#2a2e30;
+  --fg:#eaebe8;--fg2:#b2b5b2;--fg3:#7f8381;
+  --accent:#73b3ad;--accent2:#d39467;
+  --s1:#3987e5;--s2:#d95926;--s3:#199e70;--grid:#2c3032;--ref:#8a8e8c;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 20px rgba(0,0,0,.25)}
+*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}
+body{margin:0;font:16px/1.7 var(--body);background:var(--bg);color:var(--fg);overflow-wrap:anywhere;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline;text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+header{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:.55rem 1.1rem;display:flex;gap:1.2rem;align-items:center;flex-wrap:wrap}
+header .brand{font-family:var(--display);font-weight:600;font-size:1.05rem;color:var(--fg)}
+header nav{display:flex;gap:.9rem;flex-wrap:wrap}header nav a{color:var(--fg2);font-size:.92rem;padding:.2rem 0;border-bottom:2px solid transparent}
+header nav a:hover{text-decoration:none;color:var(--fg)}header nav a.on{color:var(--fg);border-bottom-color:var(--accent2)}
+header .right{margin-left:auto;display:flex;gap:.6rem;align-items:center}
+header .lang{font-size:.88rem;color:var(--fg2);border:1px solid var(--line);border-radius:999px;padding:.15rem .7rem}header .lang:hover{text-decoration:none;color:var(--fg)}
+.theme{border:1px solid var(--line);background:transparent;color:var(--fg2);border-radius:999px;width:30px;height:30px;cursor:pointer;font-size:.9rem;line-height:1;padding:0}
+main{max-width:1060px;margin:0 auto;padding:1.6rem 1.1rem 4rem;min-width:0}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(1.6rem,3.2vw,2.2rem);line-height:1.25;margin:.3rem 0 .5rem;text-wrap:balance}
+h2{font-family:var(--display);font-weight:600;font-size:1.3rem;line-height:1.3;margin:2.4rem 0 .8rem;padding-bottom:.35rem;border-bottom:1px solid var(--line)}
+h3{font-size:1.02rem;margin:1.4rem 0 .4rem}
+.tag{display:inline-block;font-size:.74rem;padding:.1rem .55rem;border-radius:999px;color:var(--fg2);background:var(--bg2);border:1px solid var(--line2);margin-right:.35rem}
+.tag.k{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 35%,transparent)}
+.lead{color:var(--fg2);font-size:1.05rem;max-width:72ch;margin:0 0 1.2rem}
+.hero{padding:.6rem 0 1.4rem;border-bottom:1px solid var(--line);margin-bottom:1.4rem}.hero h1{font-size:clamp(1.8rem,4vw,2.6rem)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.8rem;margin:1.2rem 0 1.6rem}
+.stat{display:block;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:1rem 1.1rem;box-shadow:var(--shadow);color:var(--fg)}
+.stat .n{font-family:var(--display);font-size:2rem;font-weight:600;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat .vs{font-size:.95rem;color:var(--fg2);margin-left:.3rem}
+.stat small{display:block;color:var(--fg2);margin-top:.35rem;font-size:.86rem;line-height:1.45}a.stat:hover{text-decoration:none;border-color:var(--fg3)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:.8rem;margin:.9rem 0 1.4rem}
+.card{display:block;background:var(--card);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:10px;padding:.85rem 1rem;box-shadow:var(--shadow);color:var(--fg)}
+.card.d{border-top-color:var(--line)}a.card:hover{text-decoration:none;border-color:var(--fg3)}
+.card b{display:block;margin-bottom:.25rem;color:var(--accent)}.card small{color:var(--fg2);font-size:.86rem;line-height:1.5;display:block}
+.spec{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:1rem 1.2rem;margin:1rem 0 1.4rem;box-shadow:var(--shadow)}
+dl{display:grid;grid-template-columns:max-content 1fr;gap:.55rem 1.4rem;margin:0}dt{color:var(--fg3);font-size:.82rem;padding-top:.15rem}dd{margin:0;min-width:0}
+dd.formula{font-family:ui-monospace,Consolas,"Noto Sans KR",monospace;font-size:.9rem;background:var(--bg2);border-radius:6px;padding:.45rem .65rem}
+@media(max-width:640px){dl{grid-template-columns:1fr}dt{margin-top:.5rem}}
+table{border-collapse:collapse;width:100%;font-size:.88rem;margin:.6rem 0}
+th,td{border-bottom:1px solid var(--line2);padding:.4rem .55rem;text-align:left;vertical-align:top;overflow-wrap:normal;word-break:keep-all}
+.wrap table{min-width:560px}
+thead th{color:var(--fg2);font-weight:600;font-size:.8rem;cursor:pointer;white-space:nowrap;border-bottom:1px solid var(--line)}
+tbody tr:nth-child(even){background:color-mix(in srgb,var(--bg2) 55%,transparent)}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--card);padding:0 .3rem;margin:.6rem 0 1rem}.wrap table{margin:0}
+figure{margin:1.2rem 0;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:1rem 1rem .8rem;box-shadow:var(--shadow)}
+figcaption{font-size:.86rem;color:var(--fg2);margin-top:.5rem;line-height:1.5}
+svg{max-width:100%;height:auto;display:block}svg text{font-family:var(--body);fill:var(--fg2);font-size:12px}svg .grid{stroke:var(--grid)}svg .ref{stroke:var(--ref);stroke-dasharray:4 4}
+svg .hit{fill:transparent}svg .hit:hover+.dot,svg .dot:hover{stroke:var(--fg);stroke-width:2}
+.legend{display:flex;gap:1.1rem;font-size:.86rem;color:var(--fg2);flex-wrap:wrap;margin:.2rem 0 .4rem}.legend span::before{content:"";display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:.4rem;vertical-align:-1px;background:var(--c)}
+.legend span.dash::before{height:0;border-top:2px dashed var(--c);border-radius:0;vertical-align:3px}
+.note{background:color-mix(in srgb,var(--accent) 7%,var(--card));border:1px solid color-mix(in srgb,var(--accent) 25%,var(--line));border-left:4px solid var(--accent);border-radius:8px;padding:.7rem 1rem;margin:1.2rem 0;font-size:.95rem}
+.prose p,.prose ul,.prose ol{max-width:72ch}.prose p{margin:.8rem 0}.prose li{margin:.3rem 0}
+.files a{display:inline-block;font-size:.85rem;background:var(--bg2);border:1px solid var(--line2);border-radius:6px;padding:.15rem .55rem;margin:.2rem .3rem .2rem 0;color:var(--fg2)}
+footer{border-top:1px solid var(--line);color:var(--fg3);font-size:.82rem;padding:1.2rem;text-align:center}
+.tip{position:fixed;pointer-events:none;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:.3rem .55rem;font-size:.82rem;box-shadow:var(--shadow);display:none;z-index:9;max-width:280px}
+</style></head><body>
+<header><a class="brand" href="../../ko/index.html">물리 상수 메트릭스</a><nav><a href="../../ko/index.html">홈</a><a href="../../ko/metrics/index.html">지표</a><a href="../../ko/constants/index.html" class="on">상수</a><a href="../../ko/reading.html">읽기</a><a href="../../ko/prior.html">선행 연구</a><a href="../../ko/method.html">방법·한계</a><a href="../../ko/data.html">데이터</a></nav>
+<div class="right"><button id="theme" class="theme" type="button" aria-label="theme">◑</button><a class="lang" href="../../en/index.html">English</a></div></header>
+<main><p><span class="tag k">핵심 상수</span></p>
+<h1>a_μ · 뮤온 이상 자기 모멘트</h1><p class="lead">muon magnetic-moment anomaly</p>
+<div class="spec"><dl><dt>단위</dt><dd>없음(무차원)</dd><dt>한국어 이름 근거</dt><dd>관행 표기 — 대한물리학회 용어집 미대조</dd><dt>메모</dt><dd>1973 판은 g/2 = 1 + a_μ 로 적었다. 1을 뺀 값을 쓴다.</dd><dt>M1</dt><dd>반감기(년): 5.71 (3.85–11.04)</dd></dl></div>
+<figure><div class="legend"><span style="--c:var(--s1)">판별 값 ±1σ</span><span class="dash" style="--c:var(--ref)">2022</span></div><svg viewBox="0 0 900 340" role="img" aria-label="convergence plot"><line class="grid" x1="70" x2="880" y1="300.0" y2="300.0"/><text x="64" y="304.0" text-anchor="end">−10⁻³</text><line class="grid" x1="70" x2="880" y1="264.5" y2="264.5"/><text x="64" y="268.5" text-anchor="end">−10⁻⁴</text><line class="grid" x1="70" x2="880" y1="229.2" y2="229.2"/><text x="64" y="233.2" text-anchor="end">−10⁻⁵</text><line class="grid" x1="70" x2="880" y1="195.0" y2="195.0"/><text x="64" y="199.0" text-anchor="end">−10⁻⁶</text><line class="ref" x1="70" x2="880" y1="158.0" y2="158.0"/><text x="64" y="162.0" text-anchor="end">0</text><line class="grid" x1="70" x2="880" y1="121.0" y2="121.0"/><text x="64" y="125.0" text-anchor="end">+10⁻⁶</text><line class="grid" x1="70" x2="880" y1="86.8" y2="86.8"/><text x="64" y="90.8" text-anchor="end">+10⁻⁵</text><line class="grid" x1="70" x2="880" y1="51.5" y2="51.5"/><text x="64" y="55.5" text-anchor="end">+10⁻⁴</text><line class="grid" x1="70" x2="880" y1="16.0" y2="16.0"/><text x="64" y="20.0" text-anchor="end">+10⁻³</text><text x="110.5" y="326" text-anchor="middle">1969</text><text x="191.5" y="326" text-anchor="middle">1973</text><text x="272.5" y="326" text-anchor="middle">1986</text><text x="353.5" y="326" text-anchor="middle">1998</text><text x="434.5" y="326" text-anchor="middle">2002</text><text x="515.5" y="326" text-anchor="middle">2006</text><text x="596.5" y="326" text-anchor="middle">2010</text><text x="677.5" y="326" text-anchor="middle">2014</text><text x="758.5" y="326" text-anchor="middle">2018</text><text x="839.5" y="326" text-anchor="middle">2022</text><line x1="191.5" x2="191.5" y1="256.8" y2="27.6" stroke="var(--s1)" stroke-width="2"/><circle class="dot" cx="191.5" cy="40.4" r="5" fill="var(--s1)" stroke="var(--s1)" stroke-width="2" data-tip="1973: +2.05e-04 ± 2.66e-04"/><line x1="272.5" x2="272.5" y1="219.1" y2="88.0" stroke="var(--s1)" stroke-width="2"/><circle class="dot" cx="272.5" cy="110.8" r="5" fill="var(--s1)" stroke="var(--s1)" stroke-width="2" data-tip="1986: +2.04e-06 ± 7.20e-06"/><line x1="353.5" x2="353.5" y1="217.0" y2="212.8" stroke="var(--s1)" stroke-width="2"/><circle class="dot" cx="353.5" cy="215.0" r="5" fill="var(--card)" stroke="var(--s1)" stroke-width="2" data-tip="1998: -3.95e-06 ± 5.49e-07 (1σ 밖)"/><line x1="434.5" x2="434.5" y1="197.9" y2="172.9" stroke="var(--s1)" stroke-width="2"/><circle class="dot" cx="434.5" cy="190.0" r="5" fill="var(--card)" stroke="var(--s1)" stroke-width="2" data-tip="2002: -6.95e-07 ± 5.32e-07 (1σ 밖)"/><line x1="515.5" x2="515.5" y1="184.4" y2="128.6" stroke="var(--s1)" stroke-width="2"/><circle class="dot" cx="515.5" cy="150.8" r="5" fill="var(--s1)" stroke="var(--s1)" stroke-width="2" data-tip="2006: +6.00e-08 ± 5.15e-07"/><line x1="596.5" x2="596.5" y1="179.0" y2="124.3" stroke="var(--s1)" stroke-width="2"/><circle class="dot" cx="596.5" cy="138.7" r="5" fill="var(--s1)" stroke="var(--s1)" stroke-width="2" data-tip="2010: +2.49e-07 ± 5.40e-07"/><line x1="677.5" x2="677.5" y1="179.7" y2="124.6" stroke="var(--s1)" stroke-width="2"/><circle class="dot" cx="677.5" cy="139.5" r="5" fill="var(--s1)" stroke="var(--s1)" stroke-width="2" data-tip="2014: +2.32e-07 ± 5.40e-07"/><line x1="758.5" x2="758.5" y1="179.7" y2="124.6" stroke="var(--s1)" stroke-width="2"/><circle class="dot" cx="758.5" cy="139.5" r="5" fill="var(--s1)" stroke="var(--s1)" stroke-width="2" data-tip="2018: +2.32e-07 ± 5.40e-07"/><line x1="839.5" x2="839.5" y1="181.2" y2="134.8" stroke="var(--s1)" stroke-width="2"/><circle class="dot" cx="839.5" cy="158.0" r="5" fill="var(--s1)" stroke="var(--s1)" stroke-width="2" data-tip="2022: +0.00e+00 ± 3.52e-07"/></svg>
+<figcaption>2022 판 값에서의 상대 편차(대칭 로그 축). 속이 빈 원은 오차 막대가 2022 판 값에 닿지 않은 판, 네모는 정의값.</figcaption></figure>
+<div class="wrap"><table class="sort"><thead><tr><th>판</th><th>원 표기</th><th class="num">표준불확도</th><th class="num">상대 불확도</th><th>정의값</th><th class="num">직전 판 대비 z</th><th class="num">z = (2022 판 − 이 판)/σ</th><th>원자료 위치</th></tr></thead><tbody><tr><td>1973</td><td>1.00116616(31)</td><td class="num">3.1×10⁻⁷</td><td class="num" data-v="2.6583e-04">2.7×10⁻⁴</td><td></td><td class="num"></td><td class="num">-0.7722</td><td>718 table 33.1</td></tr><tr><td>1986</td><td>1.1659230(84) e-3</td><td class="num">8.4×10⁻⁹</td><td class="num" data-v="7.2046e-06">7.2×10⁻⁶</td><td></td><td class="num">-0.7642</td><td class="num">-0.2833</td><td>codata86 p.9 table 2</td></tr><tr><td>1998</td><td>1.165 916 02(64) e-3</td><td class="num">6.4×10⁻¹⁰</td><td class="num" data-v="5.4892e-07">5.5×10⁻⁷</td><td></td><td class="num">-0.8286</td><td class="num">7.1875</td><td>1998 ASCII:196</td></tr><tr><td>2002</td><td>1.165 919 81(62) e-3</td><td class="num">6.2×10⁻¹⁰</td><td class="num" data-v="5.3177e-07">5.3×10⁻⁷</td><td></td><td class="num">4.2533</td><td class="num">1.3065</td><td>2002 ASCII:197</td></tr><tr><td>2006</td><td>1.165 920 69(60) e-3</td><td class="num">6.0×10⁻¹⁰</td><td class="num" data-v="5.1461e-07">5.1×10⁻⁷</td><td></td><td class="num">1.0200</td><td class="num">-0.1167</td><td>2006 ASCII:198</td></tr><tr><td>2010</td><td>1.165 920 91 e-3</td><td class="num">6.3×10⁻¹⁰</td><td class="num" data-v="5.4035e-07">5.4×10⁻⁷</td><td></td><td class="num">0.2529</td><td class="num">-0.4603</td><td>2010 ASCII:208</td></tr><tr><td>2014</td><td>1.165 920 89 e-3</td><td class="num">6.3×10⁻¹⁰</td><td class="num" data-v="5.4035e-07">5.4×10⁻⁷</td><td></td><td class="num">-0.0224</td><td class="num">-0.4286</td><td>2014 ASCII:208</td></tr><tr><td>2018</td><td>1.165 920 89 e-3</td><td class="num">6.3×10⁻¹⁰</td><td class="num" data-v="5.4035e-07">5.4×10⁻⁷</td><td></td><td class="num">0.0000</td><td class="num">-0.4286</td><td>2018 ASCII:217</td></tr><tr><td>2022</td><td>1.165 920 62 e-3</td><td class="num">4.1×10⁻¹⁰</td><td class="num" data-v="3.5165e-07">3.5×10⁻⁷</td><td></td><td class="num">-0.3592</td><td class="num"></td><td>2022 ASCII:218</td></tr></tbody></table></div></main>
+<footer>물리 상수 메트릭스 · 판 1.0 · 생성일 2026-11-01 · <a href="https://github.com/BowonKwon/Physical-Constants-Metrics">GitHub</a> · 공개 자료 전체 <a href="https://bowonkwon.github.io/">bowonkwon.github.io</a></footer>
+<script>
+(function(){var k="pcm-theme",r=document.documentElement,b=document.getElementById("theme");function ap(v){if(v)r.setAttribute("data-theme",v);else r.removeAttribute("data-theme");if(b)b.textContent=v==="dark"?"\u263E":v==="light"?"\u2600":"\u25D1"}var cur=localStorage.getItem(k)||"";ap(cur);if(b)b.addEventListener("click",function(){cur=cur===""?"light":cur==="light"?"dark":"";if(cur)localStorage.setItem(k,cur);else localStorage.removeItem(k);ap(cur)})})();
+document.querySelectorAll('table.sort').forEach(function(t){t.querySelectorAll('th').forEach(function(th,i){th.addEventListener('click',function(){
+ var rows=Array.from(t.tBodies[0].rows),asc=th.dataset.asc!=='1';th.dataset.asc=asc?'1':'0';
+ rows.sort(function(a,b){var x=a.cells[i].dataset.v||a.cells[i].textContent,y=b.cells[i].dataset.v||b.cells[i].textContent;var nx=parseFloat(x),ny=parseFloat(y);
+ if(!isNaN(nx)&&!isNaN(ny))return asc?nx-ny:ny-nx;return asc?x.localeCompare(y):y.localeCompare(x)});rows.forEach(function(r){t.tBodies[0].appendChild(r)})})})});
+(function(){var tip=document.createElement('div');tip.className='tip';document.body.appendChild(tip);
+document.querySelectorAll('svg [data-tip]').forEach(function(el){el.addEventListener('mousemove',function(e){tip.textContent=el.getAttribute('data-tip');tip.style.display='block';
+ var x=e.clientX+14,y=e.clientY+14;if(x+tip.offsetWidth>innerWidth-8)x=e.clientX-tip.offsetWidth-10;tip.style.left=x+'px';tip.style.top=y+'px'});
+ el.addEventListener('mouseleave',function(){tip.style.display='none'})})})();
+</script></body></html>

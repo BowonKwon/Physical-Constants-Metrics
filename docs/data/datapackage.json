@@ -1,0 +1,93 @@
+{
+ "name": "physical-constants-metrics",
+ "version": "1.0",
+ "created": "2026-11-01",
+ "licenses": [
+  {
+   "name": "CC-BY-4.0",
+   "path": "https://creativecommons.org/licenses/by/4.0/"
+  }
+ ],
+ "sources": [
+  {
+   "title": "CODATA recommended values (NIST)",
+   "path": "https://physics.nist.gov/cuu/Constants/"
+  },
+  {
+   "title": "Taylor, Parker & Langenberg 1969",
+   "path": "https://physics.nist.gov/cuu/Constants/archive1969.html"
+  }
+ ],
+ "resources": [
+  {
+   "path": "data/constants_long.csv",
+   "description": "Constant × edition long table: value, standard uncertainty, relative uncertainty, unit, exact flag, printed form, source location",
+   "format": "csv"
+  },
+  {
+   "path": "data/quantity_map.csv",
+   "description": "Map of the 27 quantities: symbol, names, source names by edition, exact-from edition, layer, basis of the Korean name",
+   "format": "csv"
+  },
+  {
+   "path": "data/m1_halflife.csv",
+   "description": "M1 relative-uncertainty half-life",
+   "format": "csv"
+  },
+  {
+   "path": "data/m2_pairs.csv",
+   "description": "M2 every consecutive-edition pair (z, z_old)",
+   "format": "csv"
+  },
+  {
+   "path": "data/m2_summary.csv",
+   "description": "M2 exceedance rates and intervals",
+   "format": "csv"
+  },
+  {
+   "path": "data/m3_vs_latest.csv",
+   "description": "M3 every (edition, constant) against 2022",
+   "format": "csv"
+  },
+  {
+   "path": "data/m3_summary.csv",
+   "description": "M3 miss rates, interquartile and surprise indices by edition and group",
+   "format": "csv"
+  },
+  {
+   "path": "data/m4_tail.csv",
+   "description": "M4 Student-t fits",
+   "format": "csv"
+  },
+  {
+   "path": "data/m5_funnel.csv",
+   "description": "M5 convergence-plot data",
+   "format": "csv"
+  },
+  {
+   "path": "data/m6_events.csv",
+   "description": "M6 exact-value transitions",
+   "format": "csv"
+  },
+  {
+   "path": "data/hf_repro.csv",
+   "description": "Henrion & Fischhoff-style recalculation (five constants)",
+   "format": "csv"
+  },
+  {
+   "path": "data/sens_all_rows.csv",
+   "description": "Sensitivity: every 1998–2022 ASCII row with an unchanged name",
+   "format": "csv"
+  },
+  {
+   "path": "data/handcheck_mapped.csv",
+   "description": "Check: every 1998–2022 row used here against NIST's PDF tables",
+   "format": "csv"
+  },
+  {
+   "path": "data/handcheck_early.csv",
+   "description": "Check: every 1969/1973/1986 hand-entered value against page images and text layer",
+   "format": "csv"
+  }
+ ]
+}
