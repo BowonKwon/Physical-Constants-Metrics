@@ -139,7 +139,8 @@ dd.formula{font-family:ui-monospace,Consolas,"Noto Sans KR",monospace;font-size:
 table{border-collapse:collapse;width:100%;font-size:.88rem;margin:.6rem 0}
 th,td{border-bottom:1px solid var(--line2);padding:.4rem .55rem;text-align:left;vertical-align:top;overflow-wrap:normal;word-break:keep-all}
 .wrap table{min-width:560px}
-thead th{color:var(--fg2);font-weight:600;font-size:.8rem;cursor:pointer;white-space:nowrap;border-bottom:1px solid var(--line)}
+thead th{color:var(--fg2);font-weight:600;font-size:.8rem;cursor:pointer;white-space:nowrap;border-bottom:1px solid var(--line);vertical-align:bottom}
+thead th small.hs{display:block;font-weight:400;color:var(--fg3);font-size:.7rem;line-height:1.3;white-space:normal;min-width:7em;max-width:15em;margin-top:.15rem}
 tbody tr:nth-child(even){background:color-mix(in srgb,var(--bg2) 55%,transparent)}
 td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 .wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--card);padding:0 .3rem;margin:.6rem 0 1rem}.wrap table{margin:0}
@@ -219,8 +220,14 @@ def page(lang, title, body, depth=1, active=""):
 <script>{JS}</script></body></html>"""
 
 
+def _th(h):
+    if isinstance(h, tuple):
+        return f'{esc(h[0])}<small class="hs">{esc(h[1])}</small>'
+    return esc(h)
+
+
 def table(headers, rows, num_cols=(), cls="sort"):
-    th = "".join(f'<th class="num">{esc(h)}</th>' if i in num_cols else f"<th>{esc(h)}</th>" for i, h in enumerate(headers))
+    th = "".join(f'<th class="num">{_th(h)}</th>' if i in num_cols else f"<th>{_th(h)}</th>" for i, h in enumerate(headers))
     body = []
     for r in rows:
         tds = []
@@ -336,7 +343,7 @@ def chart_miss(s3, lang, W=900, H=340):
     for v in (0, .2, .4, .6, .8, 1.0):
         o.append(f'<line class="grid" x1="{L}" x2="{W-R}" y1="{Y(v):.1f}" y2="{Y(v):.1f}"/><text x="{L-6}" y="{Y(v)+4:.1f}" text-anchor="end">{int(v*100)}%</text>')
     for v, lab in ((0.3173, "1σ 31.7%"), (0.0455, "2σ 4.6%")):
-        o.append(f'<line class="ref" x1="{L}" x2="{W-R}" y1="{Y(v):.1f}" y2="{Y(v):.1f}"/><text x="{W-R+6}" y="{Y(v)+4:.1f}">{("막대대로라면 " if lang == "ko" else "if bars right ") + lab}</text>')
+        o.append(f'<line class="ref" x1="{L}" x2="{W-R}" y1="{Y(v):.1f}" y2="{Y(v):.1f}"/><text x="{W-R+6}" y="{Y(v)+4:.1f}">{("정규분포 기대 " if lang == "ko" else "normal ") + lab}</text>')
     for i, r in enumerate(eds):
         o.append(f'<text x="{X(i):.1f}" y="{H-14}" text-anchor="middle">{r["subset"]}</text>')
         for col, key, off in ((1, "miss_1sigma", -7), (2, "miss_2sigma", 7)):
@@ -462,6 +469,18 @@ def numbers(qmap, m1, s2, s3, t4, summ):
 GLOSS = {"ko": '<div class="note"><b>불확도(uncertainty)</b> — 측정값이 참값에서 벗어나 있을 수 있는 폭을 표준편차로 나타낸 값이다. 그림의 오차 막대(±1σ) 길이가 이것이다. 참값과의 실제 차이인 「오차(error)」와 달리, 불확도는 그 차이가 얼마쯤일지에 대한 추정이다. 계측 분야의 표준 용어로, 한국산업표준 KS Q ISO/IEC GUIDE 98-3 「측정불확도 표현 지침」이 이 말을 쓴다. 이 사이트가 재는 것은 그 추정한 폭이 판이 바뀔 때의 실제 이동을 담았는가이다.</div><div class="note"><b>판(edition)</b> — CODATA 기본상수 작업반이 그때까지 나온 측정과 이론 계산을 모두 모아 최소제곱 조정을 한 번 하고, 그 결과로 공표하는 권고값 한 벌이다. 판의 이름은 반영한 자료의 마감 연도다(예: 2022 판은 2022년 말까지의 자료로 만들어 2024년에 공표). 1973·1986 판 뒤 1998 판부터는 4년마다 나왔다. 1969 판은 CODATA 이전의 개인 연구진(Taylor·Parker·Langenberg) 조정값으로, 비교를 위해 함께 싣는다. 판이 바뀌면 같은 상수의 값과 불확도가 함께 바뀐다 — 이 사이트는 그 변화를 센다.</div>', "en": '<div class="note"><b>Uncertainty</b> — the width, expressed as a standard deviation, within which a measured value may differ from the true value; the length of the ±1σ error bars in the plots. Unlike the error, the actual difference from the true value, the uncertainty is an estimate of how large that difference may be. It is the standard term in metrology (ISO/IEC Guide 98-3, the Guide to the Expression of Uncertainty in Measurement). What this site measures is whether that estimated width covered the actual moves between editions.</div><div class="note"><b>Edition</b> — one set of recommended values published by the CODATA Task Group on Fundamental Constants after a least-squares adjustment of all the measurements and theoretical calculations available at the time. An edition is named after the closing year of its data (the 2022 edition uses data to the end of 2022 and was published in 2024). After the 1973 and 1986 editions, one has appeared every four years since 1998. The 1969 edition is the pre-CODATA adjustment by Taylor, Parker and Langenberg, included for comparison. With each new edition the values and uncertainties of the same constants change; this site counts those changes.</div>'}
 
 
+CONST_HEAD = {
+    "ko": [("판", "권고값을 낸 해(자료 마감 연도)"), ("원 표기", "원 표에 인쇄된 그대로. 괄호 안 숫자는 마지막 자리의 표준불확도"),
+           ("표준불확도", "오차 막대의 반폭(±1σ)"), ("상대 표준불확도", "표준불확도 ÷ 값의 크기 — 값에 견준 막대 폭"),
+           ("정의값", "측정하지 않고 약속으로 정해 불확도 0"), ("직전 판 대비 z", "직전 판에서의 이동 ÷ 두 판 표준불확도의 합성"),
+           ("2022 판 기준 z", "(2022 판 값 − 이 판 값) ÷ 이 판의 표준불확도"), ("원자료 위치", "원 논문의 쪽·표 또는 NIST 표의 파일·행")],
+    "en": [("Edition", "year of the recommended values (data cut-off)"), ("As printed", "exactly as in the source table; digits in brackets are the standard uncertainty in the last digits"),
+           ("Std. uncertainty", "half-width of the error bar (±1σ)"), ("Rel. std. uncertainty", "standard uncertainty ÷ |value|: bar width relative to the value"),
+           ("Exact", "fixed by definition, uncertainty zero"), ("z vs previous edition", "move from the previous edition ÷ combined standard uncertainty of the two"),
+           ("z vs 2022", "(2022 value − this value) ÷ this edition's standard uncertainty"), ("Source location", "page and table of the paper, or file and line of NIST's table")],
+}
+
+
 def takeaway(lang, items):
     """The page's takeaway box: two or three sentences a reader should leave with."""
     items = [i for i in items if i]
@@ -537,34 +556,34 @@ def build():
         if lang == "ko":
             hero = f"""<div class="hero"><h1>{t['site']}</h1><p class="lead">과학자들이 스스로 밝힌 오차 막대는 다음 판의 값을 얼마나 자주 놓쳤나. 국제과학위원회(ISC) 산하 과학기술데이터위원회(CODATA)가 1973년부터 내 온 기본 물리 상수 권고값 아홉 판과 그 직전의 1969년 조정값을 이어 붙여, 값과 불확도가 판마다 어떻게 바뀌었는지 센다.</p></div>"""
             stats_h = f"""<div class="stats">
-<a class="stat" href="metrics/m2.html"><span class="n">{N['m2_r2']}%</span><span class="vs">막대대로라면 4.6%</span><small>새 판에서 값이 오차 막대 폭의 2배 넘게 움직인 비율 — 약 {N['m2_1in2']}번에 1번 (판 쌍 {N['m2_n']}개, 핵심 상수 {N['m2_q']}개, 95% 구간 {N['m2_r2_ci']})</small></a>
-<a class="stat" href="metrics/m2.html"><span class="n">{N['m2_r3']}%</span><span class="vs">막대대로라면 0.27%</span><small>3배 넘게 움직인 비율 — 약 {N['m2_1in3']}번에 1번 (95% 구간 {N['m2_r3_ci']})</small></a>
-<a class="stat" href="metrics/m3.html"><span class="n">{N['m3_m2']}%</span><span class="vs">막대대로라면 4.6%</span><small>옛 판의 넉넉한 막대(±2σ)가 오늘의 값을 품지 못한 비율 — 10개 중 약 {N['m3_m2_10']}개 ({N['m3_n']}개 조합, 95% 구간 {N['m3_m2_ci']})</small></a>
-<a class="stat" href="metrics/m1.html"><span class="n">{N['m1_median']}년</span><small>오차 막대가 절반으로 좁아지는 데 걸린 햇수 (막대가 좁아진 핵심 상수 {N['m1_n_dec']}개의 중앙값)</small></a></div>"""
+<a class="stat" href="metrics/m2.html"><span class="n">{N['m2_r2']}%</span><span class="vs">정규분포 기대 4.6%</span><small>연속한 두 판 사이 이동이 두 판의 표준불확도를 합친 값의 2배를 넘은 비율(|z|>2) — 약 {N['m2_1in2']}번에 1번 (판 쌍 {N['m2_n']}개, 핵심 상수 {N['m2_q']}개, 95% 구간 {N['m2_r2_ci']})</small></a>
+<a class="stat" href="metrics/m2.html"><span class="n">{N['m2_r3']}%</span><span class="vs">정규분포 기대 0.27%</span><small>3배를 넘은 비율(|z|>3) — 약 {N['m2_1in3']}번에 1번 (95% 구간 {N['m2_r3_ci']})</small></a>
+<a class="stat" href="metrics/m3.html"><span class="n">{N['m3_m2']}%</span><span class="vs">정규분포 기대 4.6%</span><small>옛 판의 ±2σ 범위(넉넉한 오차 막대)가 2022 판 값을 담지 못한 비율 — 10개 중 약 {N['m3_m2_10']}개 ({N['m3_n']}개 조합, 95% 구간 {N['m3_m2_ci']})</small></a>
+<a class="stat" href="metrics/m1.html"><span class="n">{N['m1_median']}년</span><small>상대 표준불확도의 반감기 — 불확도가 절반이 되는 데 걸린 햇수 (불확도가 줄어든 핵심 상수 {N['m1_n_dec']}개의 중앙값)</small></a></div>"""
             g1cap = f"점 하나가 (판, 핵심 상수) 하나, 선은 판별 중앙값. 세로축은 로그. 중앙값은 1969 판 {fmt_sci(med[0][1])}(상수 {med[0][2]}개), 2022 판 {fmt_sci(med[-1][1])}({med[-1][2]}개). 판마다 들어간 상수가 달라(예: 양성자 전하 반지름은 2002 판부터) 중앙값이 판 사이에서 거꾸로 오르기도 한다."
             intro2 = """<div class="prose"><p>불확도는 반세기 동안 만 배 이상 줄었다. 그런데 판이 바뀔 때 값이 움직인 폭은 그 불확도로 설명되는 범위를 자주 넘었다. 이 사이트는 그 비율을 상수별·판별로 공개하고, 같은 질문을 먼저 던진 연구(Henrion & Fischhoff 1986, Bailey 2017)와 나란히 둔다. 수치마다 표본 수와 95% 구간을 붙였다. 「과학자가 과신했다」는 해석은 측정 설계를 들여다본 결과가 아니므로 지표 면에는 쓰지 않는다 — <a href="reading.html">읽기</a>에서 유보와 함께 다룬다.</p></div>"""
         else:
             hero = f"""<div class="hero"><h1>{t['site']}</h1><p class="lead">How often did the error bars that scientists published miss the next edition's value? This site joins the nine editions of the CODATA recommended values of the fundamental physical constants (1973–2022) and the 1969 adjustment that preceded them, and counts how values and uncertainties changed from edition to edition.</p></div>"""
             stats_h = f"""<div class="stats">
-<a class="stat" href="metrics/m2.html"><span class="n">{N['m2_r2']}%</span><span class="vs">if bars right: 4.6%</span><small>Moves at a new edition larger than twice the error bars, about once in {N['m2_1in2']} ({N['m2_n']} pairs, {N['m2_q']} core constants, 95% interval {N['m2_r2_ci']})</small></a>
-<a class="stat" href="metrics/m2.html"><span class="n">{N['m2_r3']}%</span><span class="vs">if bars right: 0.27%</span><small>Larger than three times the bars, about once in {N['m2_1in3']} (95% interval {N['m2_r3_ci']})</small></a>
-<a class="stat" href="metrics/m3.html"><span class="n">{N['m3_m2']}%</span><span class="vs">if bars right: 4.6%</span><small>Generous earlier bars (±2σ) that miss today's value, about {N['m3_m2_10']} in 10 ({N['m3_n']} combinations, 95% interval {N['m3_m2_ci']})</small></a>
-<a class="stat" href="metrics/m1.html"><span class="n">{N['m1_median']} y</span><small>Years for the error bars to halve (median over the {N['m1_n_dec']} core constants whose bars narrowed)</small></a></div>"""
+<a class="stat" href="metrics/m2.html"><span class="n">{N['m2_r2']}%</span><span class="vs">normal 4.6%</span><small>Moves between consecutive editions beyond twice the combined standard uncertainty (|z| > 2), about once in {N['m2_1in2']} ({N['m2_n']} pairs, {N['m2_q']} core constants, 95% interval {N['m2_r2_ci']})</small></a>
+<a class="stat" href="metrics/m2.html"><span class="n">{N['m2_r3']}%</span><span class="vs">normal 0.27%</span><small>Beyond three times (|z| > 3), about once in {N['m2_1in3']} (95% interval {N['m2_r3_ci']})</small></a>
+<a class="stat" href="metrics/m3.html"><span class="n">{N['m3_m2']}%</span><span class="vs">normal 4.6%</span><small>Earlier ±2σ ranges (generous error bars) that miss the 2022 value, about {N['m3_m2_10']} in 10 ({N['m3_n']} combinations, 95% interval {N['m3_m2_ci']})</small></a>
+<a class="stat" href="metrics/m1.html"><span class="n">{N['m1_median']} y</span><small>Half-life of the relative standard uncertainty: years for it to halve (median over the {N['m1_n_dec']} core constants whose uncertainty declined)</small></a></div>"""
             g1cap = f"One dot per (edition, core constant); the line is the median per edition. Log scale. Median {fmt_sci(med[0][1])} in 1969 ({med[0][2]} constants), {fmt_sci(med[-1][1])} in 2022 ({med[-1][2]}). The set of constants changes between editions (the proton charge radius enters in 2002, for example), so the median can rise from one edition to the next."
             intro2 = """<div class="prose"><p>Uncertainties shrank by more than four orders of magnitude in half a century. Yet the moves between editions often exceeded what those uncertainties allow. This site publishes those rates by constant and by edition, next to the earlier studies that asked the same question (Henrion & Fischhoff 1986; Bailey 2017). Every number carries its sample size and a 95% interval. "Scientists were overconfident" is an interpretation that would require looking into the measurements themselves, so the metric pages do not use it; the <a href="reading.html">reading edition</a> takes it up with its qualifications.</p></div>"""
         cards = "".join(f'<a class="card" href="metrics/{m["id"]}.html"><b>{m["id"].upper()} · {esc(m[lang]["name"])}</b><small>{esc(m[lang]["short"])}</small></a>' for m in METRICS)
         cards += f'<a class="card" href="metrics/hf.html"><b>{"재계산" if lang == "ko" else "Recalculation"} · Henrion & Fischhoff</b><small>{"1986년 논문의 지표를 이 자료로 다시 계산" if lang == "ko" else "Their 1986 indices recomputed on these data"}</small></a>'
         hf22 = next(r for r in hf if r["reference"] == "2022" and r["qid"] == "ALL")
         if lang == "ko":
-            tk = ["과학자들은 상수 값마다 「참값은 대략 이 범위 안에 있다」는 오차 막대를 함께 발표한다. 반세기 동안 이 막대는 만 배 넘게 좁아졌다.",
-                  f"그런데 새 판이 나올 때 값이 막대 폭의 2배 넘게 움직인 경우가 약 {N['m2_1in2']}번에 1번이었다. 막대가 맞다면 22번에 1번이어야 한다. 3배 넘게 움직인 경우도 약 {N['m2_1in3']}번에 1번으로, 기대치(370번에 1번)보다 훨씬 잦았다.",
-                  f"옛 판의 넉넉한 막대(±2σ)를 오늘의 값에 대 보면 10개 중 약 {N['m3_m2_10']}개가 빗나간다. 막대가 좁아진 최근 판도 이 비율은 줄지 않았다.",
-                  "왜 그런지 — 과신인지, 몰랐던 오차인지, 값을 모으는 절차 탓인지 — 는 이 자료만으로는 가릴 수 없다."]
+            tk = ["과학자들은 상수 값마다 표준불확도(「참값이 대략 이 범위 안에 있다」는 오차 막대의 반폭, ±1σ)를 함께 발표한다. 반세기 동안 상대 표준불확도는 만 배 넘게 줄었다.",
+                  f"그런데 연속한 두 판 사이 이동이 두 판의 표준불확도를 합친 값의 2배를 넘은 경우(|z|>2)가 약 {N['m2_1in2']}번에 1번이었다. 정규분포 기대는 22번에 1번이다. 3배를 넘은 경우(|z|>3)도 약 {N['m2_1in3']}번에 1번으로, 정규분포 기대(370번에 1번)보다 훨씬 잦았다.",
+                  f"옛 판의 ±2σ 범위(넉넉한 오차 막대)를 2022 판 값에 대 보면 10개 중 약 {N['m3_m2_10']}개가 빗나간다. 불확도가 훨씬 작아진 최근 판도 이 비율은 줄지 않았다.",
+                  "원인 — 과신인지, 알려지지 않은 계통 오차인지, 조정 절차 탓인지 — 은 이 자료만으로는 가릴 수 없다."]
         else:
-            tk = ["Scientists publish each constant with error bars that say the true value is probably inside this range. Over half a century these bars narrowed more than ten-thousand-fold.",
-                  f"Yet when a new edition came out, a value moved by more than twice its bars about once in {N['m2_1in2']} times, where the bars imply once in 22; by more than three times about once in {N['m2_1in3']}, against an expected once in 370.",
-                  f"Hold the generous bars (±2σ) of earlier editions against today's values and about {N['m3_m2_10']} in 10 miss. Recent editions, with far narrower bars, miss no less often.",
-                  "Why — overconfidence, unknown errors, or the way values are combined — cannot be told from these data alone."]
+            tk = ["Scientists publish each constant with a standard uncertainty (the half-width, ±1σ, of an error bar saying the true value is probably inside this range). Over half a century the relative standard uncertainty fell more than ten-thousand-fold.",
+                  f"Yet moves between consecutive editions exceeded twice the combined standard uncertainty (|z| > 2) about once in {N['m2_1in2']} times, against a normal expectation of once in 22; beyond three times (|z| > 3) about once in {N['m2_1in3']}, against once in 370.",
+                  f"Hold the ±2σ ranges of earlier editions (generous error bars) against the 2022 values and about {N['m3_m2_10']} in 10 miss. Recent editions, with far smaller uncertainties, miss no less often.",
+                  "The cause (overconfidence, unknown systematic error, or the adjustment procedure) cannot be told from these data alone."]
         gloss = GLOSS[lang]
         body = hero + takeaway(lang, tk) + stats_h + f'<figure>{g1}<figcaption>{esc(g1cap)}</figcaption></figure>' + intro2 + gloss + f'<h2>{t["metrics"]}</h2><div class="cards">{cards}</div>'
         (base / "index.html").write_text(page(lang, t["home"], body, 1, "home"), encoding="utf-8")
@@ -605,7 +624,7 @@ def build():
                 s = sens
                 parts.append(f'<div class="note">{"민감도 — 1998~2022 ASCII 표에서 이름이 바뀌지 않은 모든 행(서로 환산 관계인 행 포함)으로 같은 계산을 하면" if lang == "ko" else "Sensitivity — repeating the calculation over every 1998–2022 ASCII row whose name did not change (including rows that are conversions of one another):"} |z|>1 {pct(s[0]["rate"])}%, |z|>2 {pct(s[1]["rate"])}%, |z|>3 {pct(s[2]["rate"])}% ({s[0]["n_pairs"]} {t["pairs"]}). {"같은 이동이 여러 행에 중복해 세어지므로 표본 수는 부풀어 있다." if lang == "ko" else "The same move is counted in many rows, so the count is inflated."}</div>')
             if m["id"] == "m3":
-                parts.append(f'<figure><div class="legend"><span style="--c:var(--s1)">±1σ {"밖" if lang == "ko" else "missed"}</span><span style="--c:var(--s2)">±2σ {"밖" if lang == "ko" else "missed"}</span><span class="dash" style="--c:var(--ref)">{"막대가 맞을 때 기대" if lang == "ko" else "expected if the bars were right"}</span></div>{chart_miss(s3, lang)}<figcaption>{"판별로 그 판과 2022 판에 모두 있는 핵심 상수 중 옛 오차 막대가 2022 판 값을 담지 못한 비율. 세로선은 상수 군집 부트스트랩 95% 구간." if lang == "ko" else "By edition, the share of core constants whose earlier error bar does not contain the 2022 value. Vertical bars: 95% cluster-bootstrap intervals."}</figcaption></figure>')
+                parts.append(f'<figure><div class="legend"><span style="--c:var(--s1)">±1σ {"밖" if lang == "ko" else "missed"}</span><span style="--c:var(--s2)">±2σ {"밖" if lang == "ko" else "missed"}</span><span class="dash" style="--c:var(--ref)">{"정규분포 기대(불확도가 맞을 때)" if lang == "ko" else "normal expectation (if the uncertainties were right)"}</span></div>{chart_miss(s3, lang)}<figcaption>{"판별로 그 판과 2022 판에 모두 있는 핵심 상수 중 옛 오차 막대가 2022 판 값을 담지 못한 비율. 세로선은 상수 군집 부트스트랩 95% 구간." if lang == "ko" else "By edition, the share of core constants whose earlier error bar does not contain the 2022 value. Vertical bars: 95% cluster-bootstrap intervals."}</figcaption></figure>')
                 sub = {"1969-1986": ("1969~1986 묶음", "1969–1986 pooled"), "1998-2018": ("1998~2018 묶음", "1998–2018 pooled"), "all": ("전체", "all")}
                 rows = [[sub.get(r["subset"], (r["subset"], r["subset"]))[0 if lang == "ko" else 1], r["n"], r["n_quantities"], pct(r["miss_1sigma"], 0), cip(r["miss_1sigma_ci"]), pct(r["miss_2sigma"], 0), cip(r["miss_2sigma_ci"]),
                          pct(r["inside_iq"], 0), pct(r["surprise"], 0), r["median_abs_z"]] for r in s3]
@@ -682,7 +701,7 @@ def build():
 {takeaway(lang, ctk)}<div class="spec"><dl><dt>{t["unit"]}</dt><dd>{esc(qm["unit"]) if qm["unit"] != "1" else ("없음(무차원)" if lang == "ko" else "none (dimensionless)")}</dd>{basis}<dt>{"메모" if lang == "ko" else "Note"}</dt><dd>{esc(note) or "—"}</dd><dt>M1</dt><dd>{esc(hl_txt) or "—"}</dd></dl></div>
 <figure><div class="legend"><span style="--c:var(--s1)">{"판별 값 ±1σ" if lang == "ko" else "value ±1σ by edition"}</span><span class="dash" style="--c:var(--ref)">2022</span></div>{chart_funnel(fr, lang)}
 <figcaption>{"2022 판 값에서의 상대 편차(대칭 로그 축). 속이 빈 원은 오차 막대가 2022 판 값에 닿지 않은 판, 네모는 정의값." if lang == "ko" else "Relative deviation from the 2022 value (symmetric-log axis). Open circles: the error bar does not reach the 2022 value. Squares: exact."}</figcaption></figure>
-{table([t["edition"], t["printed"], t["u"], t["urel"], t["exact"], t["z_prev"], t["z_latest"], t["source"]], tab, num_cols=(2, 3, 5, 6))}"""
+{table(CONST_HEAD[lang], tab, num_cols=(2, 3, 5, 6))}"""
             (base / "constants" / f"{q}.html").write_text(page(lang, qm[name], body, 2, "constants"), encoding="utf-8")
 
         # ---------- reading, prior, method, data
@@ -703,46 +722,49 @@ def build():
 
 
 def constant_takeaway(lang, q, qm, rows, pairs, m3r, m6):
+    ko = lang == "ko"
     rs = sorted(rows, key=lambda r: int(r["edition"]))
     meas = [r for r in rs if r["exact"] == "0" and float(r["u_rel"]) > 0]
     out = []
     if len(meas) >= 2:
         a, z = meas[0], meas[-1]
         fold = float(a["u_rel"]) / float(z["u_rel"])
+        u0, u1 = fmt_sci(a["u_rel"]), fmt_sci(z["u_rel"])
         if fold >= 1.5:
             f = f"{fold:,.0f}" if fold >= 10 else f"{fold:.1f}"
-            out.append(f"오차 막대가 {a['edition']} 판에서 {z['edition']} 판까지 약 {f}배 좁아졌다(상대 불확도 {fmt_sci(a['u_rel'])} → {fmt_sci(z['u_rel'])})." if lang == "ko"
-                       else f"The error bars narrowed about {f}-fold from the {a['edition']} to the {z['edition']} edition (relative uncertainty {fmt_sci(a['u_rel'])} → {fmt_sci(z['u_rel'])}).")
+            out.append(f"상대 표준불확도가 {a['edition']} 판에서 {z['edition']} 판까지 약 {f}배 줄었다({u0} → {u1}). 오차 막대가 그만큼 좁아졌다는 뜻이다." if ko
+                       else f"The relative standard uncertainty fell about {f}-fold from the {a['edition']} to the {z['edition']} edition ({u0} → {u1}): the error bars narrowed that much.")
         else:
-            out.append(f"오차 막대가 {a['edition']} 판부터 {z['edition']} 판까지 거의 좁아지지 않았다(상대 불확도 {fmt_sci(a['u_rel'])} → {fmt_sci(z['u_rel'])})." if lang == "ko"
-                       else f"The error bars barely narrowed from the {a['edition']} to the {z['edition']} edition (relative uncertainty {fmt_sci(a['u_rel'])} → {fmt_sci(z['u_rel'])}).")
+            out.append(f"상대 표준불확도가 {a['edition']} 판부터 {z['edition']} 판까지 거의 줄지 않았다({u0} → {u1})." if ko
+                       else f"The relative standard uncertainty barely changed from the {a['edition']} to the {z['edition']} edition ({u0} → {u1}).")
     m = [r for r in m3r if r["qid"] == q]
     if m:
         n1 = sum(int(r["miss_1sigma"]) for r in m)
         n2 = sum(int(r["miss_2sigma"]) for r in m)
         ex = m[0]["ref_exact"] == "1"
         if n1 == 0:
-            out.append(f"옛 판 {len(m)}개의 오차 막대가 모두 오늘의(2022 판) 값을 품었다{"(2022 판 값은 정의값)" if ex else ""}." if lang == "ko"
-                       else f"The error bars of {'both' if len(m) == 2 else 'all ' + str(len(m))} earlier editions reach today's (2022) value{' (the 2022 value is exact)' if ex else ''}.")
+            out.append(f"측정값이던 옛 판 {len(m)}개 모두 2022 판 값을 ±1σ(그 판의 오차 막대) 안에 담았다{'(2022 판 값은 정의값)' if ex else ''}." if ko
+                       else f"{'Both' if len(m) == 2 else 'All ' + str(len(m))} earlier editions with a measured value contain the 2022 value within ±1σ (their error bars){' (the 2022 value is exact)' if ex else ''}.")
         else:
-            out.append(f"옛 판 {len(m)}개 중 {n1}개의 오차 막대(±1σ)가 오늘의(2022 판) 값을 품지 못했고, 막대를 두 배로 넓혀도 {n2}개가 빗나갔다. 막대가 맞다면 각각 3개 중 1개, 20개 중 1개 꼴이어야 한다{"(2022 판 값은 정의값)" if ex else ""}." if lang == "ko"
-                       else f"Of {len(m)} earlier editions, {n1} had error bars (±1σ) that miss today's (2022) value, and {n2} still miss with the bars doubled. If the bars were right, that would be about 1 in 3 and 1 in 20{' (the 2022 value is exact)' if ex else ''}.")
+            out.append(f"측정값이던 옛 판 {len(m)}개 중 {n1}개가 2022 판 값을 ±1σ(오차 막대) 밖에, {n2}개가 ±2σ(막대를 두 배로 넓힌 범위) 밖에 두었다. 정규분포 기대는 약 3개 중 1개, 20개 중 1개다{'(2022 판 값은 정의값)' if ex else ''}." if ko
+                       else f"Of {len(m)} earlier editions with a measured value, {n1} have the 2022 value outside ±1σ (the error bar) and {n2} outside ±2σ (the bar doubled); the normal expectation is about 1 in 3 and 1 in 20{' (the 2022 value is exact)' if ex else ''}.")
     ps = [p for p in pairs if p["qid"] == q]
     if ps:
         big = max(ps, key=lambda p: abs(float(p["z"])))
         zb = abs(float(big["z"]))
         if zb < 0.1:
-            out.append("판이 바뀔 때마다 값은 오차 막대 폭의 0.1배도 움직이지 않았다." if lang == "ko"
-                       else "From edition to edition the value never moved by even a tenth of its error bars.")
+            out.append("판간 이동은 모두 두 판의 표준불확도를 합친 값의 0.1배에 못 미쳤다(|z| < 0.1)." if ko
+                       else "Every move between editions was below 0.1 times the combined standard uncertainty (|z| < 0.1).")
         else:
-            out.append(f"가장 크게 움직인 때는 {big['ed_from']}→{big['ed_to']} 판으로, 두 판의 오차 막대를 합친 폭의 {zb:.1f}배였다." if lang == "ko"
-                   else f"The biggest jump was {big['ed_from']}→{big['ed_to']}, {zb:.1f} times the combined error bars of the two editions.")
+            out.append(f"가장 큰 판간 이동은 {big['ed_from']}→{big['ed_to']} 판으로, 두 판의 표준불확도를 합친 값의 {zb:.1f}배(|z| = {zb:.1f})였다." if ko
+                       else f"The largest move between editions was {big['ed_from']}→{big['ed_to']}, {zb:.1f} times the combined standard uncertainty of the two editions (|z| = {zb:.1f}).")
     for e in m6:
         if e["qid"] == q:
-            out.append((f"{e['ed_after']} 판부터는 재는 값이 아니라 약속으로 정한 값(정의값)이라 오차 막대가 없다." if e["direction"] == "measured->exact" else f"{e['ed_after']} 판부터는 약속으로 정한 값이 아니라 재는 값이 되었다.") if lang == "ko"
-                       else (f"From the {e['ed_after']} edition it is fixed by definition, not measured, so it has no error bars." if e["direction"] == "measured->exact" else f"From the {e['ed_after']} edition it is measured rather than fixed by definition."))
+            meas2exact = e["direction"] == "measured->exact"
+            out.append((f"{e['ed_after']} 판부터 정의값(측정하지 않고 약속으로 정한 값)이라 불확도가 0이다." if meas2exact else f"{e['ed_after']} 판부터 정의값이 아니라 측정값이다.") if ko
+                       else (f"Exact from the {e['ed_after']} edition (fixed by definition rather than measured), so its uncertainty is zero." if meas2exact else f"Measured from the {e['ed_after']} edition (exact before)."))
     if not meas and not out:
-        out.append("이 사이트가 다루는 판에서는 줄곧 정의값이다." if lang == "ko" else "Exact in every edition covered here.")
+        out.append("이 사이트가 다루는 판에서는 줄곧 정의값이다." if ko else "Exact in every edition covered here.")
     return out[:4]
 
 
