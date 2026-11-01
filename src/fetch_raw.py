@@ -28,6 +28,11 @@ FILES = {
 for y in (1998, 2002, 2006, 2010, 2014, 2018):
     FILES[f"{y}_allascii.txt"] = BASE + f"Constants/ArchiveASCII/allascii_{y}.txt"
     FILES[f"{y}_corrcoef.txt"] = BASE + f"Constants/ArchiveASCII/corrcoef{y}"
+# 1.1 atomic-weights chapter: CIAAW historical standard atomic weights (compiled by J. Meija), FAQ and terms
+FILES["ciaaw_IUPAC-TSAW.csv"] = "https://www.ciaaw.org/data/IUPAC-TSAW.csv"
+FILES["ciaaw_info.htm"] = "https://www.ciaaw.org/info.htm"
+FILES["ciaaw_impressum.htm"] = "https://www.ciaaw.org/impressum.htm"
+FILES["ciaaw_atomic-weights.htm"] = "https://www.ciaaw.org/atomic-weights.htm"
 # NIST "all values" PDF tables: an independent rendering used only for the hand check
 for y in (1998, 2002, 2006, 2010, 2014, 2018):
     FILES[f"{y}_all.pdf"] = BASE + f"pdf/all_{y}.pdf"

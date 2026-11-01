@@ -1,7 +1,7 @@
 {
  "name": "physical-constants-metrics",
- "version": "1.0",
- "created": "2026-11-01",
+ "version": "1.1",
+ "created": "2026-11-02",
  "licenses": [
   {
    "name": "CC-BY-4.0",
@@ -92,6 +92,31 @@
   {
    "path": "data/handcheck_early.csv",
    "description": "Check: every 1969/1973/1986 hand-entered value against page images and text layer",
+   "format": "csv"
+  },
+  {
+   "path": "data/aw_long.csv",
+   "description": "Every atomic-weight revision, parsed (with pre-1961 values converted to the ¹²C scale). Values © IUPAC/CIAAW; republication conditions: full reference, ©, IUPAC/CIAAW, year.",
+   "format": "csv"
+  },
+  {
+   "path": "data/aw_a1_elements.csv",
+   "description": "Revisions, first/last year and mean spacing per element (A1, A4). Values © IUPAC/CIAAW; republication conditions: full reference, ©, IUPAC/CIAAW, year.",
+   "format": "csv"
+  },
+  {
+   "path": "data/aw_a1_eras.csv",
+   "description": "Revisions per era (A1). Values © IUPAC/CIAAW; republication conditions: full reference, ©, IUPAC/CIAAW, year.",
+   "format": "csv"
+  },
+  {
+   "path": "data/aw_a2_pairs.csv",
+   "description": "Every revision whose predecessor had an uncertainty: outside range, overlap, z (A2, A3). Values © IUPAC/CIAAW; republication conditions: full reference, ©, IUPAC/CIAAW, year.",
+   "format": "csv"
+  },
+  {
+   "path": "data/aw_a5_intervals.csv",
+   "description": "Switches to interval notation (A5). Values © IUPAC/CIAAW; republication conditions: full reference, ©, IUPAC/CIAAW, year.",
    "format": "csv"
   }
  ]

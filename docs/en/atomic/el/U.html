@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>U · uranium — Physical Constants Metrics</title><meta name="description" content="How often did the error bars scientists published miss the next edition&#x27;s value? CODATA fundamental constants, 1969–2022">
+<script>(function(){var q=new URLSearchParams(location.search).get("theme");if(q==="light"||q==="dark"){localStorage.setItem("pcm-theme",q)}else if(q==="auto"){localStorage.removeItem("pcm-theme")}var v=localStorage.getItem("pcm-theme");if(v)document.documentElement.setAttribute("data-theme",v)})();</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light;
+  --bg:#f7f7f5;--bg2:#ecede9;--card:#ffffff;--line:#d9dbd5;--line2:#e7e8e3;
+  --fg:#1c1f22;--fg2:#575c62;--fg3:#868b90;
+  --accent:#2d6b68;--accent2:#a5643c;
+  --s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--grid:#e4e5e0;--ref:#8f9398;
+  --shadow:0 1px 2px rgba(30,34,38,.05),0 6px 18px rgba(30,34,38,.05);
+  --display:"Noto Serif KR","Source Serif 4",Georgia,serif;
+  --body:"Noto Sans KR",-apple-system,"Segoe UI","Apple SD Gothic Neo",Roboto,sans-serif}
+@media(prefers-color-scheme:dark){:root:where(:not([data-theme="light"])){color-scheme:dark;
+  --bg:#1a1c1d;--bg2:#212425;--card:#222526;--line:#33383a;--line2:#2a2e30;
+  --fg:#eaebe8;--fg2:#b2b5b2;--fg3:#7f8381;
+  --accent:#73b3ad;--accent2:#d39467;
+  --s1:#3987e5;--s2:#d95926;--s3:#199e70;--grid:#2c3032;--ref:#8a8e8c;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 20px rgba(0,0,0,.25)}}
+:root[data-theme="dark"]{color-scheme:dark;
+  --bg:#1a1c1d;--bg2:#212425;--card:#222526;--line:#33383a;--line2:#2a2e30;
+  --fg:#eaebe8;--fg2:#b2b5b2;--fg3:#7f8381;
+  --accent:#73b3ad;--accent2:#d39467;
+  --s1:#3987e5;--s2:#d95926;--s3:#199e70;--grid:#2c3032;--ref:#8a8e8c;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 20px rgba(0,0,0,.25)}
+*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}
+body{margin:0;font:16px/1.7 var(--body);background:var(--bg);color:var(--fg);overflow-wrap:anywhere;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline;text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+header{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:.55rem 1.1rem;display:flex;gap:1.2rem;align-items:center;flex-wrap:wrap}
+header .brand{font-family:var(--display);font-weight:600;font-size:1.05rem;color:var(--fg)}
+header nav{display:flex;gap:.9rem;flex-wrap:wrap}header nav a{color:var(--fg2);font-size:.92rem;padding:.2rem 0;border-bottom:2px solid transparent}
+header nav a:hover{text-decoration:none;color:var(--fg)}header nav a.on{color:var(--fg);border-bottom-color:var(--accent2)}
+header .right{margin-left:auto;display:flex;gap:.6rem;align-items:center}
+header .lang{font-size:.88rem;color:var(--fg2);border:1px solid var(--line);border-radius:999px;padding:.15rem .7rem}header .lang:hover{text-decoration:none;color:var(--fg)}
+.theme{border:1px solid var(--line);background:transparent;color:var(--fg2);border-radius:999px;width:30px;height:30px;cursor:pointer;font-size:.9rem;line-height:1;padding:0}
+main{max-width:1060px;margin:0 auto;padding:1.6rem 1.1rem 4rem;min-width:0}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(1.6rem,3.2vw,2.2rem);line-height:1.25;margin:.3rem 0 .5rem;text-wrap:balance}
+h2{font-family:var(--display);font-weight:600;font-size:1.3rem;line-height:1.3;margin:2.4rem 0 .8rem;padding-bottom:.35rem;border-bottom:1px solid var(--line)}
+h3{font-size:1.02rem;margin:1.4rem 0 .4rem}
+.tag{display:inline-block;font-size:.74rem;padding:.1rem .55rem;border-radius:999px;color:var(--fg2);background:var(--bg2);border:1px solid var(--line2);margin-right:.35rem}
+.tag.k{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 35%,transparent)}
+.lead{color:var(--fg2);font-size:1.05rem;max-width:72ch;margin:0 0 1.2rem}
+.hero{padding:.6rem 0 1.4rem;border-bottom:1px solid var(--line);margin-bottom:1.4rem}.hero h1{font-size:clamp(1.8rem,4vw,2.6rem)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.8rem;margin:1.2rem 0 1.6rem}
+.stat{display:block;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:1rem 1.1rem;box-shadow:var(--shadow);color:var(--fg)}
+.stat .n{font-family:var(--display);font-size:2rem;font-weight:600;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat .vs{font-size:.95rem;color:var(--fg2);margin-left:.3rem}
+.stat small{display:block;color:var(--fg2);margin-top:.35rem;font-size:.86rem;line-height:1.45}a.stat:hover{text-decoration:none;border-color:var(--fg3)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:.8rem;margin:.9rem 0 1.4rem}
+.card{display:block;background:var(--card);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:10px;padding:.85rem 1rem;box-shadow:var(--shadow);color:var(--fg)}
+.card.d{border-top-color:var(--line)}a.card:hover{text-decoration:none;border-color:var(--fg3)}
+.card b{display:block;margin-bottom:.25rem;color:var(--accent)}.card small{color:var(--fg2);font-size:.86rem;line-height:1.5;display:block}
+.spec{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:1rem 1.2rem;margin:1rem 0 1.4rem;box-shadow:var(--shadow)}
+dl{display:grid;grid-template-columns:max-content 1fr;gap:.55rem 1.4rem;margin:0}dt{color:var(--fg3);font-size:.82rem;padding-top:.15rem}dd{margin:0;min-width:0}
+dd.formula{font-family:ui-monospace,Consolas,"Noto Sans KR",monospace;font-size:.9rem;background:var(--bg2);border-radius:6px;padding:.45rem .65rem}
+@media(max-width:640px){dl{grid-template-columns:1fr}dt{margin-top:.5rem}}
+table{border-collapse:collapse;width:100%;font-size:.88rem;margin:.6rem 0}
+th,td{border-bottom:1px solid var(--line2);padding:.4rem .55rem;text-align:left;vertical-align:top;overflow-wrap:normal;word-break:keep-all}
+.wrap table{min-width:560px}
+thead th{color:var(--fg2);font-weight:600;font-size:.8rem;cursor:pointer;white-space:nowrap;border-bottom:1px solid var(--line);vertical-align:bottom}
+thead th small.hs{display:block;font-weight:400;color:var(--fg3);font-size:.7rem;line-height:1.3;white-space:normal;min-width:7em;max-width:15em;margin-top:.15rem}
+tbody tr:nth-child(even){background:color-mix(in srgb,var(--bg2) 55%,transparent)}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--card);padding:0 .3rem;margin:.6rem 0 1rem}.wrap table{margin:0}
+figure{margin:1.2rem 0;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:1rem 1rem .8rem;box-shadow:var(--shadow)}
+figcaption{font-size:.86rem;color:var(--fg2);margin-top:.5rem;line-height:1.5}
+svg{max-width:100%;height:auto;display:block}svg text{font-family:var(--body);fill:var(--fg2);font-size:12px}svg .grid{stroke:var(--grid)}svg .ref{stroke:var(--ref);stroke-dasharray:4 4}
+svg .hit{fill:transparent}svg .hit:hover+.dot,svg .dot:hover{stroke:var(--fg);stroke-width:2}
+.legend{display:flex;gap:1.1rem;font-size:.86rem;color:var(--fg2);flex-wrap:wrap;margin:.2rem 0 .4rem}.legend span::before{content:"";display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:.4rem;vertical-align:-1px;background:var(--c)}
+.legend span.dash::before{height:0;border-top:2px dashed var(--c);border-radius:0;vertical-align:3px}
+.takeaway{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent2);border-radius:10px;padding:.75rem 1.1rem .8rem;margin:.4rem 0 1.4rem;box-shadow:var(--shadow);max-width:80ch}
+.takeaway b{display:block;font-size:.76rem;letter-spacing:.06em;color:var(--accent2);margin-bottom:.2rem}
+.takeaway ul{margin:0;padding-left:1.1rem}.takeaway li{margin:.25rem 0}
+.note{background:color-mix(in srgb,var(--accent) 7%,var(--card));border:1px solid color-mix(in srgb,var(--accent) 25%,var(--line));border-left:4px solid var(--accent);border-radius:8px;padding:.7rem 1rem;margin:1.2rem 0;font-size:.95rem}
+.prose p,.prose ul,.prose ol{max-width:72ch}.prose p{margin:.8rem 0}.prose li{margin:.3rem 0}
+.files a{display:inline-block;font-size:.85rem;background:var(--bg2);border:1px solid var(--line2);border-radius:6px;padding:.15rem .55rem;margin:.2rem .3rem .2rem 0;color:var(--fg2)}
+footer{border-top:1px solid var(--line);color:var(--fg3);font-size:.82rem;padding:1.2rem;text-align:center}
+.tip{position:fixed;pointer-events:none;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:.3rem .55rem;font-size:.82rem;box-shadow:var(--shadow);display:none;z-index:9;max-width:280px}
+</style></head><body>
+<header><a class="brand" href="../../../en/index.html">Physical Constants Metrics</a><nav><a href="../../../en/index.html">Home</a><a href="../../../en/metrics/index.html">Metrics</a><a href="../../../en/constants/index.html">Constants</a><a href="../../../en/atomic/index.html" class="on">Atomic weights</a><a href="../../../en/reading.html">Reading</a><a href="../../../en/prior.html">Prior work</a><a href="../../../en/method.html">Method & limits</a><a href="../../../en/data.html">Data</a></nav>
+<div class="right"><button id="theme" class="theme" type="button" aria-label="theme">◑</button><a class="lang" href="../../../ko/index.html">한국어</a></div></header>
+<main><p><span class="tag k">Atomic weight</span></p><h1>U · uranium</h1><p class="lead">우라늄</p><div class="takeaway"><b>Takeaway</b><ul><li>Recommended or revised 10 times between 1902 and 2024 (first record 1902, latest revision 1999).</li><li>All 2 revisions whose previous recommendation had an uncertainty kept the new value inside the previous (expanded) range.</li><li>The current standard atomic weight is 238.028 91(3) (recommended in 1999).</li></ul></div><figure><svg viewBox="0 0 900 320" role="img" aria-label="atomic weight history"><line class="ref" x1="70" x2="880" y1="148.0" y2="148.0"/><text x="64" y="152.0" text-anchor="end">0</text><line class="grid" x1="70" x2="880" y1="125.1" y2="125.1"/><text x="64" y="129.1" text-anchor="end">+10⁻⁷</text><line class="grid" x1="70" x2="880" y1="170.9" y2="170.9"/><text x="64" y="174.9" text-anchor="end">−10⁻⁷</text><line class="grid" x1="70" x2="880" y1="82.0" y2="82.0"/><text x="64" y="86.0" text-anchor="end">+10⁻⁵</text><line class="grid" x1="70" x2="880" y1="214.0" y2="214.0"/><text x="64" y="218.0" text-anchor="end">−10⁻⁵</text><line class="grid" x1="70" x2="880" y1="38.0" y2="38.0"/><text x="64" y="42.0" text-anchor="end">+10⁻³</text><line class="grid" x1="70" x2="880" y1="258.0" y2="258.0"/><text x="64" y="262.0" text-anchor="end">−10⁻³</text><text x="82.5" y="306" text-anchor="middle">1900</text><text x="207.1" y="306" text-anchor="middle">1920</text><text x="331.7" y="306" text-anchor="middle">1940</text><text x="456.3" y="306" text-anchor="middle">1960</text><text x="580.9" y="306" text-anchor="middle">1980</text><text x="705.5" y="306" text-anchor="middle">2000</text><text x="830.2" y="306" text-anchor="middle">2020</text><line class="grid" x1="462.5" x2="462.5" y1="16" y2="280" stroke-dasharray="2 4"/><text x="466.5" y="26">1961 scale change</text><circle class="dot" cx="94.9" cy="20.7" r="4.5" fill="var(--card)" stroke="var(--s1)" stroke-width="2" data-tip="1902: 239.5"/><circle class="dot" cx="101.2" cy="31.7" r="4.5" fill="var(--card)" stroke="var(--s1)" stroke-width="2" data-tip="1903: 238.5"/><circle class="dot" cx="182.2" cy="41.7" r="4.5" fill="var(--card)" stroke="var(--s1)" stroke-width="2" data-tip="1916: 238.2"/><circle class="dot" cx="238.2" cy="43.6" r="4.5" fill="var(--card)" stroke="var(--s1)" stroke-width="2" data-tip="1925: 238.17"/><circle class="dot" cx="275.6" cy="46.1" r="4.5" fill="var(--card)" stroke="var(--s1)" stroke-width="2" data-tip="1931: 238.14"/><circle class="dot" cx="313.0" cy="57.1" r="4.5" fill="var(--card)" stroke="var(--s1)" stroke-width="2" data-tip="1937: 238.07"/><circle class="dot" cx="462.5" cy="89.4" r="4.5" fill="var(--card)" stroke="var(--s1)" stroke-width="2" data-tip="1961: 238.03"/><line x1="512.4" x2="512.4" y1="204.8" y2="89.4" stroke="var(--s1)" stroke-width="2"/><circle class="dot" cx="512.4" cy="113.0" r="4.5" fill="var(--s1)" stroke="var(--s1)" stroke-width="2" data-tip="1969: 238.029(1)"/><line x1="574.7" x2="574.7" y1="184.8" y2="113.0" stroke="var(--s1)" stroke-width="2"/><circle class="dot" cx="574.7" cy="163.8" r="4.5" fill="var(--s1)" stroke="var(--s1)" stroke-width="2" data-tip="1979: 238.0289(1)"/><line x1="699.3" x2="699.3" y1="172.9" y2="123.1" stroke="var(--s1)" stroke-width="2"/><circle class="dot" cx="699.3" cy="148.0" r="4.5" fill="var(--s1)" stroke="var(--s1)" stroke-width="2" data-tip="1999: 238.028 91(3)"/></svg><figcaption>Relative deviation from the current (or last) value, symmetric-log axis. Bars: uncertainty (expanded range); open circles: no uncertainty; orange boxes: intervals.</figcaption></figure><div class="wrap"><table class="sort"><thead><tr><th>Year<small class="hs">year of the recommendation</small></th><th>Value (as published)<small class="hs">as published by CIAAW; digits in brackets are the uncertainty (expanded range) in the last digits</small></th><th>Notation<small class="hs">value(uncertainty), interval or no uncertainty</small></th><th>Scale<small class="hs">before 1961 oxygen = 16, from 1961 ¹²C = 12</small></th><th class="num">Value, ¹²C scale<small class="hs">pre-1961 values multiplied by 15.9994/16</small></th><th class="num">z vs previous<small class="hs">(new − previous) ÷ previous uncertainty</small></th><th>Report<small class="hs">DOI of the CIAAW report</small></th></tr></thead><tbody><tr><td>1902</td><td>239.5</td><td>no uncertainty</td><td>O=16</td><td class="num">239.49101875</td><td class="num"></td><td><a href="https://doi.org/10.1007/BF01370337">10.1007/BF01370337</a></td></tr><tr><td>1903</td><td>238.5</td><td>no uncertainty</td><td>O=16</td><td class="num">238.49105625</td><td class="num"></td><td><a href="https://doi.org/10.1021/ja02003a001">10.1021/ja02003a001</a></td></tr><tr><td>1916</td><td>238.2</td><td>no uncertainty</td><td>O=16</td><td class="num">238.1910675</td><td class="num"></td><td><a href="https://doi.org/10.1021/ja02176a001">10.1021/ja02176a001</a></td></tr><tr><td>1925</td><td>238.17</td><td>no uncertainty</td><td>O=16</td><td class="num">238.16106862</td><td class="num"></td><td><a href="https://doi.org/10.1039/CT9252700913">10.1039/CT9252700913</a></td></tr><tr><td>1931</td><td>238.14</td><td>no uncertainty</td><td>O=16</td><td class="num">238.13106975</td><td class="num"></td><td><a href="https://doi.org/10.1039/JR9310001617">10.1039/JR9310001617</a></td></tr><tr><td>1937</td><td>238.07</td><td>no uncertainty</td><td>O=16</td><td class="num">238.06107238</td><td class="num"></td><td><a href="https://doi.org/10.1039/JR9370001900">10.1039/JR9370001900</a></td></tr><tr><td>1961</td><td>238.03</td><td>no uncertainty</td><td>12C=12</td><td class="num">238.03</td><td class="num"></td><td><a href="https://doi.org/10.1021/ja00881a001">10.1021/ja00881a001</a></td></tr><tr><td>1969</td><td>238.029(1)</td><td>value(uncertainty)</td><td>12C=12</td><td class="num">238.029</td><td class="num"></td><td><a href="https://doi.org/10.1351/pac197021010091">10.1351/pac197021010091</a></td></tr><tr><td>1979</td><td>238.0289(1)</td><td>value(uncertainty)</td><td>12C=12</td><td class="num">238.0289</td><td class="num">-0.100</td><td><a href="https://doi.org/10.1351/pac198052102349">10.1351/pac198052102349</a></td></tr><tr><td>1999</td><td>238.028 91(3)</td><td>value(uncertainty)</td><td>12C=12</td><td class="num">238.02891</td><td class="num">0.100</td><td><a href="https://doi.org/10.1351/pac200173040667">10.1351/pac200173040667</a></td></tr></tbody></table></div><p class="src" style="margin-top:2rem;font-size:.82rem;color:var(--fg3)">Source: Standard atomic weights © IUPAC/CIAAW 2016–2024. Commission on Isotopic Abundances and Atomic Weights, Historical changes of standard atomic weights (compiled by J. Meija), https://www.ciaaw.org/historical-atomic-weights.htm</p></main>
+<footer>Physical Constants Metrics · Version 1.1 · Built 2026-11-02 · <a href="https://github.com/BowonKwon/Physical-Constants-Metrics">GitHub</a> · All public materials <a href="https://bowonkwon.github.io/en/">bowonkwon.github.io</a></footer>
+<script>
+(function(){var k="pcm-theme",r=document.documentElement,b=document.getElementById("theme");function ap(v){if(v)r.setAttribute("data-theme",v);else r.removeAttribute("data-theme");if(b)b.textContent=v==="dark"?"\u263E":v==="light"?"\u2600":"\u25D1"}var cur=localStorage.getItem(k)||"";ap(cur);if(b)b.addEventListener("click",function(){cur=cur===""?"light":cur==="light"?"dark":"";if(cur)localStorage.setItem(k,cur);else localStorage.removeItem(k);ap(cur)})})();
+document.querySelectorAll('table.sort').forEach(function(t){t.querySelectorAll('th').forEach(function(th,i){th.addEventListener('click',function(){
+ var rows=Array.from(t.tBodies[0].rows),asc=th.dataset.asc!=='1';th.dataset.asc=asc?'1':'0';
+ rows.sort(function(a,b){var x=a.cells[i].dataset.v||a.cells[i].textContent,y=b.cells[i].dataset.v||b.cells[i].textContent;var nx=parseFloat(x),ny=parseFloat(y);
+ if(!isNaN(nx)&&!isNaN(ny))return asc?nx-ny:ny-nx;return asc?x.localeCompare(y):y.localeCompare(x)});rows.forEach(function(r){t.tBodies[0].appendChild(r)})})})});
+(function(){var tip=document.createElement('div');tip.className='tip';document.body.appendChild(tip);
+document.querySelectorAll('svg [data-tip]').forEach(function(el){el.addEventListener('mousemove',function(e){tip.textContent=el.getAttribute('data-tip');tip.style.display='block';
+ var x=e.clientX+14,y=e.clientY+14;if(x+tip.offsetWidth>innerWidth-8)x=e.clientX-tip.offsetWidth-10;tip.style.left=x+'px';tip.style.top=y+'px'});
+ el.addEventListener('mouseleave',function(){tip.style.display='none'})})})();
+</script></body></html>

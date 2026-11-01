@@ -208,5 +208,29 @@
   "retrieved": "2026-11-01",
   "sha256": "4d7e7f34b98ab2fc4df68b38247f818f6fc8bdf7f25f91abcdfbc329e22d2f32",
   "url": "https://physics.nist.gov/cuu/pdf/JPCRD2022CODATA.pdf"
+ },
+ "ciaaw_IUPAC-TSAW.csv": {
+  "bytes": 88194,
+  "retrieved": "2026-11-02",
+  "sha256": "d0323a12fa3808904745d7053f7902bd6007dd9ed5ad8eed99cf5236284618fe",
+  "url": "https://www.ciaaw.org/data/IUPAC-TSAW.csv"
+ },
+ "ciaaw_atomic-weights.htm": {
+  "bytes": 21501,
+  "retrieved": "2026-11-02",
+  "sha256": "b48282594b1fb01eee3cbc9d469ce5e3483b628157ea1b09ede33e3476895cf2",
+  "url": "https://www.ciaaw.org/atomic-weights.htm"
+ },
+ "ciaaw_impressum.htm": {
+  "bytes": 6094,
+  "retrieved": "2026-11-02",
+  "sha256": "c070d9f8138a51eee40e27209cc1743e8ca816765efd8b1095e70df3412764d1",
+  "url": "https://www.ciaaw.org/impressum.htm"
+ },
+ "ciaaw_info.htm": {
+  "bytes": 8898,
+  "retrieved": "2026-11-02",
+  "sha256": "2ae1c799bd283ac5729ecccb734f5f495a8588dc6bc7e47002346eb8d23664be",
+  "url": "https://www.ciaaw.org/info.htm"
  }
 }
