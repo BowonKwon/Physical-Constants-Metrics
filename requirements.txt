@@ -1,0 +1,7 @@
+# Python 3.11 or later (every script in src/ parses under 3.11; builds checked on 3.13 and 3.14).
+# Tested: numpy 2.5.3 / scipy 1.17.1 / PyMuPDF 1.27.2 (Windows) and numpy 2.5.4 / scipy 1.18.1 / PyMuPDF 2.0 (Linux):
+# both give byte-identical tables.
+numpy>=2.5        # metrics.py, build_site.py
+scipy>=1.17       # metrics.py (linregress, t, norm, Nelder-Mead), build_site.py
+PyMuPDF>=1.27     # handcheck.py only (import fitz)
+# tests only: pytest>=9
