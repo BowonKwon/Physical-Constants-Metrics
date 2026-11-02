@@ -35,6 +35,8 @@ from scipy import optimize, stats
 getcontext().prec = 40
 ROOT = Path(__file__).resolve().parent.parent
 DER = ROOT / "data" / "derived"
+# hand-maintained map of the 27 quantities; kept outside data/derived so that clearing derived/ cannot lose it
+QMAP = ROOT / "data" / "manual" / "quantity_map.csv"
 LATEST = 2022
 B = 10_000
 SEED = 2026
@@ -44,7 +46,7 @@ SI_K = stats.norm.ppf(0.99)        # 2.326: outside the 98% interval (Henrion & 
 
 
 def load():
-    qmap = {r["qid"]: r for r in csv.DictReader(open(DER / "quantity_map.csv", encoding="utf-8"))}
+    qmap = {r["qid"]: r for r in csv.DictReader(open(QMAP, encoding="utf-8"))}
     data = {}
     for r in csv.DictReader(open(DER / "constants_long.csv", encoding="utf-8")):
         data.setdefault(r["qid"], {})[int(r["edition"])] = dict(
@@ -59,9 +61,10 @@ def measured(row):
 def write(name, rows, fields=None):
     if not rows:
         return
-    fields = fields or list(rows[0].keys())
+    # keys starting with "_" carry exact (unrounded) values for later steps and are not written
+    fields = fields or [k for k in rows[0].keys() if not k.startswith("_")]
     with open(DER / name, "w", newline="", encoding="utf-8") as fh:
-        w = csv.DictWriter(fh, fieldnames=fields)
+        w = csv.DictWriter(fh, fieldnames=fields, extrasaction="ignore", lineterminator="\n")
         w.writeheader()
         w.writerows(rows)
 
@@ -88,21 +91,26 @@ def m1(qmap, data):
         yv = np.log2([p[1] for p in pts])
         res = stats.linregress(x, yv)
         n = len(pts)
+        # SE(b) = sqrt(SSE/(n-2)/Sxx) computed directly: linregress returns NaN when every residual is 0
+        resid = yv - (res.intercept + res.slope * x)
+        sse, sxx, syy = float(np.sum(resid ** 2)), float(np.sum((x - x.mean()) ** 2)), float(np.sum((yv - yv.mean()) ** 2))
+        se = math.sqrt(sse / (n - 2) / sxx)
         t = stats.t.ppf(0.975, n - 2)
-        lo_s, hi_s = res.slope - t * res.stderr, res.slope + t * res.stderr
-        # slopes flatter than -0.001 per year (half-life > 1,000 years) are reported as no decline
-        hl = -1 / res.slope if res.slope < -0.001 else math.inf
+        lo_s, hi_s = res.slope - t * se, res.slope + t * se
+        # slopes flatter than -0.001 per year (half-life > 1,000 years) are reported as no decline;
+        # the comparison is made on the rounded slope so that b = -0.001 exactly (half-life 1,000 years) counts as a decline
+        hl = -1 / res.slope if round(res.slope, 12) <= -0.001 else math.inf
         # half-life CI: slope interval mapped through -1/slope; open-ended if the interval reaches 0
         hl_lo = -1 / lo_s if lo_s < 0 else math.inf  # steepest slope -> shortest half-life
         hl_hi = -1 / hi_s if hi_s < 0 else math.inf
         rows.append(dict(qid=q, layer=qmap[q]["layer"], n_editions=n, first=int(x[0]), last=int(x[-1]),
                          u_rel_first=f"{pts[0][1]:.3e}", u_rel_last=f"{pts[-1][1]:.3e}",
-                         slope_log2_per_year=f"{res.slope:.5f}", slope_se=f"{res.stderr:.5f}",
+                         slope_log2_per_year=f"{res.slope:.5f}", slope_se=f"{se:.5f}",
                          halflife_years=("inf" if math.isinf(hl) else f"{hl:.2f}"),
                          halflife_ci_low=("inf" if math.isinf(hl) else f"{hl_lo:.2f}"),
                          slope_ci_includes_zero=int(lo_s <= 0 <= hi_s),
                          halflife_ci_high=("inf" if math.isinf(hl_hi) else f"{hl_hi:.2f}"),
-                         r2=f"{res.rvalue ** 2:.3f}"))
+                         r2=(f"{1 - sse / syy:.3f}" if syy > 0 else "")))  # r2 undefined when u/|x| never changes
     return rows
 
 
@@ -118,14 +126,16 @@ def m2_pairs(qmap, data):
             rows.append(dict(qid=q, layer=qmap[q]["layer"], ed_from=a, ed_to=b, gap=b - a,
                              diff=str(d), u_from=str(ra["u"]), u_to=str(rb["u"]),
                              z=f"{float(d / den):.4f}", z_old=f"{float(d / ra['u']):.4f}",
-                             u_ratio=f"{float(rb['u'] / ra['u']):.4f}"))
+                             u_ratio=f"{float(rb['u'] / ra['u']):.4f}",
+                             _z=d / den, _z_old=d / ra["u"], _changed=d != 0))
     return rows
 
 
 def rate_table(pairs, label, rng, col="z"):
     groups = {}
     for p in pairs:
-        groups.setdefault(p["qid"], []).append(abs(float(p[col])))
+        # exact z when the pair carries it; the printed 4-decimal string only as a fallback
+        groups.setdefault(p["qid"], []).append(abs(float(p.get("_" + col, p[col]))))
     groups = {k: np.array(v) for k, v in groups.items()}
     allz = np.concatenate(list(groups.values()))
     out = []
@@ -155,7 +165,8 @@ def m3(qmap, data):
                              diff=str(d), u=str(r["u"]), u_ref=str(ref["u"]),
                              z_old=f"{z_old:.4f}", z_both=f"{z_both:.4f}",
                              miss_1sigma=int(abs(z_old) > 1), miss_2sigma=int(abs(z_old) > 2),
-                             inside_iq=int(abs(z_old) < IQ_K), surprise=int(abs(z_old) > SI_K)))
+                             inside_iq=int(abs(z_old) < IQ_K), surprise=int(abs(z_old) > SI_K),
+                             _z_old=d / r["u"]))
     return rows
 
 
@@ -169,7 +180,7 @@ def m3_summary(rows, rng):
     for label, rs in subsets:
         groups = {}
         for r in rs:
-            groups.setdefault(r["qid"], []).append(abs(float(r["z_old"])))
+            groups.setdefault(r["qid"], []).append(abs(float(r.get("_z_old", r["z_old"]))))
         groups = {k: np.array(v) for k, v in groups.items()}
         a = np.concatenate(list(groups.values()))
         rec = dict(subset=label, n=int(a.size), n_quantities=len(groups))
@@ -191,7 +202,7 @@ def m3_summary(rows, rng):
 
 # ---------------------------------------------------------------- M4
 def t_fit(z):
-    """MLE of a zero-centred Student-t: returns (nu, scale)."""
+    """MLE of a zero-centered Student-t: returns (nu, scale)."""
     z = np.asarray(z, float)
 
     def nll(p):
@@ -210,7 +221,7 @@ def t_fit(z):
 def m4(pairs, rng, label):
     groups = {}
     for p in pairs:
-        groups.setdefault(p["qid"], []).append(float(p["z"]))
+        groups.setdefault(p["qid"], []).append(float(p.get("_z", p["z"])))
     groups = {k: np.array(v) for k, v in groups.items()}
     z = np.concatenate(list(groups.values()))
     nu, s = t_fit(z)
@@ -291,7 +302,8 @@ def sensitivity(rng):
         for a, b in zip(order, order[1:]):
             if a in eds and b in eds:
                 (xa, ua), (xb, ub) = eds[a], eds[b]
-                pairs.append(dict(qid=name, z=f"{float((xb - xa) / (ua * ua + ub * ub).sqrt()):.4f}"))
+                zz = (xb - xa) / (ua * ua + ub * ub).sqrt()
+                pairs.append(dict(qid=name, z=f"{float(zz):.4f}", _z=zz))
     return pairs, rate_table(pairs, "all ASCII rows 1998-2022 (same name)", rng)
 
 
@@ -319,10 +331,11 @@ def main():
     write("m3_summary.csv", s3)
 
     # Pairs whose printed value did not change give z = 0 exactly. With exact zeros the likelihood of a
-    # zero-centred Student-t is unbounded (L ~ s^(n_nonzero*nu - n_zero) as s -> 0 for small nu), so the
+    # zero-centered Student-t is unbounded (L ~ s^(n_nonzero*nu - n_zero) as s -> 0 for small nu), so the
     # maximum-likelihood fit is made on the pairs with a change; the zero pairs are reported separately (M2).
-    t_nz = m4([p for p in kp if float(p["z"]) != 0], rng, "core: pairs with a change")
-    t_new = m4([p for p in kp if float(p["z"]) != 0 and p["ed_from"] >= 1998], rng, "core: pairs with a change, 1998-2022")
+    # "No change" is decided from the value difference itself, not from z rounded to four decimals.
+    t_nz = m4([p for p in kp if p["_changed"]], rng, "core: pairs with a change")
+    t_new = m4([p for p in kp if p["_changed"] and p["ed_from"] >= 1998], rng, "core: pairs with a change, 1998-2022")
     write("m4_tail.csv", [t_nz, t_new])
     write("hf_repro.csv", hf_repro(data))
 
@@ -350,7 +363,7 @@ def main():
         editions=sorted({y for v in data.values() for y in v}),
         m1_median_halflife_core=float(np.median(hl)), m1_n=len(hl),
         m2=summ, m3=s3, m4=[t_nz, t_new], sensitivity=ss, sensitivity_candidates=sens_k,
-        n_zero_change_pairs=sum(1 for p in kp if float(p["z"]) == 0), n_core_pairs=len(kp),
+        n_zero_change_pairs=sum(1 for p in kp if not p["_changed"]), n_core_pairs=len(kp),
     )
     (DER / "summary.json").write_text(json.dumps(summary, indent=1, ensure_ascii=False), encoding="utf-8")
 

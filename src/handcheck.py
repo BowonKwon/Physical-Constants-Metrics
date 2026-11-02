@@ -63,7 +63,7 @@ def main():
                             concise=key, found_in_pdf=int(found), ascii_line=raw_line.strip()))
             print(f"{y} {'OK ' if found else '?? '} {r['name'][:46]:46s} {key:28s} | {raw_line.strip()[60:110]}")
     with open(DER / "handcheck_ascii.csv", "w", newline="", encoding="utf-8") as fh:
-        w = csv.DictWriter(fh, fieldnames=list(out[0].keys()))
+        w = csv.DictWriter(fh, fieldnames=list(out[0].keys()), lineterminator="\n")
         w.writeheader()
         w.writerows(out)
     print("found:", sum(o["found_in_pdf"] for o in out), "/", len(out))
@@ -89,7 +89,7 @@ def check_early():
         out.append(dict(edition=r["edition"], qid=r["qid"], value_text=r["value_text"], journal_page=r["journal_page"],
                         exact=int("(" not in r["value_text"]), page_image_check="match", text_layer_check="match" if hit else "differs", note=note))
     with open(DER / "handcheck_early.csv", "w", newline="", encoding="utf-8") as fh:
-        w = csv.DictWriter(fh, fieldnames=list(out[0].keys()))
+        w = csv.DictWriter(fh, fieldnames=list(out[0].keys()), lineterminator="\n")
         w.writeheader()
         w.writerows(out)
     print("early rows:", len(out), "measured:", sum(1 for o in out if not o["exact"]), "exact:", sum(o["exact"] for o in out),
@@ -111,7 +111,7 @@ def check_mapped():
         key = vtxt.split(" e")[0].replace(" ", "").replace("...", "").lstrip("-") if "(" in vtxt else concise(r["value"], r["u"], vtxt)
         out.append(dict(qid=r["qid"], edition=y, concise=key, found_in_pdf=int(key in cache[y])))
     with open(DER / "handcheck_mapped.csv", "w", newline="", encoding="utf-8") as fh:
-        w = csv.DictWriter(fh, fieldnames=list(out[0].keys()))
+        w = csv.DictWriter(fh, fieldnames=list(out[0].keys()), lineterminator="\n")
         w.writeheader()
         w.writerows(out)
     miss = [o for o in out if not o["found_in_pdf"]]

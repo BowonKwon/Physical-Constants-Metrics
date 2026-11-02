@@ -28,7 +28,7 @@ METRICS = [{'id': 'm1',
                       '반감기가 가장 짧은 상수는 {m1_min_name}({m1_min}년), 가장 긴 상수는 {m1_max_name}({m1_max}년)이다.'],
                'en': ['The relative standard uncertainty (the error-bar width relative to the value) halved roughly every {m1_median} years: the '
                       'median half-life over the {m1_n_dec} core constants whose uncertainty declined.',
-                      "The shortest half-life is the {m1_min_name_en}'s ({m1_min} years), the longest the {m1_max_name_en}'s ({m1_max} years)."]},
+                      'The {m1_min_name_en} has the shortest half-life ({m1_min} years) and the {m1_max_name_en} the longest ({m1_max} years).']},
   'ko': {'name': '상대 불확도 반감기',
          'short': '상대 불확도가 절반이 되는 데 걸린 햇수',
          'definition': '상수마다 판별 상대 표준불확도(u/|x| — 값에 견준 오차 막대의 폭)가 얼마나 빨리 줄었는지 본다. log₂(상대 표준불확도)를 판 연도에 직선 회귀해, 불확도가 절반이 되는 데 걸린 햇수(반감기)를 구한다.',
@@ -52,7 +52,7 @@ METRICS = [{'id': 'm1',
                         'display constants.',
          'reading': 'Over the {m1_n_dec} core constants whose uncertainty declined, the median half-life is {m1_median} years: roughly every '
                     '{m1_median} years the relative standard uncertainty halved ({m1_median_all} years over all {m1_n_core}, counting the one with '
-                    "no decline). The shortest half-life is the {m1_min_name_en}'s ({m1_min} years), the longest the {m1_max_name_en}'s ({m1_max} "
+                    "no decline). The {m1_min_name_en} has the shortest half-life ({m1_min} years) and the {m1_max_name_en} the longest ({m1_max} "
                     'years). The neutron magnetic moment kept almost the same uncertainty from 1986 on (slope −7×10⁻¹¹ per year, interval including '
                     "zero) and is shown as 'no decline'.",
          'caveat': 'Editions are 4 to 13 years apart. Constants that became exact along the way (fixed by definition rather than measured), such as '
@@ -72,7 +72,7 @@ METRICS = [{'id': 'm1',
                       'long way at once when a new measurement or a corrected calculation arrives.']},
   'ko': {'name': '판간 이동 초과율',
          'short': '연속한 두 판 사이 이동이 두 불확도로 설명되지 않은 비율',
-         'definition': '같은 상수의 연속한 두 판(측정값끼리)에서 값의 이동을 두 판의 표준불확도를 합친 값 √(u_옛²+u_새²)으로 나눈 것을 z 라 한다. z 가 2면 두 판의 오차 막대를 합친 폭의 2배를 움직였다는 뜻이다. |z| 가 '
+         'definition': '같은 상수가 측정값으로 실린 판을 연도순으로 늘어놓고 이웃한 두 판(그 사이에 정의값이거나 실리지 않은 판이 있으면 건너뛴다)에서 값의 이동을 두 판의 표준불확도를 합친 값 √(u_옛²+u_새²)으로 나눈 것을 z 라 한다. z 가 2면 두 판의 오차 막대를 합친 폭의 2배를 움직였다는 뜻이다. |z| 가 '
                        '1·2·3 을 넘는 비율을 센다.',
          'formula': 'z = (x_새 − x_옛) / √(u_옛² + u_새²).  두 판이 독립이고 정규분포라면 |z|>1 은 31.7%, >2 는 4.55%, >3 은 0.27%.',
          'denominator': '핵심 상수 {m2_q}개의 연속 판 쌍 {m2_n}개. 1998 판 이후 4년 간격 쌍 {m2_n_new}개, 그 이전(4~13년 간격) 쌍 {m2_n_old}개.',
@@ -84,7 +84,8 @@ METRICS = [{'id': 'm1',
                    '3개(헬리온·삼중수소핵의 상대 원자 질량, 중양성자 자기 모멘트)를 더한 20개로 다시 세면 |z|>2 {k20_r2}%, |z|>3 {k20_r3}% 다.'},
   'en': {'name': 'Edition-to-edition exceedance',
          'short': 'Share of moves between consecutive editions not covered by the two uncertainties',
-         'definition': 'For each constant and each pair of consecutive editions in which it is measured, z is the change in value divided by the '
+         'definition': 'For each constant, the editions in which it is measured are put in order and each is paired with the next (an edition in '
+                       'which the constant is exact or absent is skipped). z is the change in value divided by the '
                        'combined standard uncertainty √(u_old² + u_new²). z = 2 means a move of twice the combined width of the two error bars. The '
                        'shares with |z| above 1, 2 and 3 are counted.',
          'formula': 'z = (x_new − x_old) / √(u_old² + u_new²). If the two editions were independent and normal, |z|>1 would occur 31.7% of the time, '
@@ -98,8 +99,8 @@ METRICS = [{'id': 'm1',
          'caveat': 'Consecutive editions share much of their experimental data, so they are not independent. Without new data a value barely moves '
                    '({m2_zero} pairs did not change in any printed digit), pulling z toward zero. That is why the low share of |z| > 1 cannot be '
                    'read as generous uncertainties (wide error bars). The share of large moves exceeds the normal expectation despite this. '
-                   'Intervals are a cluster bootstrap that resamples whole constants. Adding three candidates that meet the same selection rule '
-                   '(helion and triton relative atomic masses, deuteron magnetic moment), 20 constants give |z| > 2 in {k20_r2}% and |z| > 3 in '
+                   'Intervals are a cluster bootstrap that resamples whole constants. With three candidates that meet the same selection rule added '
+                   '(helion and triton relative atomic masses, deuteron magnetic moment), the 20 constants give |z| > 2 in {k20_r2}% and |z| > 3 in '
                    '{k20_r3}%.'}},
  {'id': 'm3',
   'file': 'm3_summary.csv',
@@ -108,7 +109,7 @@ METRICS = [{'id': 'm1',
                'en': ['The ±2σ ranges of earlier editions (twice the standard uncertainty: generous error bars) miss the 2022 value in {m3_m2}% of '
                       'cases, about {m3_m2_10} in 10. The normal expectation is 4.55% (about 1 in 20).',
                       'The 1969–1986 editions ({m3_old_m2}%) and the 1998–2018 editions ({m3_new_m2}%) miss about equally often: uncertainties '
-                      'shrank more than ten-thousand-fold, the miss rate did not.']},
+                      'shrank more than ten-thousand-fold, but the miss rate did not.']},
   'ko': {'name': '2022 판 기준 놓침률',
          'short': '옛 판의 오차 막대가 2022 판 값을 담지 못한 비율',
          'definition': '옛 판의 값과 표준불확도로, 2022 판 값이 ±1σ(그 판의 오차 막대) 안에, 그리고 ±2σ(막대를 두 배로 넓힌 범위) 안에 들어오는지 센다. Henrion & Fischhoff(1986)의 두 지표도 함께 낸다 — '
@@ -133,10 +134,10 @@ METRICS = [{'id': 'm1',
                         'being exact). Overall {m3_n} (edition, constant) combinations over {m3_q} constants.',
          'reading': "The 2022 value lies outside the earlier edition's ±1σ in {m3_m1}% of cases (95% interval {m3_m1_ci}) and outside ±2σ in "
                     '{m3_m2}% ({m3_m2_ci}); the normal expectations are 31.7% and 4.55%. The surprise index (outside ±2.326σ) is {m3_si}% '
-                    '({m3_si_ci}; normal 2%). Older editions do not miss clearly more often: at ±2σ, {m3_old_m2}% for 1969–1986 and {m3_new_m2}% for '
+                    '({m3_si_ci}; normal 2%). Older editions do not clearly miss more often: at ±2σ, {m3_old_m2}% for 1969–1986 and {m3_new_m2}% for '
                     '1998–2018.',
          'caveat': 'With the three candidates meeting the same rule added (20 constants), {k20_m3}% fall outside ±2σ. The 2022 edition is the '
-                   'current recommendation, not the true value, and may change. For constants exact from 2018 (fixed by definition rather than '
+                   'current recommendation, not a set of true values, and may change. For constants exact from 2018 (fixed by definition rather than '
                    'measured), such as the Planck and Boltzmann constants, the defined value is the reference (it was set from the 2017 special '
                    'adjustment). Editions of the same constant are not independent, so pooled rates rest on fewer effective observations than their '
                    'count suggests.'}},
@@ -163,7 +164,7 @@ METRICS = [{'id': 'm1',
                    '키운(확장 인자) 결과다. 척도 s 가 1보다 작은 것은 판 사이 자료 공유(M2 한계)를 반영한다. 표본이 작아 구간이 넓다.'},
   'en': {'name': 'Tail heaviness',
          'short': 'Student-t degrees of freedom fitted to edition-to-edition z',
-         'definition': 'A zero-centred Student-t is fitted by maximum likelihood to the z (M2) of consecutive pairs whose value changed. The '
+         'definition': 'A zero-centered Student-t is fitted by maximum likelihood to the z (M2) of consecutive pairs whose value changed. The '
                        'Student-t distribution sets the thickness of its tails (the two ends) through its degrees of freedom ν: the smaller ν, the '
                        'thicker the tails and the more common very large moves (ν = 1 is the Cauchy distribution; ν → ∞ the normal).',
          'formula': 'z ~ s · t_ν, ν and s by maximum likelihood; 95% intervals from 2,000 cluster-bootstrap resamples of constants. Pairs whose '
@@ -175,7 +176,7 @@ METRICS = [{'id': 'm1',
          'caveat': 'With the pairs whose printed value did not change (z = 0) kept, no maximum-likelihood estimate exists: the likelihood grows '
                    'without bound as the scale s goes to zero (for ν below 0.08). Those {m2_zero} pairs are left out and counted in M2 instead. '
                    'Bailey compares individual experimental results and this site compares editions of recommended values, so the two ν are not the '
-                   'same quantity: recommended values are weighted averages from which some results are dropped or whose uncertainties are expanded '
+                   'same quantity: recommended values are weighted averages of results, some of which are dropped or have their uncertainties expanded '
                    '(expansion factors). A scale below 1 reflects the data shared between editions (see M2). The sample is small and the intervals '
                    'wide.'}},
  {'id': 'm5',
@@ -184,8 +185,8 @@ METRICS = [{'id': 'm1',
                       '양성자 전하 반지름처럼 여러 판 내내 같은 쪽으로 벗어나 있다가 한 판에서 크게 옮겨 간 상수가 있다.'],
                'en': ["Each constant's values by edition with ±1σ error bars, drawn as relative deviations from the 2022 value. An open circle marks "
                       'an edition whose ±1σ range does not contain the 2022 value.',
-                      'Some constants, such as the proton charge radius, sat off to the same side for several editions and then moved a long way in '
-                      'one.']},
+                      'Some constants, such as the proton charge radius, stayed off to one side for several editions and then moved a long way in a '
+                      'single edition.']},
   'ko': {'name': '상수별 수렴 그림',
          'short': '판별 값과 오차 막대를 2022 판 기준 편차로',
          'definition': '상수마다 각 판의 값이 2022 판 값에서 얼마나 떨어져 있었는지(상대 편차)와 그 판의 ±1σ 오차 막대를 판 순서로 그린다.',
@@ -210,8 +211,8 @@ METRICS = [{'id': 'm1',
                       '반대로 진공 투자율 μ₀ 와 몰질량 상수는 정의값에서 측정값으로 바뀌었다. 불확도는 사라지지 않고 다른 양으로 옮겨 간다.'],
                'en': ['With the 2019 revision of the SI, the Planck constant, elementary charge, Boltzmann constant and Avogadro constant are exact '
                       'from the 2018 edition (fixed by definition rather than measured; uncertainty zero).',
-                      'Conversely, the vacuum magnetic permeability μ₀ and the molar mass constant went from exact to measured: uncertainty does not '
-                      'vanish, it moves to other quantities.']},
+                      'Conversely, the vacuum magnetic permeability μ₀ and the molar mass constant went from exact to measured. Uncertainty does not '
+                      'vanish; it moves to other quantities.']},
   'ko': {'name': '정의값 전환',
          'short': '측정값이 정의값이 된 상수, 정의값이 측정값이 된 상수',
          'definition': '판과 판 사이에 측정값(불확도가 있는 값)에서 정의값(측정하지 않고 약속으로 정한 값, 불확도 0)으로, 또는 그 반대로 바뀐 상수와 그 시점.',
@@ -226,7 +227,7 @@ METRICS = [{'id': 'm1',
                        'than measured, uncertainty zero), or the reverse, and when.',
          'formula': 'A change in the exact flag between two consecutive editions.',
          'denominator': 'The 27 quantities on this site.',
-         'reading': 'The speed of light became exact when the metre was redefined in terms of light in 1983, and has zero uncertainty from the 1986 '
+         'reading': 'The speed of light became exact when the meter was redefined in terms of light in 1983, and has zero uncertainty from the 1986 '
                     'edition. With the 2019 revision of the SI, the Planck constant, elementary charge, Boltzmann constant and Avogadro constant, '
                     'and the Faraday constant, molar gas constant and Stefan–Boltzmann constant computed from them, are exact from the 2018 edition. '
                     'Conversely, the vacuum magnetic permeability μ₀ and the molar mass constant M_u were exact up to the 2014 edition and are '

@@ -8,7 +8,7 @@ Inputs
                                                                    CODATA 1973 and 1986
 Output
   data/derived/constants_all_rows.csv   every ASCII row (edition, name, value, u, unit, exact)
-  data/derived/constants_long.csv       mapped quantities only (quantity_map.csv), all editions
+  data/derived/constants_long.csv       mapped quantities only (data/manual/quantity_map.csv), all editions
 
 Values are kept as decimal strings (Python Decimal) so that differences of
 values agreeing to 12 digits are exact; floats are written for convenience.
@@ -26,6 +26,8 @@ getcontext().prec = 40
 ROOT = Path(__file__).resolve().parent.parent
 RAW = ROOT / "data" / "raw"
 DER = ROOT / "data" / "derived"
+# hand-maintained map of the 27 quantities; kept outside data/derived so that clearing derived/ cannot lose it
+QMAP = ROOT / "data" / "manual" / "quantity_map.csv"
 ASCII_EDITIONS = [1998, 2002, 2006, 2010, 2014, 2018, 2022]
 
 PAREN = re.compile(r"^(?P<m>-?[\d .]+?)\s*\((?P<u>[\d.]+)\)\s*(?:e(?P<e>[-+]?\d+))?$")
@@ -120,7 +122,7 @@ def read_early():
 
 
 def load_map():
-    with open(DER / "quantity_map.csv", encoding="utf-8") as fh:
+    with open(QMAP, encoding="utf-8") as fh:
         return list(csv.DictReader(fh))
 
 
@@ -133,7 +135,7 @@ def main():
     DER.mkdir(parents=True, exist_ok=True)
     all_rows = [r for y in ASCII_EDITIONS for r in read_ascii(y)]
     with open(DER / "constants_all_rows.csv", "w", newline="", encoding="utf-8") as fh:
-        w = csv.writer(fh)
+        w = csv.writer(fh, lineterminator="\n")
         w.writerow(["edition", "name", "value", "u", "u_rel", "unit", "exact", "truncated", "source"])
         for r in all_rows:
             ur = (r["u"] / abs(r["value"])) if r["value"] and not r["exact"] else Decimal(0)
@@ -164,7 +166,7 @@ def main():
     # exact flags for the early editions: c, mu0 were exact from 1983; nothing early is exact in this list
     long.sort(key=lambda r: (r["qid"], r["edition"]))
     with open(DER / "constants_long.csv", "w", newline="", encoding="utf-8") as fh:
-        w = csv.writer(fh)
+        w = csv.writer(fh, lineterminator="\n")
         w.writerow(["qid", "edition", "value", "u", "u_rel", "unit", "exact", "source_name", "source_unit", "value_text", "source"])
         unit_of = {q["qid"]: q["unit"] for q in qmap}
         for r in long:

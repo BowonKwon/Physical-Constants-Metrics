@@ -43,7 +43,7 @@ L = {
                credit_h="자료 출처", outside="직전 범위 밖", no_saw="표준 원자량 없음(방사성)", sym="기호", name="이름", nrev="개정", last="마지막 개정",
                cur="현재 값", download="CSV 내려받기"),
     "en": dict(nav="Atomic weights", title="Atomic weights — the revision record of standard atomic weights", lead="How the standard atomic weights recommended by CIAAW since 1902 changed, and whether each new value lay within the previous recommendation's uncertainty range. The question of the physical-constants chapter, asked of a record that defines its uncertainties differently.",
-               metrics="Metrics", elements="Elements", year="Year", value="Value (as published)", kind="Notation", scale="Scale", v12="Value, ¹²C scale", zprev="z vs previous", doi="Report",
+               metrics="Metrics", elements="Elements", year="Year", value="Value (as printed)", kind="Notation", scale="Scale", v12="Value, ¹²C scale", zprev="z vs previous", doi="Report",
                kinds={"unc": "value(uncertainty)", "interval": "interval", "none": "no uncertainty", "exact": "reference (exact)", "withdrawn": "withdrawn"},
                credit_h="Source", outside="outside previous range", no_saw="no standard atomic weight (radioactive)", sym="Symbol", name="Name", nrev="Revisions", last="Latest revision",
                cur="Current value", download="Download CSV"),
@@ -192,29 +192,34 @@ def chart_element(rows, lang, H, W=900, Hh=320):
 
 
 # ------------------------------------------------------------------ pages
+def times_en(n):
+    return {1: "once", 2: "twice"}.get(n, f"{n} times")
+
+
 def element_takeaway(lang, sym, rows, pairs, el):
     ko = lang == "ko"
     out = []
     ys = [int(r["year"]) for r in rows]
     out.append(f"1902~2024년에 {len(rows)}번 권고·개정되었다(첫 기록 {ys[0]}년, 마지막 개정 {ys[-1]}년)." if ko
-               else f"Recommended or revised {len(rows)} times between 1902 and 2024 (first record {ys[0]}, latest revision {ys[-1]}).")
+               else f"Recommended or revised {times_en(len(rows))} between 1902 and 2024 (first record {ys[0]}, latest revision {ys[-1]}).")
     ps = [p for p in pairs if p["symbol"] == sym]
     if ps:
         n_out = sum(int(p["outside_prev_range"]) for p in ps)
         if n_out:
             lst = ", ".join(p["year_new"] for p in ps if p["outside_prev_range"] == "1")
             out.append(f"직전 권고에 불확도가 있었던 개정 {len(ps)}건 중 {n_out}건({lst})에서 새 값이 직전 범위(확장 범위) 밖에 놓였다." if ko
-                       else f"Of {len(ps)} revisions whose previous recommendation had an uncertainty, {n_out} ({lst}) put the new value outside the previous (expanded) range.")
+                       else (f"The one revision whose previous recommendation had an uncertainty ({lst}) put the new value outside the previous (expanded) range." if len(ps) == 1 else
+                             f"Of {len(ps)} revisions whose previous recommendation had an uncertainty, {n_out} ({lst}) put the new value outside the previous (expanded) range."))
         else:
             out.append(f"직전 권고에 불확도가 있었던 개정 {len(ps)}건 모두 새 값이 직전 범위(확장 범위) 안에 있었다." if ko
-                       else f"All {len(ps)} revisions whose previous recommendation had an uncertainty kept the new value inside the previous (expanded) range.")
+                       else f"{'The one revision' if len(ps) == 1 else ('Both revisions' if len(ps) == 2 else f'All {len(ps)} revisions')} whose previous recommendation had an uncertainty kept the new value inside the previous (expanded) range.")
     last = rows[-1]
     if el["has_standard_atomic_weight"] != "1":
         out.append("현재 표준 원자량이 없다 — 방사성 원소로, 지구 물질에 일정한 동위원소 조성이 없다." if ko
                    else "It has no standard atomic weight today: a radioactive element without a characteristic terrestrial isotopic composition.")
     elif last["kind"] == "interval":
         out.append(f"{last['year']}년부터 하나의 값 대신 구간 {last['value_text']} 으로 표기한다(구간: 정상 물질에서 실제로 나타나는 범위)." if ko
-                   else f"Since {last['year']} it is given as the interval {last['value_text']} rather than a single value (the range found in normal materials).")
+                   else f"Since {last['year']}, it has been given as the interval {last['value_text']} rather than a single value (the range found in normal materials).")
     else:
         out.append(f"현재 표준 원자량은 {last['value_text']} 이다({last['year']}년 권고)." if ko else f"The current standard atomic weight is {last['value_text']} (recommended in {last['year']}).")
     return out
@@ -252,7 +257,7 @@ def build(lang, base, H, out_root):
     else:
         tk = [f"CIAAW has recommended or revised standard atomic weights {N['aw_rows']} times since 1902; the {N['aw_saw']} elements with a standard atomic weight changed {N['aw_rev_mean']} times on average.",
               f"CIAAW uncertainties are not standard uncertainties (1σ) but expanded ranges (wide ranges that normal materials fall in with great certitude). So {N['aw_a2_out']} of {N['aw_a2_n']} revisions ({N['aw_a2_out_pct']}%) put the new value outside the previous range, and {N['aw_a2_dis']} had ranges that do not overlap at all ({N['aw_a2_dis_list']}).",
-              f"Since 2009, {N['aw_a5_n']} elements are given as an interval rather than a single value; in all {N['aw_a5_n']} the new interval contains the previous value.",
+              f"Since 2009, {N['aw_a5_n']} elements have been given as an interval rather than a single value; in all {N['aw_a5_n']} the new interval contains the previous value.",
               "Physical constants (standard uncertainties) and atomic weights (expanded ranges) define uncertainty differently, so their miss rates are not read on one scale; that difference is why the two chapters sit side by side."]
     stats = f"""<div class="stats">
 <a class="stat" href="a2.html"><span class="n">{N['aw_a2_out']}<span class="vs">/ {N['aw_a2_n']}</span></span><small>{"직전 권고 범위 밖에 새 값이 놓인 개정(기준 ①)" if lang == "ko" else "revisions with the new value outside the previous range (criterion 1)"}</small></a>
@@ -308,7 +313,7 @@ def build(lang, base, H, out_root):
     # element pages
     head = {"ko": [("연도", "권고·개정한 해"), ("값(원 표기)", "CIAAW 가 발표한 그대로. 괄호 안은 마지막 자리의 불확도(확장 범위)"), ("표기", "값(불확도)·구간·불확도 없음"),
                    ("척도", "1961년 이전은 산소 = 16, 이후는 ¹²C = 12"), ("¹²C 기준 값", "1961년 이전 값에 15.9994/16 을 곱한 값"), ("직전 대비 z", "(새 값 − 직전 값) ÷ 직전 불확도"), ("원 보고서", "CIAAW 보고서 DOI")],
-            "en": [("Year", "year of the recommendation"), ("Value (as published)", "as published by CIAAW; digits in brackets are the uncertainty (expanded range) in the last digits"), ("Notation", "value(uncertainty), interval or no uncertainty"),
+            "en": [("Year", "year of the recommendation"), ("Value (as printed)", "as printed in CIAAW's table; digits in brackets are the uncertainty (expanded range) in the last digits"), ("Notation", "value(uncertainty), interval or no uncertainty"),
                    ("Scale", "before 1961 oxygen = 16, from 1961 ¹²C = 12"), ("Value, ¹²C scale", "pre-1961 values multiplied by 15.9994/16"), ("z vs previous", "(new − previous) ÷ previous uncertainty"), ("Report", "DOI of the CIAAW report")]}
     zmap = {(p["symbol"], p["year_new"]): p["z_prev"] for p in pairs}
     for s in els:
@@ -330,7 +335,7 @@ def build(lang, base, H, out_root):
 
         def doi(r):
             if not r["doi"] or r["doi"] == "n/a":
-                return "DOI 미제공" if lang == "ko" else "no DOI yet"
+                return "DOI 미제공" if lang == "ko" else "no DOI"
             return f'<a href="https://doi.org/{esc(r["doi"])}">{esc(r["doi"])}</a>'
         tab = [[r["year"], vt(r), t["kinds"][r["kind"]], r["scale"], v12(r), zmap.get((s, r["year"]), ""), doi(r)] for r in rs]
         tag = "" if el["has_standard_atomic_weight"] == "1" else f'<span class="tag">{t["no_saw"]}</span>'

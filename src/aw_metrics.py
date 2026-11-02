@@ -105,7 +105,7 @@ def main():
 
     DER.mkdir(parents=True, exist_ok=True)
     with open(DER / "aw_long.csv", "w", newline="", encoding="utf-8") as fh:
-        w = csv.writer(fh)
+        w = csv.writer(fh, lineterminator="\n")
         w.writerow(["symbol", "element", "year", "value_text", "kind", "value", "u", "lo", "hi", "scale", "value_12C", "doi"])
         for r in recs:
             v12 = on_12c(r)
@@ -127,7 +127,7 @@ def main():
                             mean_gap=f"{sum(gaps) / len(gaps):.1f}" if gaps else "", current=last["value_text"], current_kind=last["kind"],
                             has_standard_atomic_weight=int(s not in NO_SAW and last["kind"] != "withdrawn")))
     with open(DER / "aw_a1_elements.csv", "w", newline="", encoding="utf-8") as fh:
-        w = csv.DictWriter(fh, fieldnames=list(el_rows[0].keys()))
+        w = csv.DictWriter(fh, fieldnames=list(el_rows[0].keys()), lineterminator="\n")
         w.writeheader()
         w.writerows(el_rows)
     era_rows = []
@@ -136,7 +136,7 @@ def main():
         ry = [y for y in report_years if a <= y <= b]
         era_rows.append(dict(era=lab, revisions=n, report_years=len(ry), years=b - a + 1, revisions_per_year=f"{n / (b - a + 1):.2f}"))
     with open(DER / "aw_a1_eras.csv", "w", newline="", encoding="utf-8") as fh:
-        w = csv.DictWriter(fh, fieldnames=list(era_rows[0].keys()))
+        w = csv.DictWriter(fh, fieldnames=list(era_rows[0].keys()), lineterminator="\n")
         w.writeheader()
         w.writerows(era_rows)
 
@@ -151,6 +151,8 @@ def main():
             d = nv - pv
             z = d / pu
             nu = n.get("u") or Decimal(0)   # a new value without an uncertainty is treated as a point
+            if n["year"] < SCALE_YEAR:
+                nu = nu * f   # a new value before 1961 is on the oxygen scale: convert its range as well
             disjoint = (pv + pu < nv - nu) or (nv + nu < pv - pu)
             pairs.append(dict(symbol=s, element=p["element"], year_prev=p["year"], prev=p["value_text"], year_new=n["year"], new=n["value_text"],
                               diff=f"{d:.8f}", u_prev=str(p["u"]), z_prev=f"{float(z):.3f}", z_exact=float(z), outside_prev_range=int(abs(d) > pu),
@@ -158,7 +160,7 @@ def main():
                               scale_change=int(p["year"] < SCALE_YEAR <= n["year"])))
     pairs.sort(key=lambda x: (x["year_new"], x["symbol"]))
     with open(DER / "aw_a2_pairs.csv", "w", newline="", encoding="utf-8") as fh:
-        w = csv.DictWriter(fh, fieldnames=[k for k in pairs[0].keys() if k != "z_exact"], extrasaction="ignore")
+        w = csv.DictWriter(fh, fieldnames=[k for k in pairs[0].keys() if k != "z_exact"], extrasaction="ignore", lineterminator="\n")
         w.writeheader()
         w.writerows(pairs)
 
@@ -175,7 +177,7 @@ def main():
                                interval_contains_prev_value=int(n["lo"] <= on_12c(p) <= n["hi"])))
     iv.sort(key=lambda x: (x["year_interval"], x["symbol"]))
     with open(DER / "aw_a5_intervals.csv", "w", newline="", encoding="utf-8") as fh:
-        w = csv.DictWriter(fh, fieldnames=[k for k in iv[0].keys() if k != "width_ratio_exact"], extrasaction="ignore")
+        w = csv.DictWriter(fh, fieldnames=[k for k in iv[0].keys() if k != "width_ratio_exact"], extrasaction="ignore", lineterminator="\n")
         w.writeheader()
         w.writerows(iv)
 
@@ -188,7 +190,7 @@ def main():
     ratios = [i["width_ratio_exact"] for i in iv if i["width_ratio_exact"] is not None]
     summary = dict(
         rows=len(recs), elements=len(by), elements_with_saw=len(saw), report_years=len(report_years), first=min(report_years), last=max(report_years),
-        scale_factor=str(f), revisions_mean=sum(nrev) / len(nrev), revisions_median=nrev[len(nrev) // 2], revisions_max=max(nrev),
+        scale_factor=str(f), revisions_mean=sum(nrev) / len(nrev), revisions_median=statistics.median(nrev), revisions_max=max(nrev),
         a2_pairs=len(pairs), a2_outside=len(outside), a2_outside_list=[(p["symbol"], p["year_prev"], p["prev"], p["year_new"], p["new"], p["z_prev"]) for p in outside],
         a2_first_prev_year=min(p["year_prev"] for p in pairs),
         a2_disjoint=sum(p["ranges_disjoint"] for p in pairs),

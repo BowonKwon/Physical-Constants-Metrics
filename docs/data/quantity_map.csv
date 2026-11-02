@@ -1,32 +1,32 @@
 qid,layer,symbol,name_en,name_ko,unit,first_ascii,ascii_names,exact_from,note_en,name_ko_basis
 alpha,K,α,fine-structure constant,미세 구조 상수,1,1998,fine-structure constant,,,관행 표기 — 대한물리학회 용어집 미대조
 Rinf,K,R∞,Rydberg constant,뤼드베리 상수,m^-1,1998,Rydberg constant,,,관행 표기 — 대한물리학회 용어집 미대조
-h,K,h,Planck constant,플랑크 상수,J s,1998,Planck constant,2018,exact from the 2018 edition (2019 SI),국가표준기본법 시행령 별표 1
-k,K,k,Boltzmann constant,볼츠만 상수,J K^-1,1998,Boltzmann constant,2018,exact from the 2018 edition (2019 SI),국가표준기본법 시행령 별표 1
+h,K,h,Planck constant,플랑크 상수,J s,1998,Planck constant,2018,Exact from the 2018 edition (2019 SI).,국가표준기본법 시행령 별표 1
+k,K,k,Boltzmann constant,볼츠만 상수,J K^-1,1998,Boltzmann constant,2018,Exact from the 2018 edition (2019 SI).,국가표준기본법 시행령 별표 1
 G,K,G,Newtonian constant of gravitation,뉴턴 중력 상수,m^3 kg^-1 s^-2,1998,Newtonian constant of gravitation,,,관행 표기 — 대한물리학회 용어집 미대조
-Ar_e,K,Ar(e),electron relative atomic mass,전자의 상대 원자 질량,1,1998,electron mass in u,,listed as 'electron mass in u',관행 표기 — 대한물리학회 용어집 미대조
-Ar_p,K,Ar(p),proton relative atomic mass,양성자의 상대 원자 질량,1,1998,proton mass in u,,listed as 'proton mass in u',관행 표기 — 대한물리학회 용어집 미대조
-Ar_n,K,Ar(n),neutron relative atomic mass,중성자의 상대 원자 질량,1,1998,neutron mass in u,,listed as 'neutron mass in u',관행 표기 — 대한물리학회 용어집 미대조
-Ar_d,K,Ar(d),deuteron relative atomic mass,중양성자의 상대 원자 질량,1,1998,deuteron mass in u,,listed as 'deuteron mass in u',관행 표기 — 대한물리학회 용어집 미대조
-Ar_alpha,K,Ar(α),alpha particle relative atomic mass,알파 입자의 상대 원자 질량,1,1998,alpha particle mass in u,,listed as 'alpha particle mass in u',관행 표기 — 대한물리학회 용어집 미대조
-a_e,K,aₑ,electron magnetic-moment anomaly,전자 이상 자기 모멘트,1,1998,electron magnetic moment anomaly|electron mag. mom. anomaly,,1969 and 1973 list g/2 = 1 + a_e,관행 표기 — 대한물리학회 용어집 미대조
-a_mu,K,a_μ,muon magnetic-moment anomaly,뮤온 이상 자기 모멘트,1,1998,muon magnetic moment anomaly|muon mag. mom. anomaly,,1973 lists g/2 = 1 + a_mu,관행 표기 — 대한물리학회 용어집 미대조
+Ar_e,K,Ar(e),electron relative atomic mass,전자의 상대 원자 질량,1,1998,electron mass in u,,Listed in the NIST tables as 'electron mass in u'.,관행 표기 — 대한물리학회 용어집 미대조
+Ar_p,K,Ar(p),proton relative atomic mass,양성자의 상대 원자 질량,1,1998,proton mass in u,,Listed in the NIST tables as 'proton mass in u'.,관행 표기 — 대한물리학회 용어집 미대조
+Ar_n,K,Ar(n),neutron relative atomic mass,중성자의 상대 원자 질량,1,1998,neutron mass in u,,Listed in the NIST tables as 'neutron mass in u'.,관행 표기 — 대한물리학회 용어집 미대조
+Ar_d,K,Ar(d),deuteron relative atomic mass,중양성자의 상대 원자 질량,1,1998,deuteron mass in u,,Listed in the NIST tables as 'deuteron mass in u'.,관행 표기 — 대한물리학회 용어집 미대조
+Ar_alpha,K,Ar(α),alpha particle relative atomic mass,알파 입자의 상대 원자 질량,1,1998,alpha particle mass in u,,Listed in the NIST tables as 'alpha particle mass in u'.,관행 표기 — 대한물리학회 용어집 미대조
+a_e,K,aₑ,electron magnetic-moment anomaly,전자 이상 자기 모멘트,1,1998,electron magnetic moment anomaly|electron mag. mom. anomaly,,The 1969 and 1973 editions list g/2 = 1 + aₑ; the value minus 1 is used.,관행 표기 — 대한물리학회 용어집 미대조
+a_mu,K,a_μ,muon magnetic-moment anomaly,뮤온 이상 자기 모멘트,1,1998,muon magnetic moment anomaly|muon mag. mom. anomaly,,The 1973 edition lists g/2 = 1 + a_μ; the value minus 1 is used.,관행 표기 — 대한물리학회 용어집 미대조
 mmu_me,K,m_μ/mₑ,muon-electron mass ratio,뮤온-전자 질량비,1,1998,muon-electron mass ratio,,,관행 표기 — 대한물리학회 용어집 미대조
-mup_muN,K,μₚ/μ_N,proton magnetic moment to nuclear magneton ratio,양성자 자기 모멘트(핵 마그네톤 단위),1,1998,proton magnetic moment to nuclear magneton ratio|proton mag. mom. to nuclear magneton ratio,,free proton (not shielded in water),관행 표기 — 대한물리학회 용어집 미대조
-mun_muN,K,μₙ/μ_N,neutron magnetic moment to nuclear magneton ratio,중성자 자기 모멘트(핵 마그네톤 단위),1,1998,neutron magnetic moment to nuclear magneton ratio|neutron mag. mom. to nuclear magneton ratio,,negative by convention,관행 표기 — 대한물리학회 용어집 미대조
+mup_muN,K,μₚ/μ_N,proton magnetic moment to nuclear magneton ratio,양성자 자기 모멘트(핵 마그네톤 단위),1,1998,proton magnetic moment to nuclear magneton ratio|proton mag. mom. to nuclear magneton ratio,,Free proton (not shielded in water).,관행 표기 — 대한물리학회 용어집 미대조
+mun_muN,K,μₙ/μ_N,neutron magnetic moment to nuclear magneton ratio,중성자 자기 모멘트(핵 마그네톤 단위),1,1998,neutron magnetic moment to nuclear magneton ratio|neutron mag. mom. to nuclear magneton ratio,,Negative by convention.,관행 표기 — 대한물리학회 용어집 미대조
 rp,K,rₚ,proton rms charge radius,양성자 전하 반지름(제곱평균제곱근),m,2002,proton rms charge radius,,,관행 표기 — 대한물리학회 용어집 미대조
 rd,K,r_d,deuteron rms charge radius,중양성자 전하 반지름(제곱평균제곱근),m,2002,deuteron rms charge radius,,,관행 표기 — 대한물리학회 용어집 미대조
-c,D,c,speed of light in vacuum,진공에서의 빛의 속력,m s^-1,1998,speed of light in vacuum,1983,defined in 1983; exact in every edition from 1986,국가표준기본법 시행령 별표 1
-e,D,e,elementary charge,기본 전하,C,1998,elementary charge|electron volt,2018,= sqrt(2αh/μ0c) before 2019. The 1998-2006 ASCII tables have no elementary-charge row; the electron-volt row in joules carries the same number (1 eV = {e} J) and is used instead,국가표준기본법 시행령 별표 1
-NA,D,N_A,Avogadro constant,아보가드로 상수,mol^-1,1998,Avogadro constant,2018,tied to h through the molar Planck constant before 2019,국가표준기본법 시행령 별표 1
-me,D,mₑ,electron mass,전자 질량,kg,1998,electron mass,,= 2R∞h/(cα²),관행 표기 — 대한물리학회 용어집 미대조
-mp_me,D,mₚ/mₑ,proton-electron mass ratio,양성자-전자 질량비,1,1998,proton-electron mass ratio,,= Ar(p)/Ar(e),관행 표기 — 대한물리학회 용어집 미대조
-F,D,F,Faraday constant,패러데이 상수,C mol^-1,1998,Faraday constant,2018,= N_A e,관행 표기 — 대한물리학회 용어집 미대조
-R,D,R,molar gas constant,몰 기체 상수,J mol^-1 K^-1,1998,molar gas constant,2018,= N_A k,관행 표기 — 대한물리학회 용어집 미대조
-sigma,D,σ,Stefan-Boltzmann constant,슈테판-볼츠만 상수,W m^-2 K^-4,1998,Stefan-Boltzmann constant,2018,= (π²/60)k⁴/ħ³c²,관행 표기 — 대한물리학회 용어집 미대조
-mu0,D,μ₀,vacuum magnetic permeability,진공 투자율,N A^-2,1998,magnetic constant|mag. constant|vacuum mag. permeability,,exact (4π×10^-7) until 2014; measured from 2018,관행 표기 — 대한물리학회 용어집 미대조
-Mu,D,M_u,molar mass constant,몰질량 상수,kg mol^-1,1998,molar mass constant,,exact (1 g/mol) until 2014; measured from 2018,관행 표기 — 대한물리학회 용어집 미대조
-alpha_inv,D,α⁻¹,inverse fine-structure constant,미세 구조 상수의 역수,1,1998,inverse fine-structure constant,,= 1/α. Shown because Henrion & Fischhoff (1986) and the 1973 report compare α⁻¹.,관행 표기 — 대한물리학회 용어집 미대조
-Ar_h,S,Ar(h),helion relative atomic mass,헬리온의 상대 원자 질량,1,1998,helion mass in u,,Sensitivity candidate. Listed as 'helion mass in u'.,관행 표기 — 대한물리학회 용어집 미대조
-Ar_t,S,Ar(t),triton relative atomic mass,삼중수소핵의 상대 원자 질량,1,2006,triton mass in u,,Sensitivity candidate. Listed as 'triton mass in u' from 2006.,관행 표기 — 대한물리학회 용어집 미대조
+c,D,c,speed of light in vacuum,진공에서의 빛의 속력,m s^-1,1998,speed of light in vacuum,1983,The meter was redefined in 1983; exact from the 1986 edition. Measured in the 1969 and 1973 editions.,국가표준기본법 시행령 별표 1
+e,D,e,elementary charge,기본 전하,C,1998,elementary charge|electron volt,2018,√(2αh/μ₀c) before 2019. The 1998–2006 ASCII tables have no elementary-charge row; the row for the electron volt in joules carries the same number and is used instead.,국가표준기본법 시행령 별표 1
+NA,D,N_A,Avogadro constant,아보가드로 상수,mol^-1,1998,Avogadro constant,2018,Tied to h through the molar Planck constant before 2019. Exact from the 2018 edition.,국가표준기본법 시행령 별표 1
+me,D,mₑ,electron mass,전자 질량,kg,1998,electron mass,,"= 2R∞h/(cα²). A combination of core constants, so left out of the statistics.",관행 표기 — 대한물리학회 용어집 미대조
+mp_me,D,mₚ/mₑ,proton-electron mass ratio,양성자-전자 질량비,1,1998,proton-electron mass ratio,,= Ar(p)/Ar(e). Left out of the statistics.,관행 표기 — 대한물리학회 용어집 미대조
+F,D,F,Faraday constant,패러데이 상수,C mol^-1,1998,Faraday constant,2018,= N_A e. Exact from the 2018 edition.,관행 표기 — 대한물리학회 용어집 미대조
+R,D,R,molar gas constant,몰 기체 상수,J mol^-1 K^-1,1998,molar gas constant,2018,= N_A k. Exact from the 2018 edition.,관행 표기 — 대한물리학회 용어집 미대조
+sigma,D,σ,Stefan–Boltzmann constant,슈테판-볼츠만 상수,W m^-2 K^-4,1998,Stefan-Boltzmann constant,2018,= (π²/60)k⁴/ħ³c². Exact from the 2018 edition.,관행 표기 — 대한물리학회 용어집 미대조
+mu0,D,μ₀,vacuum magnetic permeability,진공 투자율,N A^-2,1998,magnetic constant|mag. constant|vacuum mag. permeability,,Exact (4π×10⁻⁷) up to the 2014 edition; measured from 2018.,관행 표기 — 대한물리학회 용어집 미대조
+Mu,D,M_u,molar mass constant,몰질량 상수,kg mol^-1,1998,molar mass constant,,Exact (1 g/mol) up to the 2014 edition; measured from 2018.,관행 표기 — 대한물리학회 용어집 미대조
+alpha_inv,D,α⁻¹,inverse fine-structure constant,미세 구조 상수의 역수,1,1998,inverse fine-structure constant,,= 1/α. Included because Henrion & Fischhoff (1986) and the 1973 report compare α⁻¹; the statistics use α only.,관행 표기 — 대한물리학회 용어집 미대조
+Ar_h,S,Ar(h),helion relative atomic mass,헬리온의 상대 원자 질량,1,1998,helion mass in u,,Sensitivity candidate. Listed in the NIST tables as 'helion mass in u'.,관행 표기 — 대한물리학회 용어집 미대조
+Ar_t,S,Ar(t),triton relative atomic mass,삼중수소핵의 상대 원자 질량,1,2006,triton mass in u,,Sensitivity candidate. Listed in the NIST tables as 'triton mass in u' (from the 2006 edition).,관행 표기 — 대한물리학회 용어집 미대조
 mud_muN,S,μ_d/μ_N,deuteron magnetic moment to nuclear magneton ratio,중양성자 자기 모멘트(핵 마그네톤 단위),1,1998,deuteron magnetic moment to nuclear magneton ratio|deuteron mag. mom. to nuclear magneton ratio,,Sensitivity candidate.,관행 표기 — 대한물리학회 용어집 미대조
