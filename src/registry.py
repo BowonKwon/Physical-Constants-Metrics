@@ -104,7 +104,7 @@ METRICS = [{'id': 'm1',
                    '{k20_r3}%.'}},
  {'id': 'm3',
   'file': 'm3_summary.csv',
-  'takeaway': {'ko': ['옛 판의 ±2σ 범위(표준불확도의 2배 — 넉넉한 오차 막대)가 2022 판 값을 담지 못한 경우가 {m3_m2}%, 10개 중 약 {m3_m2_10}개다. 정규분포 기대는 4.55%(20개 중 1개 꼴).',
+  'takeaway': {'ko': ['옛 판의 ±2σ 범위(표준불확도의 2배 — 넉넉한 오차 막대)가 2022 판 값을 담지 못한 경우가 {m3_m2}%, 10개 중 약 {m3_m2_10}개다. 정규분포 기대는 4.55%(22개 중 1개 꼴).',
                       '1969~1986 판({m3_old_m2}%)과 1998~2018 판({m3_new_m2}%)의 놓침률이 비슷하다. 불확도는 만 배 넘게 줄었지만 놓침률은 줄지 않았다.'],
                'en': ['The ±2σ ranges of earlier editions (twice the standard uncertainty: generous error bars) miss the 2022 value in {m3_m2}% of '
                       'cases, about {m3_m2_10} in 10. The normal expectation is 4.55% (once in 22).',

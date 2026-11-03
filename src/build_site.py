@@ -25,7 +25,7 @@ DER = ROOT / "data" / "derived"
 # hand-maintained map of the 31 quantities; kept outside data/derived so that clearing derived/ cannot lose it
 QMAP = ROOT / "data" / "manual" / "quantity_map.csv"
 OUT = ROOT / "site"
-VERSION = "1.1.2"
+VERSION = "1.1.3"
 BUILD_DATE = "2026-11-02"
 REPO = "https://github.com/BowonKwon/Physical-Constants-Metrics"
 PUBLIC_DATA = ["constants_long.csv", "quantity_map.csv", "m1_halflife.csv", "m2_pairs.csv", "m2_summary.csv",
@@ -226,8 +226,60 @@ def text_fix(html, lang):
     return "".join(out)
 
 
-def page(lang, title, body, depth=1, active=""):
+CSS += ' main.wide{max-width:1300px} .crumbs{font-size:.84rem;color:var(--fg3);margin:-.4rem 0 .9rem} .crumbs .sep{margin:0 .25rem} .crumbs [aria-current]{color:var(--fg2)} .leaf{display:grid;grid-template-columns:220px minmax(0,1fr);gap:2rem;align-items:start} .sibs{position:sticky;top:4.2rem;max-height:calc(100vh - 5rem);overflow:auto;font-size:.84rem;border-right:1px solid var(--line);padding-right:.8rem} .sibs ol,.sibs-m ol{list-style:none;margin:.2rem 0 .8rem;padding:0} .sibs li a,.sibs-m li a{display:block;padding:.18rem .4rem;border-radius:6px;color:var(--fg2)} .sibs li a:hover,.sibs-m li a:hover{background:var(--bg2);text-decoration:none} .sibs a[aria-current],.sibs-m a[aria-current]{background:var(--bg2);color:var(--fg);font-weight:600} .sibs summary,.sibs-m summary{cursor:pointer;font-weight:600;color:var(--fg);margin:.3rem 0} .sibs .sg{font-weight:600;margin:.2rem 0} .sibs-m{display:none;border:1px solid var(--line);border-radius:10px;padding:.4rem .8rem;margin:0 0 1rem;font-size:.9rem} .pn{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;border-top:1px solid var(--line);margin-top:2.4rem;padding-top:1rem;font-size:.92rem} .pn a[rel=next]{margin-left:auto;text-align:right} .pn small{display:block;color:var(--fg3)} @media(max-width:860px){.leaf{display:block}.sibs{display:none}.sibs-m{display:block}} @media print{.crumbs,.sibs,.sibs-m,.pn{display:none}.leaf{display:block}}'
+JS += ';document.addEventListener("keydown",function(e){if(e.altKey||e.ctrlKey||e.metaKey||e.shiftKey)return;var t=e.target;if(t&&t.closest&&t.closest("input,textarea,select,[contenteditable]"))return;var a=null;if(e.key==="ArrowLeft")a=document.querySelector("a[rel=prev]");else if(e.key==="ArrowRight")a=document.querySelector("a[rel=next]");if(a){location.href=a.href}});var sb=document.querySelector(".sibs"),cu=sb&&sb.querySelector("a[aria-current]");if(cu){sb.scrollTop=cu.offsetTop-sb.clientHeight/2}'
+
+LEAF_T = {"ko": dict(crumbs="위치", sibs="같은 계열", others="이 계열의 다른 면", pn="이전·다음", prev="이전", next="다음", next_group="다음 계열"),
+          "en": dict(crumbs="Breadcrumb", sibs="In this series", others="Other pages in this series", pn="Previous and next", prev="Previous", next="Next", next_group="Next series")}
+
+
+def metric_leaf(lang, cur):
+    t = T[lang]
+    items = [(f'{m["id"].upper()} · {m[lang]["name"]}', f'{m["id"]}.html') for m in METRICS] + [("Henrion & Fischhoff", "hf.html")]
+    return dict(crumbs=[(t["home"], "../index.html"), (t["metrics"], "index.html")], cur=cur,
+                groups=[(("물리 상수 지표" if lang == "ko" else "Physical-constants metrics"), items)])
+
+
+def leaf_html(lang, leaf, body):
+    """Breadcrumb, same-series list (sidebar on wide screens, collapsed box on narrow ones) and previous/next links.
+    leaf = dict(crumbs=[(label, href)...], groups=[(group label, [(label, href), ...]), ...], cur=href of this page)."""
+    L = LEAF_T[lang]
+    flat = [(lab, href, gi, glab) for gi, (glab, items) in enumerate(leaf["groups"]) for lab, href in items]
+    idx = next(i for i, x in enumerate(flat) if x[1] == leaf["cur"])
+    cur_g = flat[idx][2]
+    crumbs = " <span class='sep' aria-hidden='true'>›</span> ".join(f'<a href="{h}">{esc(l)}</a>' for l, h in leaf["crumbs"])
+    crumbs += f" <span class='sep' aria-hidden='true'>›</span> <span aria-current='page'>{esc(flat[idx][0])}</span>"
+
+    def lists():
+        out = []
+        many = len(leaf["groups"]) > 1
+        for gi, (glab, items) in enumerate(leaf["groups"]):
+            lis = "".join(f'<li><a href="{h}"' + (' aria-current="page"' if h == leaf["cur"] else "") + f'>{esc(l)}</a></li>' for l, h in items)
+            if many:
+                out.append(f'<details{" open" if gi == cur_g else ""}><summary>{esc(glab)} <small>({len(items)})</small></summary><ol>{lis}</ol></details>')
+            else:
+                out.append(f'<p class="sg">{esc(glab)} <small>({len(items)})</small></p><ol>{lis}</ol>')
+        return "".join(out)
+
+    side = f'<aside class="sibs"><nav aria-label="{L["sibs"]}">{lists()}</nav></aside>'
+    mobile = f'<details class="sibs-m"><summary>{L["others"]} ({sum(len(i) for _, i in leaf["groups"])})</summary><nav aria-label="{L["sibs"]}">{lists()}</nav></details>'
+    pn = []
+    if idx > 0:
+        p = flat[idx - 1]
+        pn.append(f'<a rel="prev" href="{p[1]}">← {esc(p[0])}</a>')
+    if idx + 1 < len(flat):
+        n = flat[idx + 1]
+        note = f'<small>{L["next_group"]}: {esc(n[3])}</small> ' if n[2] != cur_g else ""
+        pn.append(f'<a rel="next" href="{n[1]}">{note}{esc(n[0])} →</a>')
+    pnav = f'<nav class="pn" aria-label="{L["pn"]}">{"".join(pn)}</nav>'
+    return (f'<nav class="crumbs" aria-label="{L["crumbs"]}">{crumbs}</nav><div class="leaf">{side}<div class="leafbody">{mobile}'
+            f'{body}{pnav}</div></div>')
+
+
+def page(lang, title, body, depth=1, active="", leaf=None):
     body = text_fix(body, lang)
+    if leaf:   # 1.1.3: breadcrumb, same-series list and previous/next on leaf pages
+        body = leaf_html(lang, leaf, body)
     if lang == "en" and title[:1].islower():   # 1.1.2: sentence case for lowercase CODATA names in the tab title
         title = title[0].upper() + title[1:]
     t = T[lang]
@@ -248,7 +300,7 @@ def page(lang, title, body, depth=1, active=""):
 <style>{CSS}</style></head><body>
 <header><a class="brand" href="{root}{lang}/index.html">{t['site']}</a><nav>{navh}</nav>
 <div class="right"><button id="theme" class="theme" type="button" aria-label="{'화면 테마' if lang == 'ko' else 'Color theme'}">◑</button><a class="lang" href="{root}{other}/index.html">{t['lang_other']}</a></div></header>
-<main>{body}</main>
+<main{' class="wide"' if leaf else ""}>{body}</main>
 <footer>{t['site']} · {t['version']} {VERSION} · {t['built']} {BUILD_DATE} · <a href="{REPO}">GitHub</a> · {t['hub']} <a href="https://bowonkwon.github.io/{hub}">bowonkwon.github.io</a></footer>
 <script>{JS}</script></body></html>"""
 
@@ -714,7 +766,7 @@ def build():
                 rows = [[f'<a href="../constants/{r["qid"]}.html">{esc(qmap[r["qid"]][name])}</a>', f'{r["ed_before"]}→{r["ed_after"]}', dirl[r["direction"]][0 if lang == "ko" else 1], r["u_rel_measured"]] for r in sorted(m6, key=lambda r: (r["ed_after"], r["qid"]))]
                 parts.append(table([t["name"], t["edition"], "전환" if lang == "ko" else "Transition", t["urel"] + (" (측정값일 때)" if lang == "ko" else " (when measured)")], rows, num_cols=(3,)))
             parts.append(f'<p class="files"><a href="../../data/{m["file"]}">{t["download"]}: {m["file"]}</a></p>')
-            (base / "metrics" / f'{m["id"]}.html').write_text(page(lang, d["name"], "".join(parts), 2, "metrics"), encoding="utf-8")
+            (base / "metrics" / f'{m["id"]}.html').write_text(page(lang, d["name"], "".join(parts), 2, "metrics", leaf=metric_leaf(lang, f'{m["id"]}.html')), encoding="utf-8")
 
         # ---------- Henrion & Fischhoff page
         r73 = [r for r in hf if r["reference"] == "1973" and r["qid"] != "ALL"]
@@ -734,7 +786,7 @@ def build():
         hfb = hfb.replace("</h1>", "</h1>" + takeaway(lang, hftk), 1)
         rows = [[esc(qmap[r["qid"]][name]), r["edition"], r["reference"], r["z_old"]] for r in hf if r["qid"] != "ALL"]
         hfb += table([t["name"], t["edition"], "기준 판" if lang == "ko" else "Reference", "z"], rows, num_cols=(3,)) + '<p class="files"><a href="../../data/hf_repro.csv">CSV: hf_repro.csv</a></p>'
-        (base / "metrics" / "hf.html").write_text(page(lang, "Henrion & Fischhoff", hfb, 2, "metrics"), encoding="utf-8")
+        (base / "metrics" / "hf.html").write_text(page(lang, "Henrion & Fischhoff", hfb, 2, "metrics", leaf=metric_leaf(lang, "hf.html")), encoding="utf-8")
 
         # ---------- constants
         lst = []
@@ -776,7 +828,10 @@ def build():
 <figure><div class="legend"><span style="--c:var(--s1)">{"판별 값 ±1σ" if lang == "ko" else "Value ±1σ by edition"}</span><span class="dash" style="--c:var(--ref)">2022</span></div>{chart_funnel(fr, lang)}
 <figcaption>{"2022 판 값에서의 상대 편차(대칭 로그 축). 속이 빈 원은 오차 막대가 2022 판 값에 닿지 않은 판, 네모는 정의값." if lang == "ko" else "Relative deviation from the 2022 value (symmetric-log axis). Open circles: the error bar does not reach the 2022 value. Squares: exact."}</figcaption></figure>
 {table(CONST_HEAD[lang], tab, num_cols=(2, 3, 5, 6))}"""
-            (base / "constants" / f"{q}.html").write_text(page(lang, qm[name], body, 2, "constants"), encoding="utf-8")
+            (base / "constants" / f"{q}.html").write_text(page(lang, qm[name], body, 2, "constants", leaf=dict(
+                crumbs=[(t["home"], "../index.html"), (t["constants"], "index.html")], cur=f"{q}.html",
+                groups=[(lab if lang == "ko" else cap(lab) + "s", [(f'{qmap[x]["symbol"]} · {qmap[x][name]}', f"{x}.html") for x in order if qmap[x]["layer"] == layer])
+                        for layer, lab in (("K", t["core"]), ("D", t["display"]), ("S", t["cand"]))])), encoding="utf-8")
 
         # ---------- 1.1 atomic-weights chapter
         import aw_site

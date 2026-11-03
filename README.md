@@ -4,7 +4,7 @@
 
 - **사이트:** https://bowonkwon.github.io/Physical-Constants-Metrics/ ([한국어](https://bowonkwon.github.io/Physical-Constants-Metrics/ko/) · [English](https://bowonkwon.github.io/Physical-Constants-Metrics/en/))
 - **읽기:** 핵심 결과를 글로 읽는 면 — [한국어](https://bowonkwon.github.io/Physical-Constants-Metrics/ko/reading.html) · [English](https://bowonkwon.github.io/Physical-Constants-Metrics/en/reading.html)
-- **판:** 1.1.2 (2026. 11. 3.) — 공개본 점검 반영(표시·표기). 1.1.1(2026. 11. 2.) 영어 면 교정과 계산 코드 정비, 1.1(원자량 장)도 같은 날, 1.0은 2026. 11. 1.
+- **판:** 1.1.3 (2026. 11. 4.) — 같은 층 면 사이 이동(위치 표시줄·같은 계열 목록·이전/다음). 1.1.2 (2026. 11. 3.) 공개본 점검 반영(표시·표기). 1.1.1(2026. 11. 2.) 영어 면 교정과 계산 코드 정비, 1.1(원자량 장)도 같은 날, 1.0은 2026. 11. 1.
 - **다른 공개 자료:** https://bowonkwon.github.io/
 
 ## 무엇이 들어 있나
@@ -19,6 +19,12 @@
 | M6 정의값 전환 | 측정값이 정의값이 된 상수(빛의 속력 1983, 2019년 SI 개정)와 그 반대(진공 투자율·몰질량 상수) |
 
 M2~M4의 분모는 서로 정확한 환산 관계가 없도록 고른 핵심 상수 17개입니다(같은 규칙에 맞는 후보 3개를 더한 민감도 결과도 싣습니다). 상수별 면은 표시용 상수 11개와 민감도 후보 3개를 더해 31개입니다. Henrion & Fischhoff(1986)의 보정 지표를 이 자료로 다시 계산한 면이 따로 있습니다.
+
+## 1.1.3 — 면 사이 이동 (2026. 11. 4.)
+
+- 지표·상수·원자량 지표·원소 면에 위치 표시줄(홈 › 상수 › …), 같은 계열의 다른 면 목록(넓은 화면은 왼쪽, 좁은 화면은 제목 위 접힘 상자), 본문 끝의 이전·다음 링크를 넣었습니다. ←·→ 키로도 넘어갑니다.
+- M3 면 한국어 요약의 「20개 중 1개 꼴」을 「22개 중 1개 꼴」로 고쳤습니다(1.1.2 에서 영어만 고쳤던 것).
+- 수치는 바뀌지 않았습니다.
 
 ## 1.1.2 — 공개본 점검 반영 (2026. 11. 3.)
 
@@ -75,7 +81,7 @@ src/    fetch_raw.py → parse_codata.py → handcheck.py → metrics.py → bui
 How often did the error bars that scientists published miss the next edition's value? This site joins the nine editions of the CODATA recommended values of the fundamental physical constants (1973–2022) and the 1969 adjustment that preceded them, and turns the changes in values and uncertainties into metrics. Every metric carries its definition, formula, denominator and caveats; every number carries its sample size and a 95% interval.
 
 - **Site:** https://bowonkwon.github.io/Physical-Constants-Metrics/en/ · **Reading:** [en/reading.html](https://bowonkwon.github.io/Physical-Constants-Metrics/en/reading.html)
-- **Version:** 1.1.2 (Nov 3, 2026), review of the public site applied (display and notation); 1.1.1 (Nov 2, 2026) English corrections and code fixes and 1.1 (atomic-weights chapter) the same day, 1.0 on Nov 1, 2026
+- **Version:** 1.1.3 (Nov 4, 2026), navigation between pages of the same level; 1.1.2 (Nov 3, 2026) review of the public site applied (display and notation); 1.1.1 (Nov 2, 2026) English corrections and code fixes and 1.1 (atomic-weights chapter) the same day, 1.0 on Nov 1, 2026
 - **Other public materials:** https://bowonkwon.github.io/en/
 
 | Metric | Contents |
@@ -88,6 +94,8 @@ How often did the error bars that scientists published miss the next edition's v
 | M6 Exact-value transitions | Constants that became exact (speed of light 1983; the 2019 SI revision) and the reverse (vacuum magnetic permeability, molar mass constant) |
 
 The denominator of M2–M4 is 17 core constants, chosen so that none is an exact function of the others (a sensitivity check adds three candidates meeting the same rule); the constant pages add 11 display constants and the 3 candidates (31 in all). A separate page recomputes Henrion & Fischhoff's (1986) calibration indices on these data.
+
+**1.1.3: navigation.** Metric, constant, atomic-weight metric and element pages now have a breadcrumb, a list of the other pages in the same series (a sidebar on wide screens, a collapsed box above the title on narrow ones) and previous/next links at the end; the arrow keys move between them. The Korean takeaway on M3 now says once in 22 (1.1.2 fixed only the English). No number changed.
 
 **1.1.2: review of the public site.** No published metric value changed. The language link now opens the same page in the other language instead of its home page. 'The 27 quantities on this site' is corrected to 31 (the map has 31 rows: 17 core, 11 display, 3 candidates; the denominator of M6). Negative numbers in tables and axis labels use the minus sign (−); tooltips and the M1 table use the ×10ⁿ form instead of e-notation; Korean pages write year ranges with a wave dash and English tables with an en dash. Chart alternative text follows the page language, and the other-language subtitle on constant and element pages is marked with its language. English pages: sentence case for legends, headers and tags; 'digits in parentheses'; 4.55% given as 'once in 22' throughout; double quotation marks; commas in element lists; parenthesized denominators in formulas; clearer M1 headers (Editions (n), Span); '(years)' for '(y)'.
 
