@@ -308,7 +308,9 @@ def build(lang, base, H, out_root):
                                [[f'<a href="el/{i["symbol"]}.html">{i["symbol"]}</a>', f'{i["year_prev"]}: {esc(i["prev"])}', f'{i["year_interval"]}: {esc(i["interval"])}', i["width_ratio"], ("예" if lang == "ko" else "yes") if i["interval_contains_prev_value"] == "1" else ("아니오" if lang == "ko" else "no")] for i in iv],
                                num_cols=(3,)))
         parts.append(f'<p class="files"><a href="../../data/{m["file"]}">{t["download"]}: {m["file"]}</a></p>' + credit(lang, H))
-        (d / f'{m["id"]}.html').write_text(page(lang, m[lang]["name"], "".join(parts), 2, "atomic"), encoding="utf-8")
+        (d / f'{m["id"]}.html').write_text(page(lang, m[lang]["name"], "".join(parts), 2, "atomic", leaf=dict(
+            crumbs=[(("홈" if lang == "ko" else "Home"), "../index.html"), (t["nav"], "index.html")], cur=f'{m["id"]}.html',
+            groups=[(t["metrics"], [(f'{x["id"].upper()} · {x[lang]["name"]}', f'{x["id"]}.html') for x in AW_METRICS])])), encoding="utf-8")
 
     # element pages
     head = {"ko": [("연도", "권고·개정한 해"), ("값(원 표기)", "CIAAW 가 발표한 그대로. 괄호 안은 마지막 자리의 불확도(확장 범위)"), ("표기", "값(불확도)·구간·불확도 없음"),
@@ -345,7 +347,9 @@ def build(lang, base, H, out_root):
                 takeaway(lang, element_takeaway(lang, s, rs, pairs, el)) +
                 (f'<figure>{chart_element(rs, lang, H)}<figcaption>{esc(cap2)}</figcaption></figure>' if len([r for r in rs if r["value_12C"]]) >= 2 else "") +
                 table(head[lang], tab, num_cols=(4, 5)) + credit(lang, H))
-        (d / "el" / f"{s}.html").write_text(page(lang, f"{s} · {name(s)}", body, 3, "atomic"), encoding="utf-8")
+        (d / "el" / f"{s}.html").write_text(page(lang, f"{s} · {name(s)}", body, 3, "atomic", leaf=dict(
+            crumbs=[(("홈" if lang == "ko" else "Home"), "../../index.html"), (t["nav"], "../index.html")], cur=f"{s}.html",
+            groups=[(t["elements"], [(f"{x} · {name(x)}", f"{x}.html") for x in sorted(els, key=lambda x: Z.get(x, 999))])])), encoding="utf-8")
     return N
 
 
