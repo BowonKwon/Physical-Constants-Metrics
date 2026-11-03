@@ -45,7 +45,7 @@ L = {
     "en": dict(nav="Atomic weights", title="Atomic weights — the revision record of standard atomic weights", lead="How the standard atomic weights recommended by CIAAW since 1902 changed, and whether each new value lay within the previous recommendation's uncertainty range. The question of the physical-constants chapter, asked of a record that defines its uncertainties differently.",
                metrics="Metrics", elements="Elements", year="Year", value="Value (as printed)", kind="Notation", scale="Scale", v12="Value, ¹²C scale", zprev="z vs previous", doi="Report",
                kinds={"unc": "value(uncertainty)", "interval": "interval", "none": "no uncertainty", "exact": "reference (exact)", "withdrawn": "withdrawn"},
-               credit_h="Source", outside="outside previous range", no_saw="no standard atomic weight (radioactive)", sym="Symbol", name="Name", nrev="Revisions", last="Latest revision",
+               credit_h="Source", outside="outside previous range", no_saw="No standard atomic weight (radioactive)", sym="Symbol", name="Name", nrev="Revisions", last="Latest revision",
                cur="Current value", download="Download CSV"),
 }
 
@@ -80,7 +80,7 @@ def numbers():
         aw_a2_dis=len(dis), aw_a2_dis_list=", ".join(f"{p['symbol']} {p['year_new']}" for p in dis),
         aw_a2_out_early=sum(1 for p in pairs if p["outside_prev_range"] == "1" and 1961 <= int(p["year_prev"]) <= 1969),
         aw_a3_med=f"{s['a3_median_abs_z']:.2f}", aw_a3_half=f"{100 * s['a3_share_le_half']:.0f}",
-        aw_a4_n=len(s["a4_unchanged_since_1969"]), aw_a4_list="·".join(s["a4_unchanged_since_1969"]),
+        aw_a4_n=len(s["a4_unchanged_since_1969"]), aw_a4_list="·".join(s["a4_unchanged_since_1969"]), aw_a4_list_en=", ".join(s["a4_unchanged_since_1969"]),
         aw_a4_2000=sum(1 for e in saw if int(e["last"]) >= 2000),
         aw_a5_n=len(iv), aw_a5_ratio=f"{s['a5_ratio_median']:.1f}", aw_a5_max=f"{s['a5_ratio_max']:.1f}",
     )
@@ -96,7 +96,7 @@ def chart_z(pairs, lang, H, W=900, Hh=340):
     def X(v): return Lm + (v - x0) / (x1 - x0) * (W - Lm - R)
 
     def Y(v): return Tp + (cap - max(-cap, min(cap, v))) / (2 * cap) * (Hh - Tp - B)
-    o = [f'<svg viewBox="0 0 {W} {Hh}" role="img" aria-label="revision z by year">']
+    o = [f'<svg viewBox="0 0 {W} {Hh}" role="img" aria-label="{"연도별 개정 z" if lang == "ko" else "Revision z by year"}">']
     for v in (-8, -4, -1, 0, 1, 4, 8):
         cls = "ref" if abs(v) == 1 else "grid"
         o.append(f'<line class="{cls}" x1="{Lm}" x2="{W-R}" y1="{Y(v):.1f}" y2="{Y(v):.1f}"/><text x="{Lm-6}" y="{Y(v)+4:.1f}" text-anchor="end">{v:+d}</text>'.replace(">+0<", ">0<"))
@@ -119,12 +119,12 @@ def chart_z(pairs, lang, H, W=900, Hh=340):
     return "".join(o)
 
 
-def chart_bars(items, H, W=900, Hh=260, unit=""):
+def chart_bars(items, H, W=900, Hh=260, unit="", lang="en"):
     esc = H["esc"]
     Lm, R, Tp, B = 46, 16, 16, 40
     vmax = max(v for _, v in items) or 1
     bw = (W - Lm - R) / len(items)
-    o = [f'<svg viewBox="0 0 {W} {Hh}" role="img" aria-label="bar chart">']
+    o = [f'<svg viewBox="0 0 {W} {Hh}" role="img" aria-label="{"막대그래프" if lang == "ko" else "Bar chart"}">']
     step = max(1, int(math.ceil(vmax / 5 / 5) * 5))
     for v in range(0, int(vmax) + step, step):
         y = Tp + (1 - v / (vmax * 1.05)) * (Hh - Tp - B)
@@ -169,7 +169,7 @@ def chart_element(rows, lang, H, W=900, Hh=320):
     def X(v): return Lm + (v - x0) / (x1 - x0) * (W - Lm - R)
 
     def Y(v): return Tp + (fm - fz(v)) / (2 * fm) * (Hh - Tp - B)
-    o = [f'<svg viewBox="0 0 {W} {Hh}" role="img" aria-label="atomic weight history">']
+    o = [f'<svg viewBox="0 0 {W} {Hh}" role="img" aria-label="{"원자량 변천" if lang == "ko" else "Atomic weight history"}">']
     e = int(round(math.log10(lt)))
     te = int(round(math.log10(top)))
     for t in [0.0] + [sgn * 10.0 ** k for k in range(e + 1, te + 1, max(1, (te - e) // 3 or 1)) for sgn in (1, -1)]:
@@ -256,7 +256,7 @@ def build(lang, base, H, out_root):
               "물리 상수(표준불확도 기준)와 원자량(확장 범위 기준)은 불확도의 정의가 달라 놓침률을 같은 눈금으로 견주지 않는다 — 두 장을 나란히 두는 까닭이 그 차이에 있다."]
     else:
         tk = [f"CIAAW has recommended or revised standard atomic weights {N['aw_rows']} times since 1902; the {N['aw_saw']} elements with a standard atomic weight changed {N['aw_rev_mean']} times on average.",
-              f"CIAAW uncertainties are not standard uncertainties (1σ) but expanded ranges (wide ranges that normal materials fall in with great certitude). So {N['aw_a2_out']} of {N['aw_a2_n']} revisions ({N['aw_a2_out_pct']}%) put the new value outside the previous range, and {N['aw_a2_dis']} had ranges that do not overlap at all ({N['aw_a2_dis_list']}).",
+              f"CIAAW uncertainties are not standard uncertainties (1σ) but expanded ranges (wide ranges that normal materials fall in with great certitude). So only {N['aw_a2_out']} of {N['aw_a2_n']} revisions ({N['aw_a2_out_pct']}%) put the new value outside the previous range, and {N['aw_a2_dis']} had ranges that do not overlap at all ({N['aw_a2_dis_list']}).",
               f"Since 2009, {N['aw_a5_n']} elements have been given as an interval rather than a single value; in all {N['aw_a5_n']} the new interval contains the previous value.",
               "Physical constants (standard uncertainties) and atomic weights (expanded ranges) define uncertainty differently, so their miss rates are not read on one scale; that difference is why the two chapters sit side by side."]
     stats = f"""<div class="stats">
@@ -283,11 +283,11 @@ def build(lang, base, H, out_root):
             for r in long:
                 dec[int(r["year"]) // 10 * 10] = dec.get(int(r["year"]) // 10 * 10, 0) + 1
             items = [(f"{k}s" if lang == "en" else f"{k}년대", dec.get(k, 0)) for k in range(1900, 2030, 10)]
-            parts.append(f'<figure>{chart_bars([(a[:-1] if lang == "ko" else a[:-1], v) for a, v in items], H)}<figcaption>{"10년 단위 개정 건수." if lang == "ko" else "Revisions per decade."}</figcaption></figure>')
+            parts.append(f'<figure>{chart_bars([(a[:-1] if lang == "ko" else a[:-1], v) for a, v in items], H, lang=lang)}<figcaption>{"10년 단위 개정 건수." if lang == "ko" else "Revisions per decade."}</figcaption></figure>')
             parts.append(table([("시대" if lang == "ko" else "Era"), ("개정" if lang == "ko" else "Revisions"), ("보고 연도" if lang == "ko" else "Report years"), ("한 해 평균" if lang == "ko" else "Per year")],
                                [[e["era"], e["revisions"], e["report_years"], e["revisions_per_year"]] for e in eras], num_cols=(1, 2, 3)))
             top = sorted([e for e in els.values() if e["has_standard_atomic_weight"] == "1"], key=lambda e: (-int(e["n_revisions"]), e["symbol"]))[:15]
-            parts.append(table([t["sym"], t["name"], t["nrev"], t["last"], ("평균 간격(년)" if lang == "ko" else "Mean gap (y)")],
+            parts.append(table([t["sym"], t["name"], t["nrev"], t["last"], ("평균 간격(년)" if lang == "ko" else "Mean gap (years)")],
                                [[f'<a href="el/{e["symbol"]}.html">{e["symbol"]}</a>', esc(name(e["symbol"])), e["n_revisions"], e["last"], e["mean_gap"]] for e in top], num_cols=(2, 3, 4)))
         if m["id"] in ("a2", "a3"):
             parts.append(f'<figure>{chart_z(pairs, lang, H)}<figcaption>{esc(cap)}</figcaption></figure>')
@@ -300,7 +300,7 @@ def build(lang, base, H, out_root):
             dec = {}
             for e in saw:
                 dec[int(e["last"]) // 10 * 10] = dec.get(int(e["last"]) // 10 * 10, 0) + 1
-            parts.append(f'<figure>{chart_bars([(str(k), dec.get(k, 0)) for k in range(1960, 2030, 10)], H)}<figcaption>{"마지막 개정 연도(10년 단위)별 원소 수." if lang == "ko" else "Elements by decade of latest revision."}</figcaption></figure>')
+            parts.append(f'<figure>{chart_bars([(str(k), dec.get(k, 0)) for k in range(1960, 2030, 10)], H, lang=lang)}<figcaption>{"마지막 개정 연도(10년 단위)별 원소 수." if lang == "ko" else "Elements by decade of latest revision."}</figcaption></figure>')
             old = sorted([e for e in saw if int(e["last"]) <= 1969], key=lambda e: e["last"])
             parts.append(table([t["sym"], t["name"], t["last"], t["cur"]], [[f'<a href="el/{e["symbol"]}.html">{e["symbol"]}</a>', esc(name(e["symbol"])), e["last"], esc(e["current"])] for e in old], num_cols=(2,)))
         if m["id"] == "a5":
@@ -313,7 +313,7 @@ def build(lang, base, H, out_root):
     # element pages
     head = {"ko": [("연도", "권고·개정한 해"), ("값(원 표기)", "CIAAW 가 발표한 그대로. 괄호 안은 마지막 자리의 불확도(확장 범위)"), ("표기", "값(불확도)·구간·불확도 없음"),
                    ("척도", "1961년 이전은 산소 = 16, 이후는 ¹²C = 12"), ("¹²C 기준 값", "1961년 이전 값에 15.9994/16 을 곱한 값"), ("직전 대비 z", "(새 값 − 직전 값) ÷ 직전 불확도"), ("원 보고서", "CIAAW 보고서 DOI")],
-            "en": [("Year", "year of the recommendation"), ("Value (as printed)", "as printed in CIAAW's table; digits in brackets are the uncertainty (expanded range) in the last digits"), ("Notation", "value(uncertainty), interval or no uncertainty"),
+            "en": [("Year", "year of the recommendation"), ("Value (as printed)", "as printed in CIAAW's table; digits in parentheses are the uncertainty (expanded range) in the last digits"), ("Notation", "value(uncertainty), interval or no uncertainty"),
                    ("Scale", "before 1961 oxygen = 16, from 1961 ¹²C = 12"), ("Value, ¹²C scale", "pre-1961 values multiplied by 15.9994/16"), ("z vs previous", "(new − previous) ÷ previous uncertainty"), ("Report", "DOI of the CIAAW report")]}
     zmap = {(p["symbol"], p["year_new"]): p["z_prev"] for p in pairs}
     for s in els:
@@ -341,7 +341,7 @@ def build(lang, base, H, out_root):
         tag = "" if el["has_standard_atomic_weight"] == "1" else f'<span class="tag">{t["no_saw"]}</span>'
         cap2 = ("현재 값(또는 마지막 값)에서의 상대 편차, 대칭 로그 축. 막대는 불확도(확장 범위), 빈 원은 불확도 없는 값, 주황 사각은 구간." if lang == "ko"
                 else "Relative deviation from the current (or last) value, symmetric-log axis. Bars: uncertainty (expanded range); open circles: no uncertainty; orange boxes: intervals.")
-        body = (f'<p><span class="tag k">{"원자량" if lang == "ko" else "Atomic weight"}</span>{tag}</p><h1>{s} · {esc(name(s))}</h1><p class="lead">{esc(el["element"] if lang == "ko" else KO.get(s, ""))}</p>' +
+        body = (f'<p><span class="tag k">{"원자량" if lang == "ko" else "Atomic weight"}</span>{tag}</p><h1>{s} · {esc(name(s))}</h1><p class="lead" lang="{"en" if lang == "ko" else "ko"}">{esc(el["element"] if lang == "ko" else KO.get(s, ""))}</p>' +
                 takeaway(lang, element_takeaway(lang, s, rs, pairs, el)) +
                 (f'<figure>{chart_element(rs, lang, H)}<figcaption>{esc(cap2)}</figcaption></figure>' if len([r for r in rs if r["value_12C"]]) >= 2 else "") +
                 table(head[lang], tab, num_cols=(4, 5)) + credit(lang, H))

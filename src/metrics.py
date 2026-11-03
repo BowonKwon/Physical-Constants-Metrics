@@ -4,7 +4,7 @@
 Outputs (data/derived/)
   m1_halflife.csv          relative-uncertainty half-life per quantity
   m2_pairs.csv             every consecutive-edition pair (z with both uncertainties, z_old)
-  m2_summary.csv           exceedance rates |z|>1,2,3 vs normal, with cluster-bootstrap CIs
+  m2_summary.csv           exceedance rates |z| > 1,2,3 vs normal, with cluster-bootstrap CIs
   m3_vs_latest.csv         every (edition, quantity) compared with the 2022 edition
   m3_summary.csv           miss rates by edition and pooled, interquartile and surprise indices
   m4_tail.csv              Student-t fit (nu, scale) to the pooled pair z, bootstrap CIs
@@ -35,7 +35,7 @@ from scipy import optimize, stats
 getcontext().prec = 40
 ROOT = Path(__file__).resolve().parent.parent
 DER = ROOT / "data" / "derived"
-# hand-maintained map of the 27 quantities; kept outside data/derived so that clearing derived/ cannot lose it
+# hand-maintained map of the 31 quantities; kept outside data/derived so that clearing derived/ cannot lose it
 QMAP = ROOT / "data" / "manual" / "quantity_map.csv"
 LATEST = 2022
 B = 10_000
