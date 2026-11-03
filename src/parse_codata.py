@@ -26,7 +26,7 @@ getcontext().prec = 40
 ROOT = Path(__file__).resolve().parent.parent
 RAW = ROOT / "data" / "raw"
 DER = ROOT / "data" / "derived"
-# hand-maintained map of the 27 quantities; kept outside data/derived so that clearing derived/ cannot lose it
+# hand-maintained map of the 31 quantities; kept outside data/derived so that clearing derived/ cannot lose it
 QMAP = ROOT / "data" / "manual" / "quantity_map.csv"
 ASCII_EDITIONS = [1998, 2002, 2006, 2010, 2014, 2018, 2022]
 

@@ -4,7 +4,7 @@
 
 - **사이트:** https://bowonkwon.github.io/Physical-Constants-Metrics/ ([한국어](https://bowonkwon.github.io/Physical-Constants-Metrics/ko/) · [English](https://bowonkwon.github.io/Physical-Constants-Metrics/en/))
 - **읽기:** 핵심 결과를 글로 읽는 면 — [한국어](https://bowonkwon.github.io/Physical-Constants-Metrics/ko/reading.html) · [English](https://bowonkwon.github.io/Physical-Constants-Metrics/en/reading.html)
-- **판:** 1.1.1 (2026. 11. 2.) — 영어 면 교정과 계산 코드 정비. 1.1(원자량 장)과 같은 날, 1.0은 2026. 11. 1.
+- **판:** 1.1.2 (2026. 11. 3.) — 공개본 점검 반영(표시·표기). 1.1.1(2026. 11. 2.) 영어 면 교정과 계산 코드 정비, 1.1(원자량 장)도 같은 날, 1.0은 2026. 11. 1.
 - **다른 공개 자료:** https://bowonkwon.github.io/
 
 ## 무엇이 들어 있나
@@ -19,6 +19,15 @@
 | M6 정의값 전환 | 측정값이 정의값이 된 상수(빛의 속력 1983, 2019년 SI 개정)와 그 반대(진공 투자율·몰질량 상수) |
 
 M2~M4의 분모는 서로 정확한 환산 관계가 없도록 고른 핵심 상수 17개입니다(같은 규칙에 맞는 후보 3개를 더한 민감도 결과도 싣습니다). 상수별 면은 표시용 상수 11개와 민감도 후보 3개를 더해 31개입니다. Henrion & Fischhoff(1986)의 보정 지표를 이 자료로 다시 계산한 면이 따로 있습니다.
+
+## 1.1.2 — 공개본 점검 반영 (2026. 11. 3.)
+
+- 공개된 지표 값은 바뀌지 않았습니다.
+- 언어 전환 링크가 상대 언어의 첫 면이 아니라 같은 면으로 갑니다.
+- 「이 사이트가 다루는 27개 양」을 31개로 고쳤습니다(대응표 31행: 핵심 17·표시 11·후보 3, M6 의 분모).
+- 표와 그림 눈금의 음수 부호를 −로, 툴팁과 M1 표의 지수 표기(5.597e-06)를 ×10ⁿ 꼴로, 한국어 면의 연도 범위를 물결표(1998~2022)로, 영어 면 표의 연도 범위를 줄표로 맞췄습니다.
+- 그림의 대체 글을 면의 언어로, 상수 면·원소 면의 다른 언어 부제에 언어 표시를 달았습니다.
+- 영어 면: 범례·표 머리글·꼬리표 첫 글자 대문자, 「digits in brackets」→「in parentheses」, 4.55% 를 「22번에 1번」으로 통일, 홑따옴표를 겹따옴표로, 원소 나열의 가운뎃점을 쉼표로, 공식의 분모 괄호, M1 표 머리글(Editions (n)·Span), 「(y)」→「(years)」 등.
 
 ## 1.1.1 — 교정 (2026. 11. 2.)
 
@@ -66,7 +75,7 @@ src/    fetch_raw.py → parse_codata.py → handcheck.py → metrics.py → bui
 How often did the error bars that scientists published miss the next edition's value? This site joins the nine editions of the CODATA recommended values of the fundamental physical constants (1973–2022) and the 1969 adjustment that preceded them, and turns the changes in values and uncertainties into metrics. Every metric carries its definition, formula, denominator and caveats; every number carries its sample size and a 95% interval.
 
 - **Site:** https://bowonkwon.github.io/Physical-Constants-Metrics/en/ · **Reading:** [en/reading.html](https://bowonkwon.github.io/Physical-Constants-Metrics/en/reading.html)
-- **Version:** 1.1.1 (Nov 2, 2026), English corrections and code fixes; 1.1 (atomic-weights chapter) came out the same day, 1.0 on Nov 1, 2026
+- **Version:** 1.1.2 (Nov 3, 2026), review of the public site applied (display and notation); 1.1.1 (Nov 2, 2026) English corrections and code fixes and 1.1 (atomic-weights chapter) the same day, 1.0 on Nov 1, 2026
 - **Other public materials:** https://bowonkwon.github.io/en/
 
 | Metric | Contents |
@@ -79,6 +88,8 @@ How often did the error bars that scientists published miss the next edition's v
 | M6 Exact-value transitions | Constants that became exact (speed of light 1983; the 2019 SI revision) and the reverse (vacuum magnetic permeability, molar mass constant) |
 
 The denominator of M2–M4 is 17 core constants, chosen so that none is an exact function of the others (a sensitivity check adds three candidates meeting the same rule); the constant pages add 11 display constants and the 3 candidates (31 in all). A separate page recomputes Henrion & Fischhoff's (1986) calibration indices on these data.
+
+**1.1.2: review of the public site.** No published metric value changed. The language link now opens the same page in the other language instead of its home page. 'The 27 quantities on this site' is corrected to 31 (the map has 31 rows: 17 core, 11 display, 3 candidates; the denominator of M6). Negative numbers in tables and axis labels use the minus sign (−); tooltips and the M1 table use the ×10ⁿ form instead of e-notation; Korean pages write year ranges with a wave dash and English tables with an en dash. Chart alternative text follows the page language, and the other-language subtitle on constant and element pages is marked with its language. English pages: sentence case for legends, headers and tags; 'digits in parentheses'; 4.55% given as 'once in 22' throughout; double quotation marks; commas in element lists; parenthesized denominators in formulas; clearer M1 headers (Editions (n), Span); '(years)' for '(y)'.
 
 **1.1.1: corrections.** No published number changed: rerunning everything from the raw files reproduces every metric CSV of 1.1 byte for byte. The placeholder `{e}` that showed in the note on the elementary-charge page is fixed (both languages). English pages: passages whose meaning differed from the Korean (ten constant-page notes; A2's "cannot be determined from the public material"; a sentence that called a growing uncertainty "barely changed") now match, and singular/plural forms on the element pages ("1 times"), grammar, terms (relative standard uncertainty, Stefan–Boltzmann, Table I) and table-header capitalization are corrected; spelling is now American. Code: eight places where a metric's definition and its code disagreed at rare edge cases are settled. M2 and M3 compare unrounded z with the thresholds; "pairs whose value did not change" are decided from the change in value; the M1 slope boundary of −0.001, the standard error when an uncertainty never changes, the A1 median of an even count, and the A2 conversion of a pre-1961 new range now follow the definitions. For M2's pairing (neighboring measured editions, skipping any in between), the definition was reworded to match the code. Python 3.11 no longer fails on the build script; `requirements.txt` and `.gitattributes` (CSV line endings fixed to LF) are added.
 

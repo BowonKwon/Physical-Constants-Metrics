@@ -22,10 +22,10 @@ from registry import EDITIONS, LATEST, METRICS, SOURCES
 
 ROOT = Path(__file__).resolve().parent.parent
 DER = ROOT / "data" / "derived"
-# hand-maintained map of the 27 quantities; kept outside data/derived so that clearing derived/ cannot lose it
+# hand-maintained map of the 31 quantities; kept outside data/derived so that clearing derived/ cannot lose it
 QMAP = ROOT / "data" / "manual" / "quantity_map.csv"
 OUT = ROOT / "site"
-VERSION = "1.1.1"
+VERSION = "1.1.2"
 BUILD_DATE = "2026-11-02"
 REPO = "https://github.com/BowonKwon/Physical-Constants-Metrics"
 PUBLIC_DATA = ["constants_long.csv", "quantity_map.csv", "m1_halflife.csv", "m2_pairs.csv", "m2_summary.csv",
@@ -33,7 +33,7 @@ PUBLIC_DATA = ["constants_long.csv", "quantity_map.csv", "m1_halflife.csv", "m2_
                "hf_repro.csv", "sens_all_rows.csv", "sens_candidates.csv", "handcheck_mapped.csv", "handcheck_early.csv"]
 DATA_DESC = {
     "constants_long.csv": ("상수 × 판 긴 표: 값·표준불확도·상대 불확도·단위·정의값 여부·원 표기·원자료 위치", "Constant × edition long table: value, standard uncertainty, relative uncertainty, unit, exact flag, printed form, source location"),
-    "quantity_map.csv": ("27개 양의 대응표: 기호·이름(한·영)·판별 원 이름·정의값 시점·층(핵심/표시)·한국어 이름 근거", "Map of the 27 quantities: symbol, names, source names by edition, exact-from edition, layer, basis of the Korean name"),
+    "quantity_map.csv": ("31개 양의 대응표: 기호·이름(한·영)·판별 원 이름·정의값 시점·층(핵심/표시)·한국어 이름 근거", "Map of the 31 quantities: symbol, names, source names by edition, exact-from edition, layer, basis of the Korean name"),
     "m1_halflife.csv": ("M1 상대 불확도 반감기", "M1 relative-uncertainty half-life"),
     "m2_pairs.csv": ("M2 연속 판 쌍 전부(z, z_옛)", "M2 every consecutive-edition pair (z, z_old)"),
     "m2_summary.csv": ("M2 초과율과 신뢰구간", "M2 exceedance rates and intervals"),
@@ -57,10 +57,10 @@ NOTE_KO = {
     "a_e": "1969·1973 판은 g/2 = 1 + aₑ 로 적었다. 1을 뺀 값을 쓴다.", "a_mu": "1973 판은 g/2 = 1 + a_μ 로 적었다. 1을 뺀 값을 쓴다.",
     "mup_muN": "물속 양성자가 아닌 자유 양성자의 값.", "mun_muN": "관례상 음수.",
     "c": "1983년 미터 정의. 1986 판부터 정의값. 1969·1973 판은 측정값.",
-    "e": "2019년 이전에는 √(2αh/μ₀c). 1998~2006 ASCII 표에는 기본 전하 행이 없어 같은 수치인 전자볼트(J) 행을 썼다(1 eV 를 줄로 나타낸 수가 e 를 쿨롱으로 나타낸 수와 같다).",
+    "e": "2019년 이전에는 √(2αh/(μ₀c)). 1998~2006 ASCII 표에는 기본 전하 행이 없어 같은 수치인 전자볼트(J) 행을 썼다(1 eV 를 줄로 나타낸 수가 e 를 쿨롱으로 나타낸 수와 같다).",
     "NA": "2019년 이전에는 몰 플랑크 상수를 통해 h 와 묶여 있었다. 2018 판부터 정의값.",
     "me": "= 2R∞h/(cα²). 핵심 상수들의 조합이라 통계에서 뺀다.", "mp_me": "= Ar(p)/Ar(e). 통계에서 뺀다.",
-    "F": "= N_A e. 2018 판부터 정의값.", "R": "= N_A k. 2018 판부터 정의값.", "sigma": "= (π²/60)k⁴/ħ³c². 2018 판부터 정의값.",
+    "F": "= N_A e. 2018 판부터 정의값.", "R": "= N_A k. 2018 판부터 정의값.", "sigma": "= (π²/60)k⁴/(ħ³c²). 2018 판부터 정의값.",
     "mu0": "2014 판까지 정의값(4π×10⁻⁷), 2018 판부터 측정값.",
     "alpha_inv": "= 1/α. Henrion & Fischhoff(1986)와 1973 보고서가 α⁻¹ 로 비교하므로 함께 싣는다. 통계에는 α 만 쓴다.",
     "Ar_h": "민감도 후보. NIST 표의 이름은 「helion mass in u」.", "Ar_t": "민감도 후보. NIST 표의 이름은 「triton mass in u」(2006 판부터).",
@@ -80,8 +80,8 @@ T = {
                home="Home", metrics="Metrics", constants="Constants", atomic="Atomic weights", reading="Reading", data="Data", method="Method & limits", prior="Prior work", lang_other="한국어",
                version="Version", built="Built", hub="All public materials:", definition="Definition", formula="Formula", denominator="Denominator", howto="How to read it", caveat="Caveats",
                download="Download CSV", edition="Edition", value="Value", u="Standard uncertainty", urel="Relative standard uncertainty", exact="Exact", printed="As printed", source="Source location",
-               z_prev="z vs previous edition", z_latest="z = (2022 − this)/σ", core="core constant", display="display constant", cand="sensitivity candidate", layer="Layer", symbol="Symbol", unit="Unit",
-               name="Name", n_ed="Editions", halflife="Half-life (y)", ci="95% interval", yes="yes", no="no", none="no decline", file="File", desc="Contents",
+               z_prev="z vs previous edition", z_latest="z = (2022 − this)/σ", core="Core constant", display="Display constant", cand="Sensitivity candidate", layer="Layer", symbol="Symbol", unit="Unit",
+               name="Name", n_ed="Editions", halflife="Half-life (years)", ci="95% interval", yes="yes", no="no", none="no decline", file="File", desc="Contents",
                normal="normal", observed="observed", rate="rate", threshold="threshold", pairs="pairs", quantities="constants", subset="Group",
                basis="Basis of Korean name"),
 }
@@ -202,13 +202,13 @@ def ci_pct(lo, hi, d=1) -> str:
 
 _SPLIT = __import__("re").compile(r"(<script.*?</script>|<style.*?</style>|<code.*?</code>|<pre.*?</pre>|<math.*?</math>)", __import__("re").S)
 # Korean particles that follow a Latin letter, digit, symbol or closing bracket: written attached (CIAAW는, 1.00으로)
-_PART = "에서는|에서|으로는|으로|로는|로|까지|부터|보다|처럼|이다|이며|이고|이면|이나|와|과|은|는|이|가|을|를|의|에|도|만|인|다"
-_PART_RE = __import__("re").compile(r"([A-Za-z0-9²³⁰-⁹₀-₉σν%)|①-⑳])((?:</(?:a|b|i|em|strong|span|sub|sup)>)*) (" + _PART + r")(?=[\s,.;:!?·)\]」』<]|$)")
+_PART = "였다|였고|였으며|였던|에서는|에서|으로는|으로|로는|로|까지|부터|보다|처럼|이다|이며|이고|이면|이나|와|과|은|는|이|가|을|를|의|에|도|만|인|다"
+_PART_RE = __import__("re").compile(r"([A-Za-z0-9²³⁰-⁹₀-₉σν%)|①-⑳])((?:</(?:a|b|i|em|strong|span|sub|sup)>)*) (" + _PART + r")(?=[\s,.;:!?·()\]」』<]|$)")
 _RE = __import__("re")
 
 
 def text_fix(html, lang):
-    """Escape a bare < or > used as an inequality in text (e.g. |z|>2, |z| < 0.1) and, in Korean,
+    """Escape a bare < or > used as an inequality in text (e.g. |z| > 2, |z| < 0.1) and, in Korean,
     pick 로/으로 after a number by its last digit as read aloud (0 영·3 삼·6 육 end in a final consonant) and
     attach a particle to a preceding Latin letter, digit or symbol (CIAAW 는 -> CIAAW는). Code, pre, math untouched."""
     out = []
@@ -216,7 +216,10 @@ def text_fix(html, lang):
         if i % 2 == 0:
             chunk = _RE.sub(r"(?<=[\s|=])<(?=[\s\d.=−-])", "&lt;", chunk)
             chunk = _RE.sub(r"(?<=[\s|=])>(?=[\s\d.=−-])", "&gt;", chunk)
+            chunk = _RE.sub(r">(\s*)-(?=\d)", lambda m: ">" + m.group(1) + "−", chunk)   # 1.1.2: minus sign in cells and axis labels
+            chunk = _RE.sub(r"(?<![\w./=\"-])(\d{4})-(\d{4})(?![\w./-])", r"\1–\2", chunk) if lang == "en" else chunk   # 1.1.2: year ranges printed with a hyphen
             if lang == "ko":
+                chunk = _RE.sub(r"(?<![\w./=\"-])(\d{4})[–-](\d{2,4})(?![\w./-])", r"\1~\2", chunk)   # 1.1.2: Korean year ranges with a wave dash
                 chunk = _RE.sub(r"(\d) ?(으로|로)(?=[\s,.)])", lambda m: m.group(1) + " " + ("으로" if m.group(1) in "036" else "로"), chunk)
                 chunk = _PART_RE.sub(lambda m: m.group(1) + m.group(2) + m.group(3), chunk)
         out.append(chunk)
@@ -225,6 +228,8 @@ def text_fix(html, lang):
 
 def page(lang, title, body, depth=1, active=""):
     body = text_fix(body, lang)
+    if lang == "en" and title[:1].islower():   # 1.1.2: sentence case for lowercase CODATA names in the tab title
+        title = title[0].upper() + title[1:]
     t = T[lang]
     root = "../" * depth
     other = "en" if lang == "ko" else "ko"
@@ -301,14 +306,14 @@ def chart_uncertainty(qmap, long, lang, W=900, H=360):
     def X(v): return L + (v - x0) / (x1 - x0) * (W - L - R)
 
     def Y(v): return Tp + (math.log10(hi) - math.log10(v)) / (math.log10(hi) - math.log10(lo)) * (H - Tp - B)
-    o = [f'<svg viewBox="0 0 {W} {H}" role="img" aria-label="relative uncertainty by edition">']
+    o = [f'<svg viewBox="0 0 {W} {H}" role="img" aria-label="{"판별 상대 불확도" if lang == "ko" else "Relative uncertainty by edition"}">']
     for t in log_ticks(lo, hi):
         o.append(f'<line class="grid" x1="{L}" x2="{W-R}" y1="{Y(t):.1f}" y2="{Y(t):.1f}"/><text x="{L-6}" y="{Y(t)+4:.1f}" text-anchor="end">{sup(int(round(math.log10(t))))}</text>')
     for e in EDITIONS:
         o.append(f'<text x="{X(e):.1f}" y="{H-14}" text-anchor="middle">{e}</text>')
     name = "name_ko" if lang == "ko" else "name_en"
     for e, v, q in pts:
-        o.append(f'<circle class="dot" cx="{X(e):.1f}" cy="{Y(v):.1f}" r="4" fill="var(--s1)" fill-opacity=".28" stroke="var(--card)" stroke-width="1" data-tip="{esc(qmap[q][name])} · {e}: {v:.2e}"/>')
+        o.append(f'<circle class="dot" cx="{X(e):.1f}" cy="{Y(v):.1f}" r="4" fill="var(--s1)" fill-opacity=".28" stroke="var(--card)" stroke-width="1" data-tip="{esc(qmap[q][name])} · {e}: {fmt_sci(v, 3)}"/>')
     med = []
     for e in EDITIONS:
         vs = [v for ee, v, _ in pts if ee == e]
@@ -318,13 +323,13 @@ def chart_uncertainty(qmap, long, lang, W=900, H=360):
     o.append(f'<path d="{d}" fill="none" stroke="var(--s1)" stroke-width="2.5"/>')
     lab = "중앙값" if lang == "ko" else "median"
     for e, v, n in med:
-        o.append(f'<circle class="dot" cx="{X(e):.1f}" cy="{Y(v):.1f}" r="5" fill="var(--s1)" stroke="var(--card)" stroke-width="2" data-tip="{e} {lab}: {v:.2e} (n={n})"/>')
+        o.append(f'<circle class="dot" cx="{X(e):.1f}" cy="{Y(v):.1f}" r="5" fill="var(--s1)" stroke="var(--card)" stroke-width="2" data-tip="{e} {lab}: {fmt_sci(v, 3)} (n={n})"/>')
     o.append("</svg>")
     return "".join(o), med
 
 
 def chart_tail(pairs, nu, s, lang, W=900, H=360):
-    """G2: P(|z|>t) observed vs normal vs fitted Student-t, log y."""
+    """G2: P(|z| > t) observed vs normal vs fitted Student-t, log y."""
     L, R, Tp, B = 64, 120, 16, 40
     z = np.sort(np.abs([float(p["z"]) for p in pairs]))
     n = len(z)
@@ -334,7 +339,7 @@ def chart_tail(pairs, nu, s, lang, W=900, H=360):
     def X(v): return L + v / tmax * (W - L - R)
 
     def Y(v): return Tp + (0 - math.log10(max(v, lo))) / (0 - math.log10(lo)) * (H - Tp - B)
-    o = [f'<svg viewBox="0 0 {W} {H}" role="img" aria-label="tail plot">']
+    o = [f'<svg viewBox="0 0 {W} {H}" role="img" aria-label="{"꼬리 분포 그림" if lang == "ko" else "Tail plot"}">']
     for t in log_ticks(lo, 1):
         o.append(f'<line class="grid" x1="{L}" x2="{W-R}" y1="{Y(t):.1f}" y2="{Y(t):.1f}"/><text x="{L-6}" y="{Y(t)+4:.1f}" text-anchor="end">{t:g}</text>')
     for t in range(0, 8):
@@ -350,7 +355,7 @@ def chart_tail(pairs, nu, s, lang, W=900, H=360):
         last = [(t, v) for t, v in zip(ts, vals) if v >= lo][-1]
         o.append(f'<text x="{min(X(last[0]) + 6, W - R + 4):.1f}" y="{Y(last[1]) - 6:.1f}">{esc(name)}</text>')
     # observed survival (step)
-    # empirical survival P(|z|>t): steps at each observed |z|; stops at the largest one (1/n)
+    # empirical survival P(|z| > t): steps at each observed |z|; stops at the largest one (1/n)
     path, prev = [f"M{X(0):.1f},{Y(1):.1f}"], 1.0
     for i, t in enumerate(z[:-1], start=1):
         if t > tmax:
@@ -365,7 +370,7 @@ def chart_tail(pairs, nu, s, lang, W=900, H=360):
     o.append(f'<text x="{X(t_lab):.1f}" y="{Y(float(np.mean(z > t_lab))) + 18:.1f}">{obs}</text>')
     for k in (1, 2, 3):
         r = float(np.mean(z > k))
-        o.append(f'<circle class="dot" cx="{X(k):.1f}" cy="{Y(r):.1f}" r="5" fill="var(--s1)" stroke="var(--card)" stroke-width="2" data-tip="|z|>{k}: {r*100:.1f}% (n={n})"/>')
+        o.append(f'<circle class="dot" cx="{X(k):.1f}" cy="{Y(r):.1f}" r="5" fill="var(--s1)" stroke="var(--card)" stroke-width="2" data-tip="|z| > {k}: {r*100:.1f}% (n={n})"/>')
     o.append("</svg>")
     return "".join(o)
 
@@ -378,7 +383,7 @@ def chart_miss(s3, lang, W=900, H=340):
     def X(i): return L + (i + 0.5) / len(eds) * (W - L - R)
 
     def Y(v): return Tp + (1 - v) * (H - Tp - B)
-    o = [f'<svg viewBox="0 0 {W} {H}" role="img" aria-label="miss rate by edition">']
+    o = [f'<svg viewBox="0 0 {W} {H}" role="img" aria-label="{"판별 놓침 비율" if lang == "ko" else "Miss rate by edition"}">']
     for v in (0, .2, .4, .6, .8, 1.0):
         o.append(f'<line class="grid" x1="{L}" x2="{W-R}" y1="{Y(v):.1f}" y2="{Y(v):.1f}"/><text x="{L-6}" y="{Y(v)+4:.1f}" text-anchor="end">{int(v*100)}%</text>')
     for v, lab in ((0.3173, "1σ 31.7%"), (0.0455, "2σ 4.6%")):
@@ -406,7 +411,7 @@ def chart_halflife(m1, qmap, lang, W=900):
 
     def X(v): return L + min(v, xmax) / xmax * (W - L - R)
     name = "name_ko" if lang == "ko" else "name_en"
-    o = [f'<svg viewBox="0 0 {W} {H}" role="img" aria-label="half-life by constant">']
+    o = [f'<svg viewBox="0 0 {W} {H}" role="img" aria-label="{"상수별 반감기" if lang == "ko" else "Half-life by constant"}">']
     for v in range(0, 26, 5):
         o.append(f'<line class="grid" x1="{X(v):.1f}" x2="{X(v):.1f}" y1="{Tp}" y2="{H-34}"/><text x="{X(v):.1f}" y="{H-18}" text-anchor="middle">{v}</text>')
     o.append(f'<text x="{(L+W-R)/2:.0f}" y="{H-2}" text-anchor="middle">{"년" if lang == "ko" else "years"}</text>')
@@ -443,7 +448,7 @@ def chart_funnel(rows, lang, W=900, H=340):
     def X(e): return L + (EDITIONS.index(e) + 0.5) / len(EDITIONS) * (W - L - R)
 
     def Y(v): return Tp + (fm - f(v)) / (2 * fm) * (H - Tp - B)
-    o = [f'<svg viewBox="0 0 {W} {H}" role="img" aria-label="convergence plot">']
+    o = [f'<svg viewBox="0 0 {W} {H}" role="img" aria-label="{"수렴 그림" if lang == "ko" else "Convergence plot"}">']
     e = int(round(math.log10(lt)))
     ticks = [0.0] + [s * 10.0 ** k for k in range(e + 1, int(round(math.log10(top))) + 1, max(1, (int(round(math.log10(top))) - e) // 4 or 1)) for s in (1, -1)]
     for t in sorted(set(ticks)):
@@ -461,7 +466,7 @@ def chart_funnel(rows, lang, W=900, H=340):
             continue
         o.append(f'<line x1="{x:.1f}" x2="{x:.1f}" y1="{Y(dv - uu):.1f}" y2="{Y(dv + uu):.1f}" stroke="var(--s1)" stroke-width="2"/>')
         miss = abs(dv) > uu
-        tip = f"{ed}: {dv:+.2e} ± {uu:.2e}" + (" (1σ 밖)" if lang == "ko" and miss else " (outside 1σ)" if miss else "")
+        tip = f"{ed}: {('+' if dv >= 0 else '−') + fmt_sci(abs(dv), 3)} ± {fmt_sci(uu, 3)}" + (" (1σ 밖)" if lang == "ko" and miss else " (outside 1σ)" if miss else "")
         o.append(f'<circle class="dot" cx="{x:.1f}" cy="{Y(dv):.1f}" r="5" fill="{"var(--s1)" if not miss else "var(--card)"}" stroke="var(--s1)" stroke-width="2" data-tip="{esc(tip)}"/>')
     o.append("</svg>")
     return "".join(o)
@@ -527,7 +532,7 @@ CONST_HEAD = {
            ("표준불확도", "오차 막대의 반폭(±1σ)"), ("상대 표준불확도", "표준불확도 ÷ 값의 크기 — 값에 견준 막대 폭"),
            ("정의값", "측정하지 않고 약속으로 정해 불확도 0"), ("직전 판 대비 z", "직전 판에서의 이동 ÷ 두 판 표준불확도의 합성"),
            ("2022 판 기준 z", "(2022 판 값 − 이 판 값) ÷ 이 판의 표준불확도"), ("원자료 위치", "원 논문의 쪽·표 또는 NIST 표의 파일·행")],
-    "en": [("Edition", "year of the recommended values (data cut-off)"), ("As printed", "exactly as in the source table; digits in brackets are the standard uncertainty in the last digits"),
+    "en": [("Edition", "year of the recommended values (data cut-off)"), ("As printed", "exactly as in the source table; digits in parentheses are the standard uncertainty in the last digits"),
            ("Standard uncertainty", "half-width of the error bar (±1σ)"), ("Relative standard uncertainty", "standard uncertainty ÷ |value|: bar width relative to the value"),
            ("Exact", "fixed by definition, uncertainty zero"), ("z vs previous edition", "move from the previous edition ÷ combined standard uncertainty of the two"),
            ("z vs 2022", "(2022 value − this value) ÷ this edition's standard uncertainty"), ("Source location", "page and table of the paper, or file and line of NIST's table")],
@@ -622,8 +627,8 @@ def build():
         if lang == "ko":
             hero = f"""<div class="hero"><h1>{t['site']}</h1><p class="lead">과학자들이 스스로 밝힌 오차 막대는 다음 판의 값을 얼마나 자주 놓쳤나. 국제과학위원회(ISC) 산하 과학기술데이터위원회(CODATA)가 1973년부터 내 온 기본 물리 상수 권고값 아홉 판과 그 직전의 1969년 조정값을 이어 붙여, 값과 불확도가 판마다 어떻게 바뀌었는지 센다.</p></div>"""
             stats_h = f"""<div class="stats">
-<a class="stat" href="metrics/m2.html"><span class="n">{N['m2_r2']}%</span><span class="vs">정규분포 기대 4.6%</span><small>연속한 두 판 사이 이동이 두 판의 표준불확도를 합친 값의 2배를 넘은 비율(|z|>2) — 약 {N['m2_1in2']}번에 1번 (판 쌍 {N['m2_n']}개, 핵심 상수 {N['m2_q']}개, 95% 구간 {N['m2_r2_ci']})</small></a>
-<a class="stat" href="metrics/m2.html"><span class="n">{N['m2_r3']}%</span><span class="vs">정규분포 기대 0.27%</span><small>3배를 넘은 비율(|z|>3) — 약 {N['m2_1in3']}번에 1번 (95% 구간 {N['m2_r3_ci']})</small></a>
+<a class="stat" href="metrics/m2.html"><span class="n">{N['m2_r2']}%</span><span class="vs">정규분포 기대 4.6%</span><small>연속한 두 판 사이 이동이 두 판의 표준불확도를 합친 값의 2배를 넘은 비율(|z| > 2) — 약 {N['m2_1in2']}번에 1번 (판 쌍 {N['m2_n']}개, 핵심 상수 {N['m2_q']}개, 95% 구간 {N['m2_r2_ci']})</small></a>
+<a class="stat" href="metrics/m2.html"><span class="n">{N['m2_r3']}%</span><span class="vs">정규분포 기대 0.27%</span><small>3배를 넘은 비율(|z| > 3) — 약 {N['m2_1in3']}번에 1번 (95% 구간 {N['m2_r3_ci']})</small></a>
 <a class="stat" href="metrics/m3.html"><span class="n">{N['m3_m2']}%</span><span class="vs">정규분포 기대 4.6%</span><small>옛 판의 ±2σ 범위(넉넉한 오차 막대)가 2022 판 값을 담지 못한 비율 — 10개 중 약 {N['m3_m2_10']}개 ({N['m3_n']}개 조합, 95% 구간 {N['m3_m2_ci']})</small></a>
 <a class="stat" href="metrics/m1.html"><span class="n">{N['m1_median']}년</span><small>상대 표준불확도의 반감기 — 불확도가 절반이 되는 데 걸린 햇수 (불확도가 줄어든 핵심 상수 {N['m1_n_dec']}개의 중앙값)</small></a></div>"""
             g1cap = f"점 하나가 (판, 핵심 상수) 하나, 선은 판별 중앙값. 세로축은 로그. 중앙값은 1969 판 {fmt_sci(med[0][1])}(상수 {med[0][2]}개), 2022 판 {fmt_sci(med[-1][1])}({med[-1][2]}개). 판마다 들어간 상수가 달라(예: 양성자 전하 반지름은 2002 판부터) 중앙값이 판 사이에서 거꾸로 오르기도 한다."
@@ -634,7 +639,7 @@ def build():
 <a class="stat" href="metrics/m2.html"><span class="n">{N['m2_r2']}%</span><span class="vs">normal expectation 4.6%</span><small>Moves between consecutive editions beyond twice the combined standard uncertainty (|z| > 2), about once in {N['m2_1in2']} ({N['m2_n']} pairs, {N['m2_q']} core constants, 95% interval {N['m2_r2_ci']})</small></a>
 <a class="stat" href="metrics/m2.html"><span class="n">{N['m2_r3']}%</span><span class="vs">normal expectation 0.27%</span><small>Beyond three times (|z| > 3), about once in {N['m2_1in3']} (95% interval {N['m2_r3_ci']})</small></a>
 <a class="stat" href="metrics/m3.html"><span class="n">{N['m3_m2']}%</span><span class="vs">normal expectation 4.6%</span><small>Earlier ±2σ ranges (generous error bars) that miss the 2022 value, about {N['m3_m2_10']} in 10 ({N['m3_n']} combinations, 95% interval {N['m3_m2_ci']})</small></a>
-<a class="stat" href="metrics/m1.html"><span class="n">{N['m1_median']} y</span><small>Half-life of the relative standard uncertainty: years for it to halve (median over the {N['m1_n_dec']} core constants whose uncertainty declined)</small></a></div>"""
+<a class="stat" href="metrics/m1.html"><span class="n">{N['m1_median']} years</span><small>Half-life of the relative standard uncertainty: years for it to halve (median over the {N['m1_n_dec']} core constants whose uncertainty declined)</small></a></div>"""
             g1cap = f"One dot per (edition, core constant); the line is the median per edition. Log scale. Median {fmt_sci(med[0][1])} in 1969 ({med[0][2]} constants), {fmt_sci(med[-1][1])} in 2022 ({med[-1][2]}). The set of constants changes between editions (the proton charge radius enters in 2002, for example), so the median can rise from one edition to the next."
             intro2 = """<div class="prose"><p>Uncertainties shrank by more than four orders of magnitude in half a century. Yet the moves between editions often exceeded what those uncertainties allow. This site publishes those rates by constant and by edition, next to the earlier studies that asked the same question (Henrion & Fischhoff 1986; Bailey 2017). Every number carries its sample size and a 95% interval. "Scientists were overconfident" is an interpretation that would require looking into the measurements themselves, so the metric pages do not use it; the <a href="reading.html">Reading</a> page takes it up with its qualifications.</p></div>"""
         cards = "".join(f'<a class="card" href="metrics/{m["id"]}.html"><b>{m["id"].upper()} · {esc(m[lang]["name"])}</b><small>{esc(m[lang]["short"])}</small></a>' for m in METRICS)
@@ -642,7 +647,7 @@ def build():
         hf22 = next(r for r in hf if r["reference"] == "2022" and r["qid"] == "ALL")
         if lang == "ko":
             tk = ["과학자들은 상수 값마다 표준불확도(「참값이 대략 이 범위 안에 있다」는 오차 막대의 반폭, ±1σ)를 함께 발표한다. 반세기 동안 상대 표준불확도는 만 배 넘게 줄었다.",
-                  f"그런데 연속한 두 판 사이 이동이 두 판의 표준불확도를 합친 값의 2배를 넘은 경우(|z|>2)가 약 {N['m2_1in2']}번에 1번이었다. 정규분포 기대는 22번에 1번이다. 3배를 넘은 경우(|z|>3)도 약 {N['m2_1in3']}번에 1번으로, 정규분포 기대(370번에 1번)보다 훨씬 잦았다.",
+                  f"그런데 연속한 두 판 사이 이동이 두 판의 표준불확도를 합친 값의 2배를 넘은 경우(|z| > 2)가 약 {N['m2_1in2']}번에 1번이었다. 정규분포 기대는 22번에 1번이다. 3배를 넘은 경우(|z| > 3)도 약 {N['m2_1in3']}번에 1번으로, 정규분포 기대(370번에 1번)보다 훨씬 잦았다.",
                   f"옛 판의 ±2σ 범위(넉넉한 오차 막대)를 2022 판 값에 대 보면 10개 중 약 {N['m3_m2_10']}개가 빗나간다. 불확도가 훨씬 작아진 최근 판도 이 비율은 줄지 않았다.",
                   "원인 — 과신인지, 알려지지 않은 계통 오차인지, 조정 절차 탓인지 — 은 이 자료만으로는 가릴 수 없다."]
         else:
@@ -653,7 +658,7 @@ def build():
         gloss = GLOSS[lang]
         body = hero + PROLOGUE[lang] + takeaway(lang, tk) + stats_h + f'<figure>{g1}<figcaption>{esc(g1cap)}</figcaption></figure>' + intro2 + gloss + f'<h2>{t["metrics"]}</h2><div class="cards">{cards}</div>' + (
             '<h2>원자량 장 <span class="tag">1.1</span></h2><div class="cards"><a class="card" href="atomic/index.html"><b>원자량 — 표준 원자량의 개정 기록</b><small>CIAAW 1902~2024, 개정 701건. 불확도를 확장 범위로 정의하는 기록에 같은 질문을 던진다</small></a></div>' if lang == "ko" else
-            '<h2>Atomic-weights chapter <span class="tag">1.1</span></h2><div class="cards"><a class="card" href="atomic/index.html"><b>Atomic weights: the revision record</b><small>CIAAW 1902–2024, 701 revisions. The same question, asked of a record that defines uncertainty as an expanded range</small></a></div>')
+            '<h2>Atomic-weights chapter <span class="tag">1.1</span></h2><div class="cards"><a class="card" href="atomic/index.html"><b>Atomic weights — the revision record</b><small>CIAAW 1902–2024, 701 revisions. The same question, asked of a record that defines uncertainty as an expanded range</small></a></div>')
         (base / "index.html").write_text(page(lang, t["home"], body, 1, "home"), encoding="utf-8")
 
         # ---------- metric pages
@@ -674,29 +679,29 @@ def build():
                     hl = r["halflife_years"]
                     rows.append([f'<a href="../constants/{r["qid"]}.html">{esc(qmap[r["qid"]][name])}</a>',
                                  {"K": t["core"], "D": t["display"], "S": t["cand"]}[qmap[r["qid"]]["layer"]], r["n_editions"], f'{r["first"]}–{r["last"]}',
-                                 r["u_rel_first"], r["u_rel_last"],
+                                 (fmt_sci(r["u_rel_first"], 4), r["u_rel_first"]), (fmt_sci(r["u_rel_last"], 4), r["u_rel_last"]),
                                  (t["none"] if hl == "inf" else hl, 1e9 if hl == "inf" else hl),
                                  "" if hl == "inf" else f'{r["halflife_ci_low"]}–{r["halflife_ci_high"]}'.replace("inf", "∞"), r["r2"]])
-                parts.append(table([t["name"], t["layer"], t["n_ed"], t["edition"], f'{t["urel"]} ({"처음" if lang == "ko" else "first"})',
+                parts.append(table([t["name"], t["layer"], t["n_ed"] + ("" if lang == "ko" else " (n)"), ("기간" if lang == "ko" else "Span"), f'{t["urel"]} ({"처음" if lang == "ko" else "first"})',
                                     f'{t["urel"]} ({"마지막" if lang == "ko" else "last"})', t["halflife"], t["ci"], "R²"], rows, num_cols=(2, 4, 5, 6, 7, 8)))
             if m["id"] == "m2":
-                parts.append(f'<figure><div class="legend"><span style="--c:var(--s1)">{"관측" if lang == "ko" else "observed"}</span><span style="--c:var(--s2)">{"정규분포" if lang == "ko" else "normal"}</span><span style="--c:var(--s3)">Student-t ({"값이 바뀐 쌍에 맞춤" if lang == "ko" else "fitted to pairs with a change"})</span></div>{chart_tail(kp, float(t4[0]["nu"]), float(t4[0]["scale"]), lang)}<figcaption>{"|z| 가 가로축 값을 넘는 판 쌍의 비율(세로축 로그). 점은 |z|>1·2·3 의 관측 비율." if lang == "ko" else "Share of pairs whose |z| exceeds the value on the horizontal axis (log vertical axis). Dots: observed shares above 1, 2 and 3."}</figcaption></figure>')
+                parts.append(f'<figure><div class="legend"><span style="--c:var(--s1)">{"관측" if lang == "ko" else "Observed"}</span><span style="--c:var(--s2)">{"정규분포" if lang == "ko" else "Normal"}</span><span style="--c:var(--s3)">Student-t ({"값이 바뀐 쌍에 맞춤" if lang == "ko" else "fitted to pairs with a change"})</span></div>{chart_tail(kp, float(t4[0]["nu"]), float(t4[0]["scale"]), lang)}<figcaption>{"|z| 가 가로축 값을 넘는 판 쌍의 비율(세로축 로그). 점은 |z| > 1·2·3 의 관측 비율." if lang == "ko" else "Share of pairs whose |z| exceeds the value on the horizontal axis (log vertical axis). Dots: observed shares above 1, 2 and 3."}</figcaption></figure>')
                 lab = {"core: all consecutive pairs": ("전체 판 쌍", "all pairs"), "core: 1998-2022 (4-year gaps)": ("1998~2022 (4년 간격)", "1998–2022 (4-year gaps)"),
                        "core: 1969-1998 (4-13-year gaps)": ("1969~1998 (4~13년 간격)", "1969–1998 (4–13-year gaps)")}
-                rows = [[lab[r["subset"]][0 if lang == "ko" else 1], "z" if r["measure"] == "z" else "z_old", f'|z|>{r["threshold"]}', r["n_pairs"], r["n_quantities"],
+                rows = [[lab[r["subset"]][0 if lang == "ko" else 1], "z" if r["measure"] == "z" else "z_old", f'|z| > {r["threshold"]}', r["n_pairs"], r["n_quantities"],
                          r["exceed"], pct(r["rate"]), ci_pct(r["ci_low"], r["ci_high"]), pct(r["normal"], 2)] for r in s2]
                 parts.append(table([t["subset"], "z", cap(t["threshold"]), cap(t["pairs"]), cap(t["quantities"]), "n", cap(t["rate"]) + " %", t["ci"], cap(t["normal"]) + " %"], rows, num_cols=(3, 4, 5, 6, 8)))
                 big = sorted(kp, key=lambda p: -abs(float(p["z"])))[:12]
                 parts.append(f'<h3>{"이동이 컸던 판 쌍" if lang == "ko" else "Largest moves"}</h3>')
                 parts.append(table([t["name"], t["edition"], "z", "z_old"], [[f'<a href="../constants/{p["qid"]}.html">{esc(qmap[p["qid"]][name])}</a>', f'{p["ed_from"]}→{p["ed_to"]}', p["z"], p["z_old"]] for p in big], num_cols=(2, 3)))
                 s = sens
-                parts.append(f'<div class="note">{"민감도 — 1998~2022 ASCII 표에서 이름이 바뀌지 않은 모든 행(서로 환산 관계인 행 포함)으로 같은 계산을 하면" if lang == "ko" else "Sensitivity: repeating the calculation over every 1998–2022 ASCII row whose name did not change (including rows that are conversions of one another) gives"} |z|>1 {pct(s[0]["rate"])}%, |z|>2 {pct(s[1]["rate"])}%, |z|>3 {pct(s[2]["rate"])}% ({s[0]["n_pairs"]} {t["pairs"]}). {"같은 이동이 여러 행에 중복해 세어지므로 표본 수는 부풀어 있다." if lang == "ko" else "The same move is counted in many rows, so the count is inflated."}</div>')
+                parts.append(f'<div class="note">{"민감도 — 1998~2022 ASCII 표에서 이름이 바뀌지 않은 모든 행(서로 환산 관계인 행 포함)으로 같은 계산을 하면" if lang == "ko" else "Sensitivity: repeating the calculation over every 1998–2022 ASCII row whose name did not change (including rows that are conversions of one another) gives"} |z| > 1 {pct(s[0]["rate"])}%, |z| > 2 {pct(s[1]["rate"])}%, |z| > 3 {pct(s[2]["rate"])}% ({s[0]["n_pairs"]} {t["pairs"]}). {"같은 이동이 여러 행에 중복해 세어지므로 표본 수는 부풀어 있다." if lang == "ko" else "The same move is counted in many rows, so the count is inflated."}</div>')
             if m["id"] == "m3":
-                parts.append(f'<figure><div class="legend"><span style="--c:var(--s1)">±1σ {"밖" if lang == "ko" else "missed"}</span><span style="--c:var(--s2)">±2σ {"밖" if lang == "ko" else "missed"}</span><span class="dash" style="--c:var(--ref)">{"정규분포 기대(불확도가 맞을 때)" if lang == "ko" else "normal expectation (if the uncertainties were right)"}</span></div>{chart_miss(s3, lang)}<figcaption>{"판별로 그 판과 2022 판에 모두 있는 핵심 상수 중 옛 오차 막대가 2022 판 값을 담지 못한 비율. 세로선은 상수 군집 부트스트랩 95% 구간." if lang == "ko" else "By edition, the share of core constants whose earlier error bar does not contain the 2022 value. Vertical bars: 95% cluster-bootstrap intervals."}</figcaption></figure>')
+                parts.append(f'<figure><div class="legend"><span style="--c:var(--s1)">±1σ {"밖" if lang == "ko" else "missed"}</span><span style="--c:var(--s2)">±2σ {"밖" if lang == "ko" else "missed"}</span><span class="dash" style="--c:var(--ref)">{"정규분포 기대(불확도가 맞을 때)" if lang == "ko" else "Normal expectation (if the uncertainties were right)"}</span></div>{chart_miss(s3, lang)}<figcaption>{"판별로 그 판과 2022 판에 모두 있는 핵심 상수 중 옛 오차 막대가 2022 판 값을 담지 못한 비율. 세로선은 상수 군집 부트스트랩 95% 구간." if lang == "ko" else "By edition, the share of core constants whose earlier error bar does not contain the 2022 value. Vertical bars: 95% cluster-bootstrap intervals."}</figcaption></figure>')
                 sub = {"1969-1986": ("1969~1986 묶음", "1969–1986 pooled"), "1998-2018": ("1998~2018 묶음", "1998–2018 pooled"), "all": ("전체", "all")}
                 rows = [[sub.get(r["subset"], (r["subset"], r["subset"]))[0 if lang == "ko" else 1], r["n"], r["n_quantities"], pct(r["miss_1sigma"], 0), cip(r["miss_1sigma_ci"]), pct(r["miss_2sigma"], 0), cip(r["miss_2sigma_ci"]),
                          pct(r["inside_iq"], 0), pct(r["surprise"], 0), r["median_abs_z"]] for r in s3]
-                parts.append(table([t["edition"], "n", t["quantities"], "1σ %", t["ci"], "2σ %", t["ci"], "IQ %", "SI %", "중앙값 |z|" if lang == "ko" else "Median |z|"], rows, num_cols=(1, 2, 3, 5, 7, 8, 9)))
+                parts.append(table([t["edition"], "n", cap(t["quantities"]), "1σ %", t["ci"], "2σ %", t["ci"], "IQ %", "SI %", "중앙값 |z|" if lang == "ko" else "Median |z|"], rows, num_cols=(1, 2, 3, 5, 7, 8, 9)))
             if m["id"] == "m4":
                 lab = {"core: pairs with a change": ("값이 바뀐 판 쌍", "pairs with a change"), "core: pairs with a change, 1998-2022": ("값이 바뀐 판 쌍, 1998~2022", "pairs with a change, 1998–2022")}
                 rows = [[lab[r["subset"]][0 if lang == "ko" else 1], r["n_pairs"], r["n_quantities"], r["nu"], f'{r["nu_ci_low"]}–{r["nu_ci_high"]}', r["scale"], f'{r["scale_ci_low"]}–{r["scale_ci_high"]}'] for r in t4]
@@ -718,7 +723,7 @@ def build():
         if lang == "ko":
             hfb = f"""<h1>Henrion & Fischhoff (1986) 지표 재계산</h1><p class="lead">이들의 표 I 마지막 줄은 1929~1969년 권고값 여덟 개 검토의 상수 다섯 개(α⁻¹, e, h, mₑ, N_A)를 1973 판 값과 견주어 사분위 지수(IQ) 22%, 놀람 지수(SI) 57% 를 보고했다(정규 기대 50%, 2%). 이 사이트는 1969 판까지만 갖고 있어 같은 계산의 일부를 다시 하고, 기준을 2022 판으로 옮긴 계산을 함께 싣는다. 그들과 1973 보고서 표 34.2 처럼 α 가 아닌 α⁻¹ 로 계산한다.</p>
 <div class="prose"><ul><li>1969 판 → 1973 판 기준 (그들과 같은 기준, 상수 5개): {esc(all73['z_old'])}.</li><li>1969~2018 판 → 2022 판 기준 (상수 5개, 측정값이던 판만 {esc(all22['edition'])}): {esc(all22['z_old'])}.</li></ul>
-<p>z = (기준 판 값 − 옛 값) / 옛 불확도. IQ 는 |z|<0.674, SI 는 |z|>2.326 인 비율, RMS 는 z 의 제곱평균제곱근이다. 1969→1973 의 e·h·mₑ·N_A 변화를 ppm 으로 바꾸면 −1.56·−3.02·−2.63·−20.6 으로, 1973 보고서 표 34.2 의 −1.6·−3.0·−2.6·−21 과 맞는다. α⁻¹ 는 +0.146 ppm(표 34.2: +0.15). 원 논문 표 I 의 22%·57% 는 공개 사본(OCR)에서 읽은 값이고 출판본과 대조하지 못했다. 1929~1963 판(Birge, DuMond–Cohen 등)은 다음 판 이후에 넣을 예정이다.</p></div>"""
+<p>z = (기준 판 값 − 옛 값) / 옛 불확도. IQ 는 |z|<0.674, SI 는 |z| > 2.326 인 비율, RMS 는 z 의 제곱평균제곱근이다. 1969→1973 의 e·h·mₑ·N_A 변화를 ppm 으로 바꾸면 −1.56·−3.02·−2.63·−20.6 으로, 1973 보고서 표 34.2 의 −1.6·−3.0·−2.6·−21 과 맞는다. α⁻¹ 는 +0.146 ppm(표 34.2: +0.15). 원 논문 표 I 의 22%·57% 는 공개 사본(OCR)에서 읽은 값이고 출판본과 대조하지 못했다. 1929~1963 판(Birge, DuMond–Cohen 등)은 다음 판 이후에 넣을 예정이다.</p></div>"""
         else:
             hfb = f"""<h1>Henrion & Fischhoff (1986) indices, recomputed</h1><p class="lead">In the last row of their Table I, they compared five constants (α⁻¹, e, h, mₑ, N_A) in eight reviews from 1929 to 1969 with the 1973 values and reported an interquartile index of 22% and a surprise index of 57% (normal: 50% and 2%). This site reaches back only to 1969, so it repeats part of that calculation and adds the same calculation against the 2022 edition. As in their paper and in Table 34.2 of the 1973 report, α⁻¹ is used rather than α.</p>
 <div class="prose"><ul><li>1969 edition against 1973 (their reference, five constants): {esc(all73['z_old'])}.</li><li>1969–2018 editions against 2022 (five constants, editions in which they were measured, {esc(all22['edition'])}): {esc(all22['z_old'])}.</li></ul>
@@ -766,9 +771,9 @@ def build():
             ctk = constant_takeaway(lang, q, qm, rows, pairs, m3r, m6)
             basis = f'<dt>{t["basis"]}</dt><dd>{esc(qm["name_ko_basis"])}</dd>' if lang == "ko" else ""
             body = f"""<p><span class="tag{" k" if qm["layer"] == "K" else ""}">{ {"K": t["core"], "D": t["display"], "S": t["cand"]}[qm["layer"]] }</span></p>
-<h1>{esc(qm["symbol"])} · {esc(qm[name])}</h1><p class="lead">{esc(qm["name_en"] if lang == "ko" else qm["name_ko"])}</p>
+<h1>{esc(qm["symbol"])} · {esc(qm[name])}</h1><p class="lead" lang="{"en" if lang == "ko" else "ko"}">{esc(qm["name_en"] if lang == "ko" else qm["name_ko"])}</p>
 {takeaway(lang, ctk)}<div class="spec"><dl><dt>{t["unit"]}</dt><dd>{fmt_unit(qm["unit"]) if qm["unit"] != "1" else ("없음(무차원)" if lang == "ko" else "none (dimensionless)")}</dd>{basis}<dt>{"메모" if lang == "ko" else "Note"}</dt><dd>{esc(cap(note)) or "—"}</dd><dt>M1</dt><dd>{esc(hl_txt) or "—"}</dd></dl></div>
-<figure><div class="legend"><span style="--c:var(--s1)">{"판별 값 ±1σ" if lang == "ko" else "value ±1σ by edition"}</span><span class="dash" style="--c:var(--ref)">2022</span></div>{chart_funnel(fr, lang)}
+<figure><div class="legend"><span style="--c:var(--s1)">{"판별 값 ±1σ" if lang == "ko" else "Value ±1σ by edition"}</span><span class="dash" style="--c:var(--ref)">2022</span></div>{chart_funnel(fr, lang)}
 <figcaption>{"2022 판 값에서의 상대 편차(대칭 로그 축). 속이 빈 원은 오차 막대가 2022 판 값에 닿지 않은 판, 네모는 정의값." if lang == "ko" else "Relative deviation from the 2022 value (symmetric-log axis). Open circles: the error bar does not reach the 2022 value. Squares: exact."}</figcaption></figure>
 {table(CONST_HEAD[lang], tab, num_cols=(2, 3, 5, 6))}"""
             (base / "constants" / f"{q}.html").write_text(page(lang, qm[name], body, 2, "constants"), encoding="utf-8")
@@ -796,6 +801,16 @@ def build():
 
     (OUT / "index.html").write_text('<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="refresh" content="0; url=ko/index.html"><link rel="canonical" href="ko/index.html"><title>물리 상수 메트릭스 · Physical Constants Metrics</title></head><body><p><a href="ko/index.html">한국어</a> · <a href="en/index.html" lang="en">English</a></p></body></html>', encoding="utf-8")
     (OUT / ".nojekyll").write_text("", encoding="utf-8")
+    # 1.1.2: the language link points to the same page in the other language (it used to go to the other home page)
+    import re as _re2
+    for lang, other in (("ko", "en"), ("en", "ko")):
+        for fp in (OUT / lang).rglob("*.html"):
+            rel = fp.relative_to(OUT / lang).as_posix()
+            h = fp.read_text(encoding="utf-8")
+            h2, k = _re2.subn(r'(class="lang" href="(?:\.\./)*)' + other + r'/index\.html"', lambda mm: mm.group(1) + other + "/" + rel + '"', h)
+            if k != 1:
+                raise SystemExit(f"language link not found once in {fp}")
+            fp.write_text(h2, encoding="utf-8")
     print("pages:", sum(1 for _ in OUT.rglob("*.html")))
 
 
@@ -829,10 +844,10 @@ def constant_takeaway(lang, q, qm, rows, pairs, m3r, m6):
             out.append(f"측정값이던 옛 판 {len(m)}개 모두 2022 판 값을 ±1σ(그 판의 오차 막대) 안에 담았다{'(2022 판 값은 정의값)' if ex else ''}." if ko
                        else f"{'The one earlier edition with a measured value contains' if len(m) == 1 else ('Both' if len(m) == 2 else 'All ' + str(len(m))) + ' earlier editions with a measured value contain'} the 2022 value within ±1σ (the error bar).{' The 2022 value is exact.' if ex else ''}")
         else:
-            out.append((f"측정값이던 옛 판은 하나({m[0]['edition']} 판)이고, 그 판이 2022 판 값을 ±1σ(오차 막대) 밖에{', ±2σ(막대를 두 배로 넓힌 범위) 밖에도' if n2 else ' 두었으나 ±2σ(막대를 두 배로 넓힌 범위) 안에는'} 두었다. 정규분포 기대는 약 3개 중 1개, 20개 중 1개다{'(2022 판 값은 정의값)' if ex else ''}." if len(m) == 1 else
-                        f"측정값이던 옛 판 {len(m)}개 중 {n1}개가 2022 판 값을 ±1σ(오차 막대) 밖에, {n2}개가 ±2σ(막대를 두 배로 넓힌 범위) 밖에 두었다. 정규분포 기대는 약 3개 중 1개, 20개 중 1개다{'(2022 판 값은 정의값)' if ex else ''}.") if ko
-                       else (f"The one earlier edition with a measured value has the 2022 value outside ±1σ (the error bar){' and outside ±2σ (the bar doubled)' if n2 else ', though within ±2σ (the bar doubled)'}; the normal expectation is about 1 in 3 and 1 in 20.{' The 2022 value is exact.' if ex else ''}" if len(m) == 1 else
-                             f"Of {len(m)} earlier editions with a measured value, {n1} {'has' if n1 == 1 else 'have'} the 2022 value outside ±1σ (the error bar) and {n2} outside ±2σ (the bar doubled); the normal expectation is about 1 in 3 and 1 in 20.{' The 2022 value is exact.' if ex else ''}"))
+            out.append((f"측정값이던 옛 판은 하나({m[0]['edition']} 판)이고, 그 판이 2022 판 값을 ±1σ(오차 막대) 밖에{', ±2σ(막대를 두 배로 넓힌 범위) 밖에도' if n2 else ' 두었으나 ±2σ(막대를 두 배로 넓힌 범위) 안에는'} 두었다. 정규분포 기대는 약 3개 중 1개, 22개 중 1개다{'(2022 판 값은 정의값)' if ex else ''}." if len(m) == 1 else
+                        f"측정값이던 옛 판 {len(m)}개 중 {n1}개가 2022 판 값을 ±1σ(오차 막대) 밖에, {n2}개가 ±2σ(막대를 두 배로 넓힌 범위) 밖에 두었다. 정규분포 기대는 약 3개 중 1개, 22개 중 1개다{'(2022 판 값은 정의값)' if ex else ''}.") if ko
+                       else (f"The one earlier edition with a measured value has the 2022 value outside ±1σ (the error bar){' and outside ±2σ (the bar doubled)' if n2 else ', though within ±2σ (the bar doubled)'}; the normal expectation is about 1 in 3 and 1 in 22.{' The 2022 value is exact.' if ex else ''}" if len(m) == 1 else
+                             f"Of {len(m)} earlier editions with a measured value, {n1} {'has' if n1 == 1 else 'have'} the 2022 value outside ±1σ (the error bar) and {n2} outside ±2σ (the bar doubled); the normal expectation is about 1 in 3 and 1 in 22.{' The 2022 value is exact.' if ex else ''}"))
     ps = [p for p in pairs if p["qid"] == q]
     if ps:
         big = max(ps, key=lambda p: abs(float(p["z"])))
@@ -862,7 +877,7 @@ def reading_page(lang, N):
 <p>CODATA 는 대략 4년마다 그동안의 측정과 이론 계산을 한데 모아 최소제곱 조정을 하고 기본 물리 상수의 권고값과 표준불확도를 낸다. 이 사이트는 1969년 조정(CODATA 이전)과 CODATA 아홉 판에서 서로 환산 관계가 없는 핵심 상수 17개를 골라, 판이 바뀔 때 값이 움직인 폭을 그 불확도와 견주었다.</p>
 <h2>보이는 것</h2>
 <p>불확도는 꾸준히 줄었다. 불확도가 줄어든 핵심 상수 {N['m1_n_dec']}개의 상대 불확도는 중앙값으로 {N['m1_median']}년마다 절반이 되었다. 그런데 이동의 크기는 불확도가 말하는 범위를 자주 넘었다. 연속한 두 판 사이에서 두 불확도를 합친 것의 2배를 넘은 이동이 {N['m2_r2']}%, 3배를 넘은 이동이 {N['m2_r3']}% 였다. 판이 독립이고 정규분포를 따른다면 각각 4.6%, 0.27% 여야 한다. 2022 판 값을 기준으로 보면 옛 판의 ±2σ 막대 중 {N['m3_m2']}% 가 그 값을 담지 못했다.</p>
-<p>반대로 작은 이동은 기대보다 드물었다. |z|>1 인 판 쌍은 {N['m2_r1']}% 로 기대치 31.7% 보다 낮다. 판과 판이 같은 실험 자료를 상당 부분 공유하기 때문이다. 새 측정이 없으면 값은 거의 그대로 남고({N['m2_zero']}개 쌍은 한 자리도 바뀌지 않았다), 새 측정이나 이론 수정이 들어오면 한꺼번에 크게 움직인다. 2006→2010 판의 미세 구조 상수 이동(옛 σ 기준 6.4배)은 CODATA 2010 보고서가 주로 전자 자기 모멘트 이론의 8차 항 계산 오류를 바로잡은 결과로 설명한다. 2014→2018 판의 양성자 전하 반지름 이동(옛 σ 기준 5.5배)에는 뮤온 수소·중수소의 램 이동 측정이 처음 들어온 것과 수소·중수소 분광의 개선이 함께 작용했다.</p>
+<p>반대로 작은 이동은 기대보다 드물었다. |z| > 1 인 판 쌍은 {N['m2_r1']}% 로 기대치 31.7% 보다 낮다. 판과 판이 같은 실험 자료를 상당 부분 공유하기 때문이다. 새 측정이 없으면 값은 거의 그대로 남고({N['m2_zero']}개 쌍은 한 자리도 바뀌지 않았다), 새 측정이나 이론 수정이 들어오면 한꺼번에 크게 움직인다. 2006→2010 판의 미세 구조 상수 이동(옛 σ 기준 6.4배)은 CODATA 2010 보고서가 주로 전자 자기 모멘트 이론의 8차 항 계산 오류를 바로잡은 결과로 설명한다. 2014→2018 판의 양성자 전하 반지름 이동(옛 σ 기준 5.5배)에는 뮤온 수소·중수소의 램 이동 측정이 처음 들어온 것과 수소·중수소 분광의 개선이 함께 작용했다.</p>
 <h2>어디까지 말할 수 있나</h2>
 <ul><li>이 숫자는 「보고된 불확도가 판간 이동을 설명하지 못한 비율」이다. 그 원인이 연구자의 과신인지, 알려지지 않은 계통 오차인지, 조정 절차(어떤 측정을 넣고 뺄지, 불확도를 얼마나 키울지)인지는 이 자료로 가릴 수 없다.</li>
 <li>2022 판도 참값이 아니다. 기준을 바꾸면 놓침률도 바뀐다.</li>
@@ -881,7 +896,7 @@ def reading_page(lang, N):
 <ul><li>These numbers are the share of moves that the reported uncertainties did not cover. Whether the cause is the researchers' overconfidence, unknown systematic errors, or the adjustment procedure (which data to keep, how far to expand uncertainties) cannot be told from these data.</li>
 <li>The 2022 values are not the true values either; a different reference would give different miss rates.</li>
 <li>Editions are not independent and constants are correlated (joint adjustment, the theoretical link between α and aₑ, spectroscopic input shared by R∞ and nuclear radii). Intervals for rates are cluster bootstraps over constants, which handle dependence within a constant but not correlation between constants; and there are only 17 constants.</li>
-<li>Henrion & Fischhoff (1986) reported the same tendency for 1929–1973, and Bailey (2017) for some 41,000 individual measurements. The data here are narrower (recommended values, core constants) and longer (to 2022). The direction of the result is the same.</li></ul>
+<li>Henrion & Fischhoff (1986) reported the same tendency for the reviews from 1929 to 1969, measured against the 1973 values, and Bailey (2017) for some 41,000 individual measurements. The data here are narrower (recommended values, core constants) and longer (to 2022). The direction of the result is the same.</li></ul>
 <p>One practical lesson follows. A published uncertainty is better read together with the heavy tails that the field's record shows than as a promise that the truth lies outside the stated range only 5% of the time. The size of those tails is what this site measures.</p></div>"""
 
 
@@ -900,7 +915,7 @@ def prior_page(lang):
 <h2>Bailey (2017)</h2><p>D. C. Bailey, "Not Normal: the uncertainties of scientific measurements", <i>Royal Society Open Science</i> 4, 160600. About 41,000 measurements of some 3,200 quantities in medicine, nuclear and particle physics and interlaboratory comparisons; z for every pair of measurements of the same quantity, fitted with Student-t. For the fundamental constants (7 quantities, 320 measurements, 9,098 pairs) ν = 1.81 ± 0.15. Individual measurements are compared, whereas this site compares editions of recommended values. Data on Dryad (doi:10.5061/dryad.jb3mj, CC0).</p>
 <h2>Shlyakhter (1994)</h2><p>A. I. Shlyakhter, "Uncertainty estimates in scientific models: lessons from trends in physical measurements, population and energy projections", in B. M. Ayyub and M. M. Gupta (eds.), <i>Uncertainty Modelling and Analysis: Theory and Applications</i> (Elsevier, 1994), pp. 477ff. Fitted an exponential distribution to normalized deviations of successive measurements and proposed widening uncertainties by factors drawn from past errors.</p>
 <h2>Particle Data Group</h2><p>Publishes history plots of its averages for particle masses, lifetimes and other properties. This site does not yet use PDG data.</p>
-<h2>CODATA's own comparisons</h2><p>Each CODATA report compares its values with the previous edition (for example, "Comparison of 2022 and 2018 CODATA recommended values" in the 2022 report; Table 34.2 of the 1973 report compares with the 1963 and 1969 adjustments). The 1969 Taylor–Parker–Langenberg report plotted the history of α⁻¹ since the 1950s and wrote that no set of fundamental constants should be taken as Gospel truth.</p></div>"""
+<h2>CODATA's own comparisons</h2><p>Each CODATA report compares its values with the previous edition (for example, "Comparison of 2022 and 2018 CODATA recommended values" in the 2022 report; Table 34.2 of the 1973 report compares with the 1963 and 1969 adjustments). The 1969 Taylor–Parker–Langenberg report plotted the history of α⁻¹ since the 1950s and wrote that no set of fundamental constants should be taken as gospel truth.</p></div>"""
 
 
 def method_page(lang, N):
@@ -915,7 +930,7 @@ def method_page(lang, N):
 <li>2002 판 ASCII 보관본은 볼츠만 상수를 1.380 6504(24)×10⁻²³ 으로 적었으나, 같은 판의 PDF 표와 출판된 보고서(Rev. Mod. Phys. 77, 1)는 1.380 6505(24)×10⁻²³ 이다. 출판본 값을 쓴다. 같은 보관본의 전자 자기 모멘트와 양성자 비전하도 마지막 자리가 출판본과 달라 함께 보정했다(통계에는 쓰지 않는 행).</li>
 <li>1998~2006 ASCII 표에는 기본 전하 행이 없다. 같은 수치인 전자볼트(J) 행을 썼다.</li>
 <li>1998 판 ASCII 의 진공 투자율 행은 지수가 빠져 있어(정의값 4π×10⁻⁷) 복원했다.</li></ul>
-<h2>상수 선정</h2><p>통계의 분모인 핵심 상수 17개는 서로 정확한 환산 관계가 없도록 골랐다. 예컨대 2019년 이전에는 e = √(2αh/μ₀c), mₑ = 2R∞h/(cα²) 이므로 α·h·R∞ 를 넣으면 e·mₑ 는 뺀다. 아보가드로 상수는 몰 플랑크 상수 관계로 h 와 묶여 있어 뺐다. 상대 원자 질량(전자·양성자·중성자·중양성자·알파 입자)을 넣고, 그 비인 양성자–전자 질량비는 뺐다. PDG 에서 받아 쓰는 양(타우 질량, 페르미 결합 상수, 약한 혼합각)은 넣지 않았다. 빛의 속력은 1969·1973 판에서 측정값이었으므로 그 두 판의 관계식에는 c 가 측정값으로 더 들어가지만, 측정값인 판이 둘뿐이라 핵심 상수에 넣지 않았다. μ₀·M_u 는 2014 판까지 정의값이었다.</p>
+<h2>상수 선정</h2><p>통계의 분모인 핵심 상수 17개는 서로 정확한 환산 관계가 없도록 골랐다. 예컨대 2019년 이전에는 e = √(2αh/(μ₀c)), mₑ = 2R∞h/(cα²) 이므로 α·h·R∞ 를 넣으면 e·mₑ 는 뺀다. 아보가드로 상수는 몰 플랑크 상수 관계로 h 와 묶여 있어 뺐다. 상대 원자 질량(전자·양성자·중성자·중양성자·알파 입자)을 넣고, 그 비인 양성자–전자 질량비는 뺐다. PDG 에서 받아 쓰는 양(타우 질량, 페르미 결합 상수, 약한 혼합각)은 넣지 않았다. 빛의 속력은 1969·1973 판에서 측정값이었으므로 그 두 판의 관계식에는 c 가 측정값으로 더 들어가지만, 측정값인 판이 둘뿐이라 핵심 상수에 넣지 않았다. μ₀·M_u 는 2014 판까지 정의값이었다.</p>
 <p>17개는 설계 단계에서 고른 목록이다. 같은 규칙(정확한 관계 없음, 측정값인 판 4개 이상, PDG 채택값 아님)에 맞지만 넣지 않은 양이 더 있다 — 헬리온·삼중수소핵의 상대 원자 질량, 중양성자 자기 모멘트, 규소 격자 간격 등. 앞의 셋을 더한 20개로 다시 계산한 값을 M2·M3 면에 민감도로 적었다(<code>sens_candidates.csv</code>). 정확한 관계가 없다는 것이 통계적으로 독립이라는 뜻은 아니다.</p>
 <h2>통계</h2><ul><li>비율(M2·M3)과 M4 의 신뢰구간: 상수를 통째로 다시 뽑는 군집 부트스트랩, 10,000회(M4 는 2,000회), 시드 2026, 백분위 95%. M1 의 구간은 회귀 기울기의 t(n−2) 구간이다.</li>
 <li>M4 는 값이 한 자리도 바뀌지 않은 판 쌍(z = 0)을 빼고 맞춘다. 남기면 중심 0 Student-t 의 우도가 척도 0 쪽으로 무한대가 되어 최대우도 추정량이 없다.</li>
@@ -929,14 +944,14 @@ def method_page(lang, N):
     return f"""<div class="prose"><h1>Method & limits</h1>
 <div class="takeaway"><b>Takeaway</b><ul><li>The 1969, 1973 and 1986 values were transcribed by hand from page images of the published tables, later editions from NIST's tables; every value used was checked against a separately typeset version.</li><li>The checks found three rows of NIST's archived 2002 ASCII table that differ from the published report; the published values are used.</li><li>Editions are not independent and the 2022 values are not the true values; every number should be read with both in mind.</li></ul></div>
 {GLOSS["en"]}<h2>Data</h2><p>{esc(SOURCES['codata']['en'])} {esc(SOURCES['tpl1969']['en'])}</p>
-<ul><li>1998–2022: NIST ASCII tables, parsed. 1998–2006 use concise notation, value(uncertainty), the bracketed digits referring to the last digits; from 2010 value and uncertainty are in separate columns. Values ending in '...' and '(exact)' are exact.</li>
+<ul><li>1998–2022: NIST ASCII tables, parsed. 1998–2006 use concise notation, value(uncertainty), the digits in parentheses referring to the last digits; from 2010 value and uncertainty are in separate columns. Values ending in “...” and “(exact)” are exact.</li>
 <li>1969, 1973, 1986: the quantities used here were transcribed by hand from page images of the published tables. All 66 values (63 measured, 3 exact) were compared automatically with the PDF text layer: 64 are identical, and the other two are OCR errors in the text layer, the image reading being correct. These editions state their uncertainties as standard deviations (1969: heading of table XXXII; 1973: table 33.1, note a; 1986: endnote 3).</li>
-<li>All 213 rows used from 1998–2022 were checked against NIST's separately typeset 'all values' PDF tables, as was a random sample of 10 rows per edition.</li></ul>
+<li>All 213 rows used from 1998–2022 were checked against NIST's separately typeset “all values” PDF tables; a random sample of 10 rows per edition was also compared with the same PDFs.</li></ul>
 <h2>Corrections to the sources</h2><ul>
 <li>The archived 2002 ASCII table gives the Boltzmann constant as 1.380 6504(24)×10⁻²³; the 2002 PDF table and the published report (Rev. Mod. Phys. 77, 1) give 1.380 6505(24)×10⁻²³. The published value is used. Two other rows of the same file (electron magnetic moment, proton charge-to-mass quotient) differ from the publication in the last digit and were corrected too; neither enters the statistics.</li>
 <li>The 1998–2006 ASCII tables have no elementary-charge row; the row for the electron volt in joules carries the same number and is used instead.</li>
 <li>The 1998 ASCII row for the vacuum magnetic permeability lacks its exponent; the exact value 4π×10⁻⁷ was restored.</li></ul>
-<h2>Choice of constants</h2><p>The 17 core constants that form every denominator were chosen so that none is an exact function of the others. Before 2019, e = √(2αh/μ₀c) and mₑ = 2R∞h/(cα²); with α, h and R∞ in, e and mₑ are out. The Avogadro constant is tied to h through the molar Planck constant and is out. The relative atomic masses of the electron, proton, neutron, deuteron and alpha particle are in, and their ratio mₚ/mₑ is out. Quantities CODATA adopts from the PDG (tau mass, Fermi coupling constant, weak mixing angle) are not used. The speed of light was measured in the 1969 and 1973 editions, so in those two editions the relations above involve c as a further measured quantity; with only two measured editions it is not a core constant. μ₀ and M_u were exact up to 2014.</p>
+<h2>Choice of constants</h2><p>The 17 core constants that form every denominator were chosen so that none is an exact function of the others. Before 2019, e = √(2αh/(μ₀c)) and mₑ = 2R∞h/(cα²); with α, h and R∞ in, e and mₑ are out. The Avogadro constant is tied to h through the molar Planck constant and is out. The relative atomic masses of the electron, proton, neutron, deuteron and alpha particle are in, and their ratio mₚ/mₑ is out. Quantities CODATA adopts from the PDG (tau mass, Fermi coupling constant, weak mixing angle) are not used. The speed of light was measured in the 1969 and 1973 editions, so in those two editions the relations above involve c as a further measured quantity; with only two measured editions it is not a core constant. μ₀ and M_u were exact up to 2014.</p>
 <p>The 17 were chosen at the design stage. Other quantities meet the same rule (no exact relation, measured in at least four editions, not adopted from the PDG) but were not included: the helion and triton relative atomic masses, the deuteron magnetic moment, the silicon lattice spacing and others. The M2 and M3 pages give, as a sensitivity check, the values with the first three added (20 constants; <code>sens_candidates.csv</code>). The absence of exact relations does not make the constants statistically independent.</p>
 <h2>Statistics</h2><ul><li>Intervals for the rates (M2, M3) and for M4: cluster bootstrap resampling whole constants, 10,000 resamples (2,000 for M4), seed 2026, 95% percentile intervals. M1 intervals are t(n−2) intervals of the regression slope.</li>
 <li>M4 is fitted without the pairs whose printed value did not change (z = 0); with them, the likelihood of a zero-centered Student-t is unbounded as the scale goes to zero and no maximum-likelihood estimate exists.</li>

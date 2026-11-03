@@ -54,16 +54,16 @@ METRICS = [{'id': 'm1',
                     '{m1_median} years the relative standard uncertainty halved ({m1_median_all} years over all {m1_n_core}, counting the one with '
                     "no decline). The {m1_min_name_en} has the shortest half-life ({m1_min} years) and the {m1_max_name_en} the longest ({m1_max} "
                     'years). The neutron magnetic moment kept almost the same uncertainty from 1986 on (slope −7×10⁻¹¹ per year, interval including '
-                    "zero) and is shown as 'no decline'.",
+                    "zero) and is shown as “no decline.”",
          'caveat': 'Editions are 4 to 13 years apart. Constants that became exact along the way (fixed by definition rather than measured), such as '
                    'the Planck and Boltzmann constants, are counted only up to that point. A straight line is a summary: constants whose uncertainty '
                    'dropped in one step when a new method arrived fit it poorly (low R²).'}},
  {'id': 'm2',
   'file': 'm2_summary.csv',
-  'takeaway': {'ko': ['연속한 두 판 사이 이동이 두 판의 표준불확도를 합친 값의 2배를 넘은 경우(|z|>2)가 {m2_r2}%, 약 {m2_1in2}번에 1번이다. 정규분포 기대는 4.55%(22번에 1번) — 오차 막대가 맞다면 이 정도여야 '
+  'takeaway': {'ko': ['연속한 두 판 사이 이동이 두 판의 표준불확도를 합친 값의 2배를 넘은 경우(|z| > 2)가 {m2_r2}%, 약 {m2_1in2}번에 1번이다. 정규분포 기대는 4.55%(22번에 1번) — 오차 막대가 맞다면 이 정도여야 '
                       '한다.',
-                      '3배를 넘은 경우(|z|>3)는 {m2_r3}%(약 {m2_1in3}번에 1번)로, 정규분포 기대 0.27%(370번에 1번)보다 훨씬 잦다.',
-                      '반대로 |z|>1 은 정규분포 기대보다 적다. 판끼리 자료를 공유해 값은 대개 그대로 있다가, 새 측정이나 이론 수정이 들어오면 한 번에 크게 움직인다.'],
+                      '3배를 넘은 경우(|z| > 3)는 {m2_r3}%(약 {m2_1in3}번에 1번)로, 정규분포 기대 0.27%(370번에 1번)보다 훨씬 잦다.',
+                      '반대로 |z| > 1 은 정규분포 기대보다 적다. 판끼리 자료를 공유해 값은 대개 그대로 있다가, 새 측정이나 이론 수정이 들어오면 한 번에 크게 움직인다.'],
                'en': ['Moves between consecutive editions exceeded twice the combined standard uncertainty of the two editions (|z| > 2) in {m2_r2}% '
                       'of pairs, about once in {m2_1in2}. The normal expectation is 4.55% (once in 22): what correct error bars would give.',
                       'Moves beyond three times (|z| > 3) occurred in {m2_r3}% (about once in {m2_1in3}), far more often than the normal 0.27% (once '
@@ -74,21 +74,21 @@ METRICS = [{'id': 'm1',
          'short': '연속한 두 판 사이 이동이 두 불확도로 설명되지 않은 비율',
          'definition': '같은 상수가 측정값으로 실린 판을 연도순으로 늘어놓고 이웃한 두 판(그 사이에 정의값이거나 실리지 않은 판이 있으면 건너뛴다)에서 값의 이동을 두 판의 표준불확도를 합친 값 √(u_옛²+u_새²)으로 나눈 것을 z 라 한다. z 가 2면 두 판의 오차 막대를 합친 폭의 2배를 움직였다는 뜻이다. |z| 가 '
                        '1·2·3 을 넘는 비율을 센다.',
-         'formula': 'z = (x_새 − x_옛) / √(u_옛² + u_새²).  두 판이 독립이고 정규분포라면 |z|>1 은 31.7%, >2 는 4.55%, >3 은 0.27%.',
+         'formula': 'z = (x_새 − x_옛) / √(u_옛² + u_새²).  두 판이 독립이고 정규분포라면 |z| > 1 은 31.7%, >2 는 4.55%, >3 은 0.27%.',
          'denominator': '핵심 상수 {m2_q}개의 연속 판 쌍 {m2_n}개. 1998 판 이후 4년 간격 쌍 {m2_n_new}개, 그 이전(4~13년 간격) 쌍 {m2_n_old}개.',
-         'reading': '|z|>2 는 {m2_r2}%(95% 구간 {m2_r2_ci}), 약 {m2_1in2}번에 1번이다. 정규분포 기대는 4.55%(22번에 1번) — 불확도가 맞고 판끼리 독립이라면 이 정도여야 한다. |z|>3 은 '
-                    '{m2_r3}%({m2_r3_ci}), 약 {m2_1in3}번에 1번으로 정규분포 기대 0.27%(370번에 1번)보다 훨씬 많다. 반대로 |z|>1 은 {m2_r1}%({m2_r1_ci})로 정규분포 기대 31.7%보다 적다. '
+         'reading': '|z| > 2 는 {m2_r2}%(95% 구간 {m2_r2_ci}), 약 {m2_1in2}번에 1번이다. 정규분포 기대는 4.55%(22번에 1번) — 불확도가 맞고 판끼리 독립이라면 이 정도여야 한다. |z| > 3 은 '
+                    '{m2_r3}%({m2_r3_ci}), 약 {m2_1in3}번에 1번으로 정규분포 기대 0.27%(370번에 1번)보다 훨씬 많다. 반대로 |z| > 1 은 {m2_r1}%({m2_r1_ci})로 정규분포 기대 31.7%보다 적다. '
                     '작은 이동은 드물고 큰 이동은 잦다.',
-         'caveat': '연속한 두 판은 같은 실험 자료를 상당 부분 공유하므로 독립이 아니다. 새 자료가 없으면 값이 거의 그대로 남고(값이 한 자리도 바뀌지 않은 쌍이 {m2_zero}개), z 가 0 쪽으로 쏠린다. 그래서 |z|>1 이 적은 것을 '
+         'caveat': '연속한 두 판은 같은 실험 자료를 상당 부분 공유하므로 독립이 아니다. 새 자료가 없으면 값이 거의 그대로 남고(값이 한 자리도 바뀌지 않은 쌍이 {m2_zero}개), z 가 0 쪽으로 쏠린다. 그래서 |z| > 1 이 적은 것을 '
                    '「불확도가 넉넉했다(오차 막대가 넓었다)」로 읽으면 안 된다. 큰 이동의 비율은 이런 사정에도 정규분포 기대보다 높다. 95% 구간은 상수를 통째로 다시 뽑는 군집 부트스트랩이다. 같은 선정 규칙에 맞는 후보 '
-                   '3개(헬리온·삼중수소핵의 상대 원자 질량, 중양성자 자기 모멘트)를 더한 20개로 다시 세면 |z|>2 {k20_r2}%, |z|>3 {k20_r3}% 다.'},
+                   '3개(헬리온·삼중수소핵의 상대 원자 질량, 중양성자 자기 모멘트)를 더한 20개로 다시 세면 |z| > 2 {k20_r2}%, |z| > 3 {k20_r3}% 다.'},
   'en': {'name': 'Edition-to-edition exceedance',
          'short': 'Share of moves between consecutive editions not covered by the two uncertainties',
          'definition': 'For each constant, the editions in which it is measured are put in order and each is paired with the next (an edition in '
                        'which the constant is exact or absent is skipped). z is the change in value divided by the '
                        'combined standard uncertainty √(u_old² + u_new²). z = 2 means a move of twice the combined width of the two error bars. The '
                        'shares with |z| above 1, 2 and 3 are counted.',
-         'formula': 'z = (x_new − x_old) / √(u_old² + u_new²). If the two editions were independent and normal, |z|>1 would occur 31.7% of the time, '
+         'formula': 'z = (x_new − x_old) / √(u_old² + u_new²). If the two editions were independent and normal, |z| > 1 would occur 31.7% of the time, '
                     '>2 4.55%, >3 0.27%.',
          'denominator': '{m2_n} consecutive pairs over {m2_q} core constants: {m2_n_new} four-year pairs from 1998 on, {m2_n_old} earlier pairs (4 '
                         'to 13 years apart).',
@@ -107,7 +107,7 @@ METRICS = [{'id': 'm1',
   'takeaway': {'ko': ['옛 판의 ±2σ 범위(표준불확도의 2배 — 넉넉한 오차 막대)가 2022 판 값을 담지 못한 경우가 {m3_m2}%, 10개 중 약 {m3_m2_10}개다. 정규분포 기대는 4.55%(20개 중 1개 꼴).',
                       '1969~1986 판({m3_old_m2}%)과 1998~2018 판({m3_new_m2}%)의 놓침률이 비슷하다. 불확도는 만 배 넘게 줄었지만 놓침률은 줄지 않았다.'],
                'en': ['The ±2σ ranges of earlier editions (twice the standard uncertainty: generous error bars) miss the 2022 value in {m3_m2}% of '
-                      'cases, about {m3_m2_10} in 10. The normal expectation is 4.55% (about 1 in 20).',
+                      'cases, about {m3_m2_10} in 10. The normal expectation is 4.55% (once in 22).',
                       'The 1969–1986 editions ({m3_old_m2}%) and the 1998–2018 editions ({m3_new_m2}%) miss about equally often: uncertainties '
                       'shrank more than ten-thousand-fold, but the miss rate did not.']},
   'ko': {'name': '2022 판 기준 놓침률',
@@ -145,7 +145,7 @@ METRICS = [{'id': 'm1',
   'file': 'm4_tail.csv',
   'takeaway': {'ko': ['판간 이동 z 의 분포는 정규분포(종 모양)보다 꼬리가 훨씬 두껍다 — 아주 크게 빗나가는 일이 정규분포가 예상하는 것보다 훨씬 잦다.',
                       'Student-t 자유도는 ν = {m4_nu} 로 코시 분포(ν = 1)에 가깝다(정규분포는 ν = ∞, 작을수록 꼬리가 두껍다).',
-                      '실무로 옮기면, 공표된 표준불확도의 3배 밖으로 움직이는 일(|z|>3)도 드물지 않다 — 판 쌍의 {m2_r3}%.'],
+                      '실무로 옮기면, 공표된 표준불확도의 3배 밖으로 움직이는 일(|z| > 3)도 드물지 않다 — 판 쌍의 {m2_r3}%.'],
                'en': ['The distribution of moves between editions (z) has much heavier tails than the normal (bell curve): very large misses happen '
                       'far more often than the normal predicts.',
                       'The Student-t degrees of freedom are ν = {m4_nu}, close to the Cauchy distribution (ν = 1); the normal has ν = ∞, and smaller '
@@ -217,7 +217,7 @@ METRICS = [{'id': 'm1',
          'short': '측정값이 정의값이 된 상수, 정의값이 측정값이 된 상수',
          'definition': '판과 판 사이에 측정값(불확도가 있는 값)에서 정의값(측정하지 않고 약속으로 정한 값, 불확도 0)으로, 또는 그 반대로 바뀐 상수와 그 시점.',
          'formula': '연속한 두 판에서 「정의값 여부」가 바뀐 경우.',
-         'denominator': '이 사이트가 다루는 27개 양.',
+         'denominator': '이 사이트가 다루는 31개 양.',
          'reading': '빛의 속력은 1983년 미터를 빛으로 다시 정의하면서 정의값이 되어 1986 판부터 불확도가 0이다. 2019년 SI 개정으로 플랑크 상수·기본 전하·볼츠만 상수·아보가드로 상수와, 이 값들로 계산되는 패러데이 상수·몰 기체 '
                     '상수·슈테판–볼츠만 상수가 2018 판부터 정의값이다. 반대로 진공 투자율 μ₀ 와 몰질량 상수 M_u 는 2014 판까지 정의값이었다가 2018 판부터 측정값이다.',
          'caveat': '정의값이 된 상수는 그 판부터 M1~M4 계산에서 빠진다. 정의값이 되었다고 그 양에 대한 지식이 완성된 것은 아니다 — 불확도는 그 상수로 계산하던 다른 양으로 옮겨 간다.'},
@@ -226,7 +226,7 @@ METRICS = [{'id': 'm1',
          'definition': 'Constants whose status changed between editions, from measured (with an uncertainty) to exact (fixed by definition rather '
                        'than measured, uncertainty zero), or the reverse, and when.',
          'formula': 'A change in the exact flag between two consecutive editions.',
-         'denominator': 'The 27 quantities on this site.',
+         'denominator': 'The 31 quantities on this site.',
          'reading': 'The speed of light became exact when the meter was redefined in terms of light in 1983, and has zero uncertainty from the 1986 '
                     'edition. With the 2019 revision of the SI, the Planck constant, elementary charge, Boltzmann constant and Avogadro constant, '
                     'and the Faraday constant, molar gas constant and Stefan–Boltzmann constant computed from them, are exact from the 2018 edition. '
