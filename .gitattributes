@@ -5,3 +5,6 @@
 *.png binary
 *.jpg binary
 *.gz binary
+
+# raw source files: keep bytes exactly as downloaded (SHA-256 checked by the parsers)
+data/raw/** -text

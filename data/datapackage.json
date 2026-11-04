@@ -1,7 +1,7 @@
 {
  "name": "physical-constants-metrics",
- "version": "1.1.3",
- "created": "2026-11-02",
+ "version": "1.2",
+ "created": "2026-11-04",
  "licenses": [
   {
    "name": "CC-BY-4.0",
@@ -16,6 +16,14 @@
   {
    "title": "Taylor, Parker & Langenberg 1969",
    "path": "https://physics.nist.gov/cuu/Constants/archive1969.html"
+  },
+  {
+   "title": "Faerber & López-Corredoira 2020, Table A2 (CC BY 4.0)",
+   "path": "https://doi.org/10.3390/universe6080114"
+  },
+  {
+   "title": "Huchra, Estimates of the Hubble Constant (aggregates only)",
+   "path": "https://www.cfa.harvard.edu/~huchra/hubble.plot.dat"
   }
  ],
  "resources": [
@@ -117,6 +125,51 @@
   {
    "path": "aw_a5_intervals.csv",
    "description": "Switches to interval notation (A5). Atomic-weight values © IUPAC/CIAAW (not covered by CC BY 4.0): republication with full reference, ©, IUPAC or CIAAW and year; translations need prior approval from the relevant IUPAC National Adhering Organization; commercial use by arrangement with the CIAAW Secretariat. CC BY 4.0 covers only the editor's computations (z, aggregates, conversions).",
+   "format": "csv"
+  },
+  {
+   "path": "h0_faerber2020.csv",
+   "description": "Every row of Table A2 of Faerber & López-Corredoira (2020): year, H0, error as printed, reference (CC BY 4.0, with attribution). Table A2 values © the authors, CC BY 4.0 (Faerber & López-Corredoira 2020, Universe 6, 114). Huchra's list (hubble.plot.dat) grants no right to republish: these files hold aggregates only (counts, quartiles, metrics), never a row of the list. CC BY 4.0 covers the editor's computations.",
+   "format": "csv"
+  },
+  {
+   "path": "h0_h3_rows_faerber.csv",
+   "description": "z against both references for every Table A2 row (H3). Table A2 values © the authors, CC BY 4.0 (Faerber & López-Corredoira 2020, Universe 6, 114). Huchra's list (hubble.plot.dat) grants no right to republish: these files hold aggregates only (counts, quartiles, metrics), never a row of the list. CC BY 4.0 covers the editor's computations.",
+   "format": "csv"
+  },
+  {
+   "path": "h0_h1_halflife.csv",
+   "description": "H1 precision half-life by series, start year and variant. Table A2 values © the authors, CC BY 4.0 (Faerber & López-Corredoira 2020, Universe 6, 114). Huchra's list (hubble.plot.dat) grants no right to republish: these files hold aggregates only (counts, quartiles, metrics), never a row of the list. CC BY 4.0 covers the editor's computations.",
+   "format": "csv"
+  },
+  {
+   "path": "h0_h3_summary.csv",
+   "description": "H3 miss rates, interquartile and surprise indices with 95% intervals, by series and reference. Table A2 values © the authors, CC BY 4.0 (Faerber & López-Corredoira 2020, Universe 6, 114). Huchra's list (hubble.plot.dat) grants no right to republish: these files hold aggregates only (counts, quartiles, metrics), never a row of the list. CC BY 4.0 covers the editor's computations.",
+   "format": "csv"
+  },
+  {
+   "path": "h0_h4_tail.csv",
+   "description": "H4 Student-t fits by series and reference. Table A2 values © the authors, CC BY 4.0 (Faerber & López-Corredoira 2020, Universe 6, 114). Huchra's list (hubble.plot.dat) grants no right to republish: these files hold aggregates only (counts, quartiles, metrics), never a row of the list. CC BY 4.0 covers the editor's computations.",
+   "format": "csv"
+  },
+  {
+   "path": "h0_huchra_yearly.csv",
+   "description": "Huchra's list by year: count, quartiles of H0 and of the relative error (years with fewer than three rows: count only). Table A2 values © the authors, CC BY 4.0 (Faerber & López-Corredoira 2020, Universe 6, 114). Huchra's list (hubble.plot.dat) grants no right to republish: these files hold aggregates only (counts, quartiles, metrics), never a row of the list. CC BY 4.0 covers the editor's computations.",
+   "format": "csv"
+  },
+  {
+   "path": "h0_huchra_decades.csv",
+   "description": "Huchra's list by decade: count, quartiles of H0. Table A2 values © the authors, CC BY 4.0 (Faerber & López-Corredoira 2020, Universe 6, 114). Huchra's list (hubble.plot.dat) grants no right to republish: these files hold aggregates only (counts, quartiles, metrics), never a row of the list. CC BY 4.0 covers the editor's computations.",
+   "format": "csv"
+  },
+  {
+   "path": "h0_huchra_types.csv",
+   "description": "Huchra's list: rows per decade and type code. Table A2 values © the authors, CC BY 4.0 (Faerber & López-Corredoira 2020, Universe 6, 114). Huchra's list (hubble.plot.dat) grants no right to republish: these files hold aggregates only (counts, quartiles, metrics), never a row of the list. CC BY 4.0 covers the editor's computations.",
+   "format": "csv"
+  },
+  {
+   "path": "h0_huchra_codes.csv",
+   "description": "Huchra's list: rows, first and last year per type code. Table A2 values © the authors, CC BY 4.0 (Faerber & López-Corredoira 2020, Universe 6, 114). Huchra's list (hubble.plot.dat) grants no right to republish: these files hold aggregates only (counts, quartiles, metrics), never a row of the list. CC BY 4.0 covers the editor's computations.",
    "format": "csv"
   }
  ]

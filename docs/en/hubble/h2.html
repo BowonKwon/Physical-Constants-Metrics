@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>H2 · Not produced — Physical Constants Metrics</title><meta name="description" content="How often did the error bars scientists published miss the next edition&#x27;s value? CODATA fundamental constants, 1969–2022">
+<script>(function(){var q=new URLSearchParams(location.search).get("theme");if(q==="light"||q==="dark"){localStorage.setItem("pcm-theme",q)}else if(q==="auto"){localStorage.removeItem("pcm-theme")}var v=localStorage.getItem("pcm-theme");if(v)document.documentElement.setAttribute("data-theme",v)})();</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light;
+  --bg:#f7f7f5;--bg2:#ecede9;--card:#ffffff;--line:#d9dbd5;--line2:#e7e8e3;
+  --fg:#1c1f22;--fg2:#575c62;--fg3:#868b90;
+  --accent:#2d6b68;--accent2:#a5643c;
+  --s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--grid:#e4e5e0;--ref:#8f9398;
+  --shadow:0 1px 2px rgba(30,34,38,.05),0 6px 18px rgba(30,34,38,.05);
+  --display:"Noto Serif KR","Source Serif 4",Georgia,serif;
+  --body:"Noto Sans KR",-apple-system,"Segoe UI","Apple SD Gothic Neo",Roboto,sans-serif}
+@media(prefers-color-scheme:dark){:root:where(:not([data-theme="light"])){color-scheme:dark;
+  --bg:#1a1c1d;--bg2:#212425;--card:#222526;--line:#33383a;--line2:#2a2e30;
+  --fg:#eaebe8;--fg2:#b2b5b2;--fg3:#7f8381;
+  --accent:#73b3ad;--accent2:#d39467;
+  --s1:#3987e5;--s2:#d95926;--s3:#199e70;--grid:#2c3032;--ref:#8a8e8c;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 20px rgba(0,0,0,.25)}}
+:root[data-theme="dark"]{color-scheme:dark;
+  --bg:#1a1c1d;--bg2:#212425;--card:#222526;--line:#33383a;--line2:#2a2e30;
+  --fg:#eaebe8;--fg2:#b2b5b2;--fg3:#7f8381;
+  --accent:#73b3ad;--accent2:#d39467;
+  --s1:#3987e5;--s2:#d95926;--s3:#199e70;--grid:#2c3032;--ref:#8a8e8c;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 20px rgba(0,0,0,.25)}
+*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}
+body{margin:0;font:16px/1.7 var(--body);background:var(--bg);color:var(--fg);overflow-wrap:anywhere;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline;text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+header{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:.55rem 1.1rem;display:flex;gap:1.2rem;align-items:center;flex-wrap:wrap}
+header .brand{font-family:var(--display);font-weight:600;font-size:1.05rem;color:var(--fg)}
+header nav{display:flex;gap:.9rem;flex-wrap:wrap}header nav a{color:var(--fg2);font-size:.92rem;padding:.2rem 0;border-bottom:2px solid transparent}
+header nav a:hover{text-decoration:none;color:var(--fg)}header nav a.on{color:var(--fg);border-bottom-color:var(--accent2)}
+header .right{margin-left:auto;display:flex;gap:.6rem;align-items:center}
+header .lang{font-size:.88rem;color:var(--fg2);border:1px solid var(--line);border-radius:999px;padding:.15rem .7rem}header .lang:hover{text-decoration:none;color:var(--fg)}
+.theme{border:1px solid var(--line);background:transparent;color:var(--fg2);border-radius:999px;width:30px;height:30px;cursor:pointer;font-size:.9rem;line-height:1;padding:0}
+main{max-width:1060px;margin:0 auto;padding:1.6rem 1.1rem 4rem;min-width:0}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(1.6rem,3.2vw,2.2rem);line-height:1.25;margin:.3rem 0 .5rem;text-wrap:balance}
+h2{font-family:var(--display);font-weight:600;font-size:1.3rem;line-height:1.3;margin:2.4rem 0 .8rem;padding-bottom:.35rem;border-bottom:1px solid var(--line)}
+h3{font-size:1.02rem;margin:1.4rem 0 .4rem}
+.tag{display:inline-block;font-size:.74rem;padding:.1rem .55rem;border-radius:999px;color:var(--fg2);background:var(--bg2);border:1px solid var(--line2);margin-right:.35rem}
+.tag.k{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 35%,transparent)}
+.lead{color:var(--fg2);font-size:1.05rem;max-width:72ch;margin:0 0 1.2rem}
+.hero{padding:.6rem 0 1.4rem;border-bottom:1px solid var(--line);margin-bottom:1.4rem}.hero h1{font-size:clamp(1.8rem,4vw,2.6rem)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.8rem;margin:1.2rem 0 1.6rem}
+.stat{display:block;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:1rem 1.1rem;box-shadow:var(--shadow);color:var(--fg)}
+.stat .n{font-family:var(--display);font-size:2rem;font-weight:600;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat .vs{font-size:.95rem;color:var(--fg2);margin-left:.3rem}
+.stat small{display:block;color:var(--fg2);margin-top:.35rem;font-size:.86rem;line-height:1.45}a.stat:hover{text-decoration:none;border-color:var(--fg3)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:.8rem;margin:.9rem 0 1.4rem}
+.card{display:block;background:var(--card);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:10px;padding:.85rem 1rem;box-shadow:var(--shadow);color:var(--fg)}
+.card.d{border-top-color:var(--line)}a.card:hover{text-decoration:none;border-color:var(--fg3)}
+.card b{display:block;margin-bottom:.25rem;color:var(--accent)}.card small{color:var(--fg2);font-size:.86rem;line-height:1.5;display:block}
+.spec{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:1rem 1.2rem;margin:1rem 0 1.4rem;box-shadow:var(--shadow)}
+dl{display:grid;grid-template-columns:max-content 1fr;gap:.55rem 1.4rem;margin:0}dt{color:var(--fg3);font-size:.82rem;padding-top:.15rem}dd{margin:0;min-width:0}
+dd.formula{font-family:ui-monospace,Consolas,"Noto Sans KR",monospace;font-size:.9rem;background:var(--bg2);border-radius:6px;padding:.45rem .65rem}
+@media(max-width:640px){dl{grid-template-columns:1fr}dt{margin-top:.5rem}}
+table{border-collapse:collapse;width:100%;font-size:.88rem;margin:.6rem 0}
+th,td{border-bottom:1px solid var(--line2);padding:.4rem .55rem;text-align:left;vertical-align:top;overflow-wrap:normal;word-break:keep-all}
+.wrap table{min-width:560px}
+thead th{color:var(--fg2);font-weight:600;font-size:.8rem;cursor:pointer;white-space:nowrap;border-bottom:1px solid var(--line);vertical-align:bottom}
+thead th small.hs{display:block;font-weight:400;color:var(--fg3);font-size:.7rem;line-height:1.3;white-space:normal;min-width:7em;max-width:15em;margin-top:.15rem}
+tbody tr:nth-child(even){background:color-mix(in srgb,var(--bg2) 55%,transparent)}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--card);padding:0 .3rem;margin:.6rem 0 1rem}.wrap table{margin:0}
+figure{margin:1.2rem 0;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:1rem 1rem .8rem;box-shadow:var(--shadow)}
+figcaption{font-size:.86rem;color:var(--fg2);margin-top:.5rem;line-height:1.5}
+svg{max-width:100%;height:auto;display:block}svg text{font-family:var(--body);fill:var(--fg2);font-size:12px}svg .grid{stroke:var(--grid)}svg .ref{stroke:var(--ref);stroke-dasharray:4 4}
+svg .hit{fill:transparent}svg .hit:hover+.dot,svg .dot:hover{stroke:var(--fg);stroke-width:2}
+.legend{display:flex;gap:1.1rem;font-size:.86rem;color:var(--fg2);flex-wrap:wrap;margin:.2rem 0 .4rem}.legend span::before{content:"";display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:.4rem;vertical-align:-1px;background:var(--c)}
+.legend span.dash::before{height:0;border-top:2px dashed var(--c);border-radius:0;vertical-align:3px}
+.takeaway{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent2);border-radius:10px;padding:.75rem 1.1rem .8rem;margin:.4rem 0 1.4rem;box-shadow:var(--shadow);max-width:80ch}
+.takeaway b{display:block;font-size:.76rem;letter-spacing:.06em;color:var(--accent2);margin-bottom:.2rem}
+.takeaway ul{margin:0;padding-left:1.1rem}.takeaway li{margin:.25rem 0}
+.note{background:color-mix(in srgb,var(--accent) 7%,var(--card));border:1px solid color-mix(in srgb,var(--accent) 25%,var(--line));border-left:4px solid var(--accent);border-radius:8px;padding:.7rem 1rem;margin:1.2rem 0;font-size:.95rem}
+.prologue{max-width:68ch;margin:0 0 1.8rem;font-size:1.04rem;line-height:1.9;color:var(--fg)}.prologue h2{border:0;margin:.4rem 0 .6rem;padding:0;font-size:1.15rem;color:var(--fg2);letter-spacing:.02em}.prologue p{margin:.75rem 0}.prose p,.prose ul,.prose ol{max-width:72ch}.prose p{margin:.8rem 0}.prose li{margin:.3rem 0}
+.files a{display:inline-block;font-size:.85rem;background:var(--bg2);border:1px solid var(--line2);border-radius:6px;padding:.15rem .55rem;margin:.2rem .3rem .2rem 0;color:var(--fg2)}
+footer{border-top:1px solid var(--line);color:var(--fg3);font-size:.82rem;padding:1.2rem;text-align:center}
+.tip{position:fixed;pointer-events:none;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:.3rem .55rem;font-size:.82rem;box-shadow:var(--shadow);display:none;z-index:9;max-width:280px}
+ main.wide{max-width:1300px} .crumbs{font-size:.84rem;color:var(--fg3);margin:-.4rem 0 .9rem} .crumbs .sep{margin:0 .25rem} .crumbs [aria-current]{color:var(--fg2)} .leaf{display:grid;grid-template-columns:220px minmax(0,1fr);gap:2rem;align-items:start} .sibs{position:sticky;top:4.2rem;max-height:calc(100vh - 5rem);overflow:auto;font-size:.84rem;border-right:1px solid var(--line);padding-right:.8rem} .sibs ol,.sibs-m ol{list-style:none;margin:.2rem 0 .8rem;padding:0} .sibs li a,.sibs-m li a{display:block;padding:.18rem .4rem;border-radius:6px;color:var(--fg2)} .sibs li a:hover,.sibs-m li a:hover{background:var(--bg2);text-decoration:none} .sibs a[aria-current],.sibs-m a[aria-current]{background:var(--bg2);color:var(--fg);font-weight:600} .sibs summary,.sibs-m summary{cursor:pointer;font-weight:600;color:var(--fg);margin:.3rem 0} .sibs .sg{font-weight:600;margin:.2rem 0} .sibs-m{display:none;border:1px solid var(--line);border-radius:10px;padding:.4rem .8rem;margin:0 0 1rem;font-size:.9rem} .pn{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;border-top:1px solid var(--line);margin-top:2.4rem;padding-top:1rem;font-size:.92rem} .pn a[rel=next]{margin-left:auto;text-align:right} .pn small{display:block;color:var(--fg3)} @media(max-width:860px){.leaf{display:block}.sibs{display:none}.sibs-m{display:block}} @media print{.crumbs,.sibs,.sibs-m,.pn{display:none}.leaf{display:block}}</style></head><body>
+<header><a class="brand" href="../../en/index.html">Physical Constants Metrics</a><nav><a href="../../en/index.html">Home</a><a href="../../en/metrics/index.html">Metrics</a><a href="../../en/constants/index.html">Constants</a><a href="../../en/atomic/index.html">Atomic weights</a><a href="../../en/hubble/index.html" class="on">Hubble constant</a><a href="../../en/reading.html">Reading</a><a href="../../en/prior.html">Prior work</a><a href="../../en/method.html">Method & limits</a><a href="../../en/data.html">Data</a></nav>
+<div class="right"><button id="theme" class="theme" type="button" aria-label="Color theme">◑</button><a class="lang" href="../../ko/hubble/h2.html">한국어</a></div></header>
+<main class="wide"><nav class="crumbs" aria-label="Breadcrumb"><a href="../index.html">Home</a> <span class='sep' aria-hidden='true'>›</span> <a href="index.html">Hubble constant</a> <span class='sep' aria-hidden='true'>›</span> <span aria-current='page'>H2 · Not produced</span></nav><div class="leaf"><aside class="sibs"><nav aria-label="In this series"><details open><summary>Metrics <small>(4)</small></summary><ol><li><a href="h1.html">H1 · Precision half-life</a></li><li><a href="h2.html" aria-current="page">H2 · Not produced</a></li><li><a href="h3.html">H3 · Surprise against a reference</a></li><li><a href="h4.html">H4 · Student-t degrees of freedom</a></li></ol></details><details><summary>Chronology and method <small>(2)</small></summary><ol><li><a href="timeline.html">Chronology</a></li><li><a href="method.html">Method and limits</a></li></ol></details></nav></aside><div class="leafbody"><details class="sibs-m"><summary>Other pages in this series (6)</summary><nav aria-label="In this series"><details open><summary>Metrics <small>(4)</small></summary><ol><li><a href="h1.html">H1 · Precision half-life</a></li><li><a href="h2.html" aria-current="page">H2 · Not produced</a></li><li><a href="h3.html">H3 · Surprise against a reference</a></li><li><a href="h4.html">H4 · Student-t degrees of freedom</a></li></ol></details><details><summary>Chronology and method <small>(2)</small></summary><ol><li><a href="timeline.html">Chronology</a></li><li><a href="method.html">Method and limits</a></li></ol></details></nav></details><p><span class="tag k">H2</span></p><h1>Not produced</h1><p class="lead">The exceedance rate of consecutive pairs changes its verdict with the grouping, so it is not published</p><div class="prose"><p>M2 of the physical-constants chapter compares the move between two consecutive editions with their uncertainties. The H0 analogue, a pair of consecutive estimates, is only a publication order: several estimates share a year, so how the pairs are joined is arbitrary, and in the stage-1 sensitivity tables the verdict moved between &quot;above the normal expectation&quot; and &quot;overlapping&quot; depending on whether pairs were pooled or grouped by type code. Pairing only the follow-ups of the same team would come closest to M2, but neither compilation has a column that identifies teams. The chapter therefore leaves H2 empty and publishes no number under it; the numbering stays so that H1, H3 and H4 visibly correspond to M1, M3 and M4.</p><p>The gist of the stage-1 sensitivity tables: in Huchra's list the share of consecutive pairs with |z| &gt; 2 lay above the normal expectation (4.6%) when the list was pooled, and its interval overlapped the expectation when pairs were grouped by type code. The conclusion depends on the grouping, so no number is published.</p></div><p class="src" style="margin-top:2rem;font-size:.82rem;color:var(--fg3)">Sources: J. Huchra, Estimates of the Hubble Constant (hubble.plot.dat, last updated 2010-10-07), Harvard-Smithsonian Center for Astrophysics; assembled as part of the NASA/HST Key Project on the Extragalactic Distance Scale. Aggregates only. · Faerber, T.; López-Corredoira, M. A Chi-Squared Analysis of the Measurements of Two Cosmological Parameters over Time. Universe 2020, 6, 114, doi:10.3390/universe6080114, Appendix Table A2 (read from arXiv:2008.04035v1). CC BY 4.0.</p><nav class="pn" aria-label="Previous and next"><a rel="prev" href="h1.html">← H1 · Precision half-life</a><a rel="next" href="h3.html">H3 · Surprise against a reference →</a></nav></div></div></main>
+<footer>Physical Constants Metrics · Version 1.2 · Built 2026-11-04 · <a href="https://github.com/BowonKwon/Physical-Constants-Metrics">GitHub</a> · All public materials: <a href="https://bowonkwon.github.io/en/">bowonkwon.github.io</a></footer>
+<script>
+(function(){var k="pcm-theme",r=document.documentElement,b=document.getElementById("theme");function ap(v){if(v)r.setAttribute("data-theme",v);else r.removeAttribute("data-theme");if(b)b.textContent=v==="dark"?"\u263E":v==="light"?"\u2600":"\u25D1"}var cur=localStorage.getItem(k)||"";ap(cur);if(b)b.addEventListener("click",function(){cur=cur===""?"light":cur==="light"?"dark":"";if(cur)localStorage.setItem(k,cur);else localStorage.removeItem(k);ap(cur)})})();
+document.querySelectorAll('table.sort').forEach(function(t){t.querySelectorAll('th').forEach(function(th,i){th.addEventListener('click',function(){
+ var rows=Array.from(t.tBodies[0].rows),asc=th.dataset.asc!=='1';th.dataset.asc=asc?'1':'0';
+ rows.sort(function(a,b){var x=a.cells[i].dataset.v||a.cells[i].textContent,y=b.cells[i].dataset.v||b.cells[i].textContent;var nx=parseFloat(x),ny=parseFloat(y);
+ if(!isNaN(nx)&&!isNaN(ny))return asc?nx-ny:ny-nx;return asc?x.localeCompare(y):y.localeCompare(x)});rows.forEach(function(r){t.tBodies[0].appendChild(r)})})})});
+(function(){var tip=document.createElement('div');tip.className='tip';document.body.appendChild(tip);
+document.querySelectorAll('svg [data-tip]').forEach(function(el){el.addEventListener('mousemove',function(e){tip.textContent=el.getAttribute('data-tip');tip.style.display='block';
+ var x=e.clientX+14,y=e.clientY+14;if(x+tip.offsetWidth>innerWidth-8)x=e.clientX-tip.offsetWidth-10;tip.style.left=x+'px';tip.style.top=y+'px'});
+ el.addEventListener('mouseleave',function(){tip.style.display='none'})})})();
+;document.addEventListener("keydown",function(e){if(e.altKey||e.ctrlKey||e.metaKey||e.shiftKey)return;var t=e.target;if(t&&t.closest&&t.closest("input,textarea,select,[contenteditable]"))return;var a=null;if(e.key==="ArrowLeft")a=document.querySelector("a[rel=prev]");else if(e.key==="ArrowRight")a=document.querySelector("a[rel=next]");if(a){location.href=a.href}});var sb=document.querySelector(".sibs"),cu=sb&&sb.querySelector("a[aria-current]");if(cu){sb.scrollTop=cu.offsetTop-sb.clientHeight/2}</script></body></html>
