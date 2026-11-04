@@ -4,7 +4,7 @@
 
 - **사이트:** https://bowonkwon.github.io/Physical-Constants-Metrics/ ([한국어](https://bowonkwon.github.io/Physical-Constants-Metrics/ko/) · [English](https://bowonkwon.github.io/Physical-Constants-Metrics/en/))
 - **읽기:** 핵심 결과를 글로 읽는 면 — [한국어](https://bowonkwon.github.io/Physical-Constants-Metrics/ko/reading.html) · [English](https://bowonkwon.github.io/Physical-Constants-Metrics/en/reading.html)
-- **판:** 1.1.3 (2026. 11. 4.) — 같은 층 면 사이 이동(위치 표시줄·같은 계열 목록·이전/다음). 1.1.2 (2026. 11. 3.) 공개본 점검 반영(표시·표기). 1.1.1(2026. 11. 2.) 영어 면 교정과 계산 코드 정비, 1.1(원자량 장)도 같은 날, 1.0은 2026. 11. 1.
+- **판:** 1.2 (2026. 11. 4.) — 허블 상수 장(H0 추정값의 정밀도 반감기·기준값 대비 놀람 지수·t 분포 자유도, 연대기, 방법). 1.1.3 (2026. 11. 4.) 같은 층 면 사이 이동(위치 표시줄·같은 계열 목록·이전/다음). 1.1.2 (2026. 11. 3.) 공개본 점검 반영(표시·표기). 1.1.1(2026. 11. 2.) 영어 면 교정과 계산 코드 정비, 1.1(원자량 장)도 같은 날, 1.0은 2026. 11. 1.
 - **다른 공개 자료:** https://bowonkwon.github.io/
 
 ## 무엇이 들어 있나
@@ -19,6 +19,10 @@
 | M6 정의값 전환 | 측정값이 정의값이 된 상수(빛의 속력 1983, 2019년 SI 개정)와 그 반대(진공 투자율·몰질량 상수) |
 
 M2~M4의 분모는 서로 정확한 환산 관계가 없도록 고른 핵심 상수 17개입니다(같은 규칙에 맞는 후보 3개를 더한 민감도 결과도 싣습니다). 상수별 면은 표시용 상수 11개와 민감도 후보 3개를 더해 31개입니다. Henrion & Fischhoff(1986)의 보정 지표를 이 자료로 다시 계산한 면이 따로 있습니다.
+
+## 1.2 — 허블 상수 장 (2026. 11. 4.)
+
+발표된 허블 상수 H0 추정값의 기록에 같은 질문을 던진다. 자료는 둘이다: Huchra 의 H0 목록(1927~2010, 553건)은 재게시 허락 문장이 없어 집계(연도별·10년별 건수와 사분위, 부호별 건수, 지표)만 싣고, Faerber & López-Corredoira (2020) 표 A2(1976~2019, 163건, CC BY 4.0)는 행 단위로 싣는다. 지표는 H1 정밀도 반감기(해별 중앙값 상대 오차의 반감기), H3 기준값 대비 놀람 지수(Planck 2018 67.36 ± 0.54 와 Riess 외 2022 73.04 ± 1.04 를 나란히), H4 t 분포 자유도이고, H2(연속 쌍)는 묶는 방식에 따라 결론이 갈려 내지 않는다. 연대기 면은 두 집성의 값과 오차의 흐름, 10년 단위 방법 부호 분포, 자료에서 확인되는 사건을 한데 둔다. 두 집성 모두 오차의 신뢰 수준을 적지 않아 「수준 미표기」로 다룬다. 기존 장의 수치는 바뀌지 않았다.
 
 ## 1.1.3 — 면 사이 이동 (2026. 11. 4.)
 
@@ -81,7 +85,7 @@ src/    fetch_raw.py → parse_codata.py → handcheck.py → metrics.py → bui
 How often did the error bars that scientists published miss the next edition's value? This site joins the nine editions of the CODATA recommended values of the fundamental physical constants (1973–2022) and the 1969 adjustment that preceded them, and turns the changes in values and uncertainties into metrics. Every metric carries its definition, formula, denominator and caveats; every number carries its sample size and a 95% interval.
 
 - **Site:** https://bowonkwon.github.io/Physical-Constants-Metrics/en/ · **Reading:** [en/reading.html](https://bowonkwon.github.io/Physical-Constants-Metrics/en/reading.html)
-- **Version:** 1.1.3 (Nov 4, 2026), navigation between pages of the same level; 1.1.2 (Nov 3, 2026) review of the public site applied (display and notation); 1.1.1 (Nov 2, 2026) English corrections and code fixes and 1.1 (atomic-weights chapter) the same day, 1.0 on Nov 1, 2026
+- **Version:** 1.2 (Nov 4, 2026), Hubble-constant chapter (precision half-life, surprise against a reference and Student-t degrees of freedom of published H0 estimates; chronology; method); 1.1.3 (Nov 4, 2026), navigation between pages of the same level; 1.1.2 (Nov 3, 2026) review of the public site applied (display and notation); 1.1.1 (Nov 2, 2026) English corrections and code fixes and 1.1 (atomic-weights chapter) the same day, 1.0 on Nov 1, 2026
 - **Other public materials:** https://bowonkwon.github.io/en/
 
 | Metric | Contents |
@@ -94,6 +98,8 @@ How often did the error bars that scientists published miss the next edition's v
 | M6 Exact-value transitions | Constants that became exact (speed of light 1983; the 2019 SI revision) and the reverse (vacuum magnetic permeability, molar mass constant) |
 
 The denominator of M2–M4 is 17 core constants, chosen so that none is an exact function of the others (a sensitivity check adds three candidates meeting the same rule); the constant pages add 11 display constants and the 3 candidates (31 in all). A separate page recomputes Henrion & Fischhoff's (1986) calibration indices on these data.
+
+**1.2: Hubble-constant chapter.** The same question, asked of the record of published Hubble-constant estimates. Two sources: Huchra's H0 list (1927–2010, 553 rows) grants no right to republish and appears only in aggregate (counts and quartiles by year and decade, counts by type code, the metrics); Table A2 of Faerber & López-Corredoira (2020) (1976–2019, 163 rows, CC BY 4.0) is published row by row. The metrics are H1, the precision half-life (of the yearly median relative error), H3, surprise against a reference (Planck 2018, 67.36 ± 0.54, and Riess et al. 2022, 73.04 ± 1.04, side by side) and H4, Student-t degrees of freedom; H2 (consecutive pairs) is not produced because its verdict changes with the grouping. A chronology page joins the values and errors of both compilations, the decade-by-decade mix of method codes and the events traceable in the data. Neither compilation states the confidence level of its errors, so they are treated as unstated. No number of the earlier chapters changed.
 
 **1.1.3: navigation.** Metric, constant, atomic-weight metric and element pages now have a breadcrumb, a list of the other pages in the same series (a sidebar on wide screens, a collapsed box above the title on narrow ones) and previous/next links at the end; the arrow keys move between them. The Korean takeaway on M3 now says once in 22 (1.1.2 fixed only the English). No number changed.
 

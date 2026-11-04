@@ -25,8 +25,8 @@ DER = ROOT / "data" / "derived"
 # hand-maintained map of the 31 quantities; kept outside data/derived so that clearing derived/ cannot lose it
 QMAP = ROOT / "data" / "manual" / "quantity_map.csv"
 OUT = ROOT / "site"
-VERSION = "1.1.3"
-BUILD_DATE = "2026-11-02"
+VERSION = "1.2"
+BUILD_DATE = "2026-11-04"
 REPO = "https://github.com/BowonKwon/Physical-Constants-Metrics"
 PUBLIC_DATA = ["constants_long.csv", "quantity_map.csv", "m1_halflife.csv", "m2_pairs.csv", "m2_summary.csv",
                "m3_vs_latest.csv", "m3_summary.csv", "m4_tail.csv", "m5_funnel.csv", "m6_events.csv",
@@ -69,7 +69,7 @@ NOTE_KO = {
 
 T = {
     "ko": dict(site="물리 상수 메트릭스", tagline="과학자들이 밝힌 오차 막대는 다음 판의 값을 얼마나 자주 놓쳤나 — CODATA 기본 물리 상수 1969~2022",
-               home="홈", metrics="지표", constants="상수", atomic="원자량", reading="읽기", data="데이터", method="방법·한계", prior="선행 연구", lang_other="English",
+               home="홈", metrics="지표", constants="상수", atomic="원자량", hubble="허블 상수", reading="읽기", data="데이터", method="방법·한계", prior="선행 연구", lang_other="English",
                version="판", built="생성일", hub="공개 자료 전체", definition="정의", formula="공식", denominator="분모", howto="읽는 법", caveat="한계",
                download="CSV 내려받기", edition="판", value="값", u="표준불확도", urel="상대 불확도", exact="정의값", printed="원 표기", source="원자료 위치",
                z_prev="직전 판 대비 z", z_latest="z = (2022 판 − 이 판)/σ", core="핵심 상수", display="표시용 상수", cand="민감도 후보", layer="층", symbol="기호", unit="단위",
@@ -77,7 +77,7 @@ T = {
                normal="정규 기대", observed="관측", rate="비율", threshold="기준", pairs="판 쌍", quantities="상수", subset="묶음",
                basis="한국어 이름 근거"),
     "en": dict(site="Physical Constants Metrics", tagline="How often did the error bars scientists published miss the next edition's value? CODATA fundamental constants, 1969–2022",
-               home="Home", metrics="Metrics", constants="Constants", atomic="Atomic weights", reading="Reading", data="Data", method="Method & limits", prior="Prior work", lang_other="한국어",
+               home="Home", metrics="Metrics", constants="Constants", atomic="Atomic weights", hubble="Hubble constant", reading="Reading", data="Data", method="Method & limits", prior="Prior work", lang_other="한국어",
                version="Version", built="Built", hub="All public materials:", definition="Definition", formula="Formula", denominator="Denominator", howto="How to read it", caveat="Caveats",
                download="Download CSV", edition="Edition", value="Value", u="Standard uncertainty", urel="Relative standard uncertainty", exact="Exact", printed="As printed", source="Source location",
                z_prev="z vs previous edition", z_latest="z = (2022 − this)/σ", core="Core constant", display="Display constant", cand="Sensitivity candidate", layer="Layer", symbol="Symbol", unit="Unit",
@@ -287,7 +287,7 @@ def page(lang, title, body, depth=1, active="", leaf=None):
     other = "en" if lang == "ko" else "ko"
     hub = "" if lang == "ko" else "en/"
     nav = [("home", "index.html", t["home"]), ("metrics", "metrics/index.html", t["metrics"]),
-           ("constants", "constants/index.html", t["constants"]), ("atomic", "atomic/index.html", t["atomic"]), ("reading", "reading.html", t["reading"]),
+           ("constants", "constants/index.html", t["constants"]), ("atomic", "atomic/index.html", t["atomic"]), ("hubble", "hubble/index.html", t["hubble"]), ("reading", "reading.html", t["reading"]),
            ("prior", "prior.html", t["prior"]), ("method", "method.html", t["method"]), ("data", "data.html", t["data"])]
     on = ' class="on"'
     navh = "".join(f'<a href="{root}{lang}/{h}"{on if k == active else ""}>{n}</a>' for k, h, n in nav)
@@ -661,7 +661,9 @@ def build():
                                 dict(title="Taylor, Parker & Langenberg 1969", path=SOURCES["tpl1969"]["url"])],
                        resources=[dict(path=f, description=DATA_DESC[f][1], format="csv") for f in PUBLIC_DATA] +
                        [dict(path=f, description=__import__("aw_site").DESC[f][1] + ". Atomic-weight values © IUPAC/CIAAW (not covered by CC BY 4.0): republication with full reference, ©, IUPAC or CIAAW and year; translations need prior approval from the relevant IUPAC National Adhering Organization; commercial use by arrangement with the CIAAW Secretariat. CC BY 4.0 covers only the editor's computations (z, aggregates, conversions).",
-                             format="csv") for f in __import__("aw_site").PUBLIC])
+                             format="csv") for f in __import__("aw_site").PUBLIC] + __import__("h0_site").datapackage_resources())
+    datapackage["sources"] += [dict(title="Faerber & López-Corredoira 2020, Table A2 (CC BY 4.0)", path=__import__("h0_registry").H0_SOURCES["faerber"]["url"]),
+                               dict(title="Huchra, Estimates of the Hubble Constant (aggregates only)", path=__import__("h0_registry").H0_SOURCES["huchra"]["url"])]
     (OUT / "data" / "raw_manifest.json").write_bytes(manifest_bytes)
     (OUT / "data" / "datapackage.json").write_text(json.dumps(datapackage, indent=1, ensure_ascii=False), encoding="utf-8")
 
@@ -710,7 +712,9 @@ def build():
         gloss = GLOSS[lang]
         body = hero + PROLOGUE[lang] + takeaway(lang, tk) + stats_h + f'<figure>{g1}<figcaption>{esc(g1cap)}</figcaption></figure>' + intro2 + gloss + f'<h2>{t["metrics"]}</h2><div class="cards">{cards}</div>' + (
             '<h2>원자량 장 <span class="tag">1.1</span></h2><div class="cards"><a class="card" href="atomic/index.html"><b>원자량 — 표준 원자량의 개정 기록</b><small>CIAAW 1902~2024, 개정 701건. 불확도를 확장 범위로 정의하는 기록에 같은 질문을 던진다</small></a></div>' if lang == "ko" else
-            '<h2>Atomic-weights chapter <span class="tag">1.1</span></h2><div class="cards"><a class="card" href="atomic/index.html"><b>Atomic weights — the revision record</b><small>CIAAW 1902–2024, 701 revisions. The same question, asked of a record that defines uncertainty as an expanded range</small></a></div>')
+            '<h2>Atomic-weights chapter <span class="tag">1.1</span></h2><div class="cards"><a class="card" href="atomic/index.html"><b>Atomic weights — the revision record</b><small>CIAAW 1902–2024, 701 revisions. The same question, asked of a record that defines uncertainty as an expanded range</small></a></div>') + (
+            '<h2>허블 상수 장 <span class="tag">1.2</span></h2><div class="cards"><a class="card" href="hubble/index.html"><b>허블 상수 — 발표된 H0 추정값과 그 오차</b><small>Huchra 목록 1929~2010(집계만)과 표 A2 1976~2019. 판 대신 개별 측정의 기록에, 두 기준값(Planck 2018·Riess 외 2022)을 나란히 두고 같은 질문을 던진다</small></a></div>' if lang == "ko" else
+            '<h2>Hubble-constant chapter <span class="tag">1.2</span></h2><div class="cards"><a class="card" href="hubble/index.html"><b>Hubble constant — published H0 estimates and their errors</b><small>Huchra’s list 1929–2010 (aggregates only) and Table A2 1976–2019. The same question, asked of individual measurements against two references (Planck 2018, Riess et al. 2022)</small></a></div>')
         (base / "index.html").write_text(page(lang, t["home"], body, 1, "home"), encoding="utf-8")
 
         # ---------- metric pages
@@ -837,6 +841,10 @@ def build():
         import aw_site
         AWN = aw_site.build(lang, base, dict(page=page, table=table, takeaway=takeaway, esc=esc, fmt_sci=fmt_sci, sup=sup, spec_block=spec_block), OUT)
 
+        # ---------- 1.2 Hubble-constant chapter
+        import h0_site
+        h0_site.build(lang, base, dict(page=page, table=table, takeaway=takeaway, esc=esc, fmt_sci=fmt_sci, sup=sup, spec_block=spec_block, N=N), OUT)
+
         # ---------- reading, prior, method, data
         (base / "reading.html").write_text(page(lang, t["reading"], reading_page(lang, N), 1, "reading"), encoding="utf-8")
         (base / "prior.html").write_text(page(lang, t["prior"], prior_page(lang), 1, "prior"), encoding="utf-8")
@@ -844,14 +852,16 @@ def build():
         rows = [[f'<a href="../data/{f}">{f}</a>', esc(DATA_DESC[f][0 if lang == "ko" else 1])] for f in PUBLIC_DATA]
         lic = ("<p>파생 표(아래 CSV)는 CC BY 4.0. 원 수치는 NIST가 공개한 CODATA 권고값과 1969년 논문의 표에서 옮겼고, 각 행에 원자료 위치를 적었다. NIST의 원 파일(ASCII 표·PDF)은 이 저장소에 싣지 않는다 — NIST는 표준참조자료(SRD)의 복제에 사전 허락을 요구한다고 밝힌다. 원 파일의 주소·내려받은 날짜·SHA-256 은 <a href='../data/raw_manifest.json'>raw_manifest.json</a> 에 있다.</p>" if lang == "ko"
                else "<p>The derived tables below are CC BY 4.0. The underlying values were taken from the CODATA recommended values published by NIST and from the 1969 paper's table; every row records its source location. NIST's original files (ASCII tables, PDFs) are not included: NIST states that its Standard Reference Data may not be reproduced without prior permission. Their URLs, retrieval dates and SHA-256 hashes are in <a href='../data/raw_manifest.json'>raw_manifest.json</a>.</p>")
-        ncsv = len(PUBLIC_DATA) + len(__import__("aw_site").PUBLIC)
-        dtk = ([f"파생 CSV {ncsv}개와 datapackage.json 을 내려받을 수 있다. 엮은이가 계산한 부분은 CC BY 4.0 이다(원자량 값 자체는 IUPAC/CIAAW 조건을 따른다).", "NIST 원 파일은 싣지 않는다. 주소·날짜·해시로 같은 파일을 다시 받을 수 있다."] if lang == "ko" else
-               [f"{ncsv} derived CSV files and datapackage.json can be downloaded; the editor's computations are CC BY 4.0 (atomic-weight values themselves follow IUPAC/CIAAW's conditions).", "NIST's original files are not included; their URLs, dates and hashes let anyone fetch the same files."])
+        import h0_site as _h0
+        ncsv = len(PUBLIC_DATA) + len(__import__("aw_site").PUBLIC) + len(_h0.PUBLIC)
+        dtk = ([f"파생 CSV {ncsv}개와 datapackage.json 을 내려받을 수 있다. 엮은이가 계산한 부분은 CC BY 4.0 이다(원자량 값 자체는 IUPAC/CIAAW 조건을, 허블 상수 표 A2 의 값은 CC BY 4.0 출처 표시를 따른다).", "NIST 원 파일과 Huchra 목록 원 파일은 싣지 않는다. NIST 파일은 주소·날짜·해시로 같은 파일을 다시 받을 수 있고, Huchra 목록은 집계만 싣는다."] if lang == "ko" else
+               [f"{ncsv} derived CSV files and datapackage.json can be downloaded; the editor's computations are CC BY 4.0 (atomic-weight values themselves follow IUPAC/CIAAW's conditions; the Table A2 values of the Hubble chapter carry their CC BY 4.0 attribution).", "Neither NIST's original files nor Huchra's list is included; the NIST files can be fetched again from their URLs, dates and hashes, and Huchra's list appears only in aggregate."])
         import aw_site as _aw
         awlic = ("<h2>원자량 장</h2><p>원자량 값은 CIAAW 의 역사 표준 원자량 표에서 옮겼다. CIAAW·IUPAC 는 출처 전체와 © 표시·IUPAC 또는 CIAAW·발행 연도를 눈에 띄게 적는 조건으로 별도 허락 없는 재게시를 허용한다. 다른 언어로 옮겨 싣는 것은 해당 국가 IUPAC 회원 기구의 사전 승인 대상이고, 상업적 이용은 CIAAW 사무국에 문의해야 한다. 이 사이트는 원자량 값(숫자)과 원 표기만 옮기고, 설명문은 따로 썼다. 원자량 값의 권리와 조건은 CIAAW·IUPAC 의 것이며, 이 사이트의 CC BY 4.0 은 엮은이가 계산한 부분(z·집계·환산)에만 미친다. 출처: " + esc(_aw.AW_SOURCE["credit"]) + "</p>" if lang == "ko" else
                  "<h2>Atomic-weights chapter</h2><p>Atomic-weight values are taken from CIAAW's table of historical standard atomic weights. CIAAW and IUPAC permit republication without formal permission provided the full reference, the © symbol, the name IUPAC or CIAAW and the year are prominently visible. Publication of a translation requires prior approval from the relevant IUPAC National Adhering Organization, and commercial use requires contacting the CIAAW Secretariat. This site reproduces only the atomic-weight values (numbers) and their printed notation and writes its own explanations. Rights and conditions for the atomic-weight values remain with CIAAW/IUPAC; the site's CC BY 4.0 covers only the editor's computations (z, aggregates, conversions). Source: " + esc(_aw.AW_SOURCE["credit"]) + "</p>")
         awtab = table([t["file"], t["desc"]], _aw.data_rows(lang, esc), cls="")
-        body = f"<h1>{t['data']}</h1>{takeaway(lang, dtk)}{lic}" + table([t["file"], t["desc"]], rows, cls="") + awlic + awtab + '<p class="files"><a href="../data/datapackage.json">datapackage.json</a></p>'
+        h0tab = table([t["file"], t["desc"]], _h0.data_rows(lang, esc), cls="")
+        body = f"<h1>{t['data']}</h1>{takeaway(lang, dtk)}{lic}" + table([t["file"], t["desc"]], rows, cls="") + awlic + awtab + _h0.data_license(lang, esc) + h0tab + '<p class="files"><a href="../data/datapackage.json">datapackage.json</a></p>'
         (base / "data.html").write_text(page(lang, t["data"], body, 1, "data"), encoding="utf-8")
 
     (OUT / "index.html").write_text('<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="refresh" content="0; url=ko/index.html"><link rel="canonical" href="ko/index.html"><title>물리 상수 메트릭스 · Physical Constants Metrics</title></head><body><p><a href="ko/index.html">한국어</a> · <a href="en/index.html" lang="en">English</a></p></body></html>', encoding="utf-8")
