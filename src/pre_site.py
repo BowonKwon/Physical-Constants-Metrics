@@ -14,10 +14,10 @@ TRANS = ROOT / "data" / "transcribed"
 PUBLIC = ["pre_codata_reviews.csv", "pre_codata_values.csv", "pre_codata_hf.csv"]
 PUBLIC_SRC = {"pre_codata_reviews.csv": TRANS, "pre_codata_values.csv": DER, "pre_codata_hf.csv": DER}
 DESC = {
-    "pre_codata_reviews.csv": ("CODATA 이전 권고값 전사: 1929·1941·1950·1952·1955·1963 검토의 α⁻¹·h·e·mₑ·N_A, 원 표기 값과 ±, ±의 뜻(확률오차·표준오차·표준편차), 원자량 척도, 원 논문 쪽",
-                               "Recommended values before CODATA as transcribed: α⁻¹, h, e, mₑ, N_A in the 1929, 1941, 1950, 1952, 1955 and 1963 reviews, value and ± as printed, kind of ± (probable error, standard error, standard deviation), atomic-weight scale, page of the paper"),
-    "pre_codata_values.csv": ("위 값을 SI·통합 척도·표준 불확도로 바꾼 값과 1973·2022 판 대비 z·ppm (1969 판 포함 35행)",
-                              "The same values in SI units, on the unified scale and with standard uncertainties, with z and ppm against the 1973 and 2022 editions (35 rows with 1969)"),
+    "pre_codata_reviews.csv": ("CODATA 이전 권고값 전사: 1929·1941·1950·1952·1955·1957·1963 검토의 α⁻¹·h·e·mₑ·N_A, 원 표기 값과 ±, ±의 뜻(확률오차·표준오차·표준편차), 원자량 척도, 원 논문 쪽",
+                               "Recommended values before CODATA as transcribed: α⁻¹, h, e, mₑ, N_A in the 1929, 1941, 1950, 1952, 1955, 1957 and 1963 reviews, value and ± as printed, kind of ± (probable error, standard error, standard deviation), atomic-weight scale, page of the paper"),
+    "pre_codata_values.csv": ("위 값을 SI·통합 척도·표준 불확도로 바꾼 값과 1973·2022 판 대비 z·ppm (1969 판 포함 40행)",
+                              "The same values in SI units, on the unified scale and with standard uncertainties, with z and ppm against the 1973 and 2022 editions (40 rows with 1969)"),
     "pre_codata_hf.csv": ("Henrion & Fischhoff 방식 지수(R_B·IQ·SI): 본값·감도 변형, 1973·2022 기준, H&F 인쇄값",
                           "Henrion & Fischhoff indices (R_B, IQ, SI): main set and sensitivity variants, against 1973 and 2022, with H&F's printed row"),
 }
@@ -32,6 +32,7 @@ REVIEWS = [  # year, short source, doi
     (1950, "DuMond & Cohen, Phys. Rev. 82, 555 (1951)", "10.1103/PhysRev.82.555.3"),
     (1952, "DuMond & Cohen, Rev. Mod. Phys. 25, 691 (1953)", "10.1103/RevModPhys.25.691"),
     (1955, "Cohen, DuMond, Layton & Rollett, Rev. Mod. Phys. 27, 363 (1955)", "10.1103/RevModPhys.27.363"),
+    (1957, "Cohen, Crowe & DuMond, The Fundamental Constants of Physics (Interscience, 1957), Table 8-7, p. 267 — the 1955 values reprinted", "hdl:2027/mdp.39015001326753"),
     (1963, "Cohen & DuMond, Rev. Mod. Phys. 37, 537 (1965)", "10.1103/RevModPhys.37.537"),
     (1969, "Taylor, Parker & Langenberg, Rev. Mod. Phys. 41, 375 (1969) — the site's 1969 edition", "10.1103/RevModPhys.41.375"),
 ]
@@ -49,10 +50,10 @@ T = {
                review="Review", source="Paper", page="Page", const="Constant", printed="As printed", kind="Kind of ±", z73="z (vs 1973)", z22="z (vs 2022)", ppm22="ppm vs 2022",
                variant="Variant", ref="Reference", n="n", rb="R_B (H&F eq. 1)", rbsd="RMS", iq="IQ", si="SI", reviews="Reviews", download="Download CSV"),
 }
-VARIANT_KO = {"main": "본값 — 보유한 검토 7개", "without 1950 (only reviews H&F cite)": "1950 제외(H&F 가 인용한 검토만)",
+VARIANT_KO = {"main": "본값 — 검토 8개(1957 포함)", "without 1957 (each adjustment once)": "1957 제외(조정마다 한 번)", "without 1950 (only reviews H&F cite)": "1950 제외(H&F 가 인용한 검토만)",
               "PE factor 1.48 (H&F)": "확률오차 환산 1.48(H&F)", "N_A not put on the unified scale": "N_A 척도 미환산",
               "probable errors not converted": "확률오차를 표준 불확도로 바꾸지 않음", "H&F printed": "H&F 표 I 인쇄값"}
-VARIANT_EN = {"main": "Main — the seven reviews held"}
+VARIANT_EN = {"main": "Main — eight reviews (with 1957)", "without 1957 (each adjustment once)": "Without 1957 (each adjustment once)"}
 
 
 def read(path):
@@ -72,19 +73,24 @@ def hfrow(D, variant, ref):
 
 
 def pct(x):
-    return f"{float(x) * 100:.0f}"
+    return f"{float(x) * 100:.1f}"
+
+
+def cnt(x, n):
+    return round(float(x) * int(n))
 
 
 def numbers(D):
     m73, m22 = hfrow(D, "main", 1973), hfrow(D, "main", 2022)
     pr = hfrow(D, "H&F printed", 1973)
     v = {(int(r["review"]), r["qid"]): r for r in D["vals"]}
-    return dict(n=m73["n"], rb73=m73["rb_hf"], iq73=pct(m73["iq"]), si73=pct(m73["si"]), rb22=m22["rb_hf"], iq22=pct(m22["iq"]), si22=pct(m22["si"]),
+    return dict(si73k=cnt(m73["si"], m73["n"]), iq73k=cnt(m73["iq"], m73["n"]), n=m73["n"], rb73=m73["rb_hf"], iq73=pct(m73["iq"]), si73=pct(m73["si"]), rb22=m22["rb_hf"], iq22=pct(m22["iq"]), si22=pct(m22["si"]),
                 hf_n=pr["n"], hf_rb=pr["rb_hf"], hf_iq=pr["iq"].rstrip("%"), hf_si=pr["si"].rstrip("%"),
                 h29=f"{float(v[(1929, 'h')]['ppm_vs_2022']) / 1e4:.1f}", e29=f"{float(v[(1929, 'e')]['ppm_vs_2022']) / 1e4:.1f}",
                 zh29=f"{float(v[(1929, 'h')]['z_vs_2022']):.1f}", ze29=f"{float(v[(1929, 'e')]['z_vs_2022']):.1f}",
                 rb_nf=hfrow(D, "N_A not put on the unified scale", 1973)["rb_hf"], rb_pe=hfrow(D, "probable errors not converted", 1973)["rb_hf"],
-                rb_no50=hfrow(D, "without 1950 (only reviews H&F cite)", 1973)["rb_hf"])
+                rb_no50=hfrow(D, "without 1950 (only reviews H&F cite)", 1973)["rb_hf"],
+                rb_no57=hfrow(D, "without 1957 (each adjustment once)", 1973)["rb_hf"], iq_no57=pct(hfrow(D, "without 1957 (each adjustment once)", 1973)["iq"]), si_no57=pct(hfrow(D, "without 1957 (each adjustment once)", 1973)["si"]))
 
 
 # ------------------------------------------------------------------ figure
@@ -167,7 +173,7 @@ def hf_table(D, lang, t, table, esc):
 
 
 def sources_list(lang, esc):
-    items = "".join(f'<li>{y}: {esc(s)} — <a href="https://doi.org/{d}">doi:{d}</a></li>' for y, s, d in REVIEWS)
+    items = "".join(f'<li>{y}: {esc(s)} — ' + (f'<a href="https://hdl.handle.net/{d[4:]}">HathiTrust {d[4:]}</a>' if d.startswith("hdl:") else f'<a href="https://doi.org/{d}">doi:{d}</a>') + '</li>' for y, s, d in REVIEWS)
     return f'<ul>{items}</ul>'
 
 
@@ -188,18 +194,18 @@ def build(lang, base, H, out_root):
     d = base / "early"
     d.mkdir(parents=True, exist_ok=True)
 
-    tk = ([f"1929~1963년 검토 6개와 1969 판의 다섯 상수 {N['n']}개 값을 1973 판에 비추면, 놀람 지수(|z| > 2.326)는 {N['si73']}%, 사분위 지수는 {N['iq73']}% 다(정규 기대 2%, 50%). Henrion & Fischhoff 표 I 은 {N['hf_n']}개에서 {N['hf_si']}%, {N['hf_iq']}% 였다.",
+    tk = ([f"1929~1969년 검토 8개의 다섯 상수 {N['n']}개 값을 1973 판에 비추면, 놀람 지수(|z| > 2.326)는 {N['si73']}%({N['si73k']}개), 사분위 지수는 {N['iq73']}%({N['iq73k']}개)다(정규 기대 2%, 50%). Henrion & Fischhoff 표 I 은 {N['hf_n']}개에서 {N['hf_si']}%·{N['hf_iq']}% 로, 같은 건수를 소수점 아래에서 버린 값과 같다. 8개 가운데 1957년 단행본은 1955년 조정값을 그대로 다시 실었다.",
            f"기준을 2022 판으로 옮겨도 놀람 지수는 {N['si22']}%, 사분위 지수는 {N['iq22']}% 다. 뒤의 값이 인용 오차의 98% 구간 밖에 있는 경우가 절반을 넘는다는 결과는 기준 판을 바꿔도 남는다.",
-           f"Birge 비 R_B(H&F 식 (1), R_B² = Σz²/(N−1))는 {N['rb73']} 로, 표 I 의 {N['hf_rb']} 와 다르다. H&F 는 검토 8개를 나열하지 않았고, 그 참고문헌 가운데 1957년 단행본을 이 사이트는 갖고 있지 않다. 그래서 같은 계산을 정확히 재현하지 못했고, 차이는 아래 감도 표에 그대로 둔다.",
+           f"Birge 비 R_B(H&F 식 (1), R_B² = Σz²/(N−1))만 {N['rb73']} 로 표 I 의 {N['hf_rb']} 와 다르다. 조건을 바꾼 감도 가운데 R_B·IQ·SI 가 함께 표 I 에 맞는 것은 없어, 차이의 원인은 확인하지 못했다.",
            f"1929년 Birge 의 h 와 e 는 2022 판 값보다 각각 {N['h29'].lstrip('-')}%, {N['e29'].lstrip('-')}% 작았다. Birge 가 붙인 확률오차를 표준 불확도로 바꾸면 그 차이는 h 에서 {N['zh29']}배, e 에서 {N['ze29']}배다."] if ko else
-          [f"Set against the 1973 edition, the {N['n']} values of the five constants in six reviews from 1929 to 1963 and the 1969 edition give a surprise index (|z| > 2.326) of {N['si73']}% and an interquartile index of {N['iq73']}% (normal: 2% and 50%). Henrion & Fischhoff's Table I reported {N['hf_si']}% and {N['hf_iq']}% for {N['hf_n']} values.",
+          [f"Set against the 1973 edition, the {N['n']} values of the five constants in eight reviews from 1929 to 1969 give a surprise index (|z| > 2.326) of {N['si73']}% ({N['si73k']} values) and an interquartile index of {N['iq73']}% ({N['iq73k']} values) (normal: 2% and 50%). Henrion & Fischhoff's Table I gives {N['hf_si']}% and {N['hf_iq']}% for {N['hf_n']} values: the same counts with the decimals dropped. One of the eight, the 1957 book, reprints the 1955 adjustment unchanged.",
            f"Against the 2022 edition the surprise index is {N['si22']}% and the interquartile index {N['iq22']}%. That more than half of the later values lie outside the stated 98% interval holds whichever edition is the reference.",
-           f"The Birge ratio R_B (Henrion & Fischhoff's eq. (1), R_B² = Σz²/(N−1)) is {N['rb73']}, not the {N['hf_rb']} of Table I. Henrion & Fischhoff did not list their eight reviews, and the site does not hold one of the works they cite, a 1957 book. The calculation is therefore not reproduced exactly; the differences are left in the sensitivity table below.",
+           f"Only the Birge ratio R_B (Henrion & Fischhoff's eq. (1), R_B² = Σz²/(N−1)) differs: {N['rb73']} against the {N['hf_rb']} of Table I. No sensitivity variant matches R_B, IQ and SI of Table I together, so the cause of the difference is not known.",
            f"Birge's 1929 h and e were {N['h29'].lstrip('-')}% and {N['e29'].lstrip('-')}% below the 2022 values: {N['zh29']} and {N['ze29']} times the standard uncertainty obtained from his probable errors."])
     cap = ("세로축은 2022 판 값에서의 편차(ppm)로, 0 근처는 선형이고 바깥은 로그인 대칭 로그 축이다. 채운 점은 CODATA 이전 검토(1929~1963), 빈 점은 1969~2018 판, 세로 막대는 ± 표준 불확도(확률오차는 1.4826 배). 2022 판에서 h·e·N_A 는 정의값이라 0 이다." if ko else
            "Vertical axis: deviation from the 2022 value in ppm, on a symmetric log scale (linear near zero, logarithmic beyond). Filled dots: reviews before CODATA (1929–1963); open dots: the 1969–2018 editions; bars: ± one standard uncertainty (probable errors × 1.4826). In 2022 h, e and N_A are exact, hence zero.")
-    hf_lead = (f"<p>{esc(HF_CITE)} 의 표 I 「Recommended values」 줄(끝에서 두 번째, 794쪽)은 R_B {N['hf_rb']}, IQ {N['hf_iq']}%, SI {N['hf_si']}%(n = {N['hf_n']})를 보고했다. 본문(795쪽)에 따르면 다섯 상수를 「1929~1969년 검토 8개」에서 1973 값과 견주었다. 확률오차는 1.48 배해 표준편차로 바꿨다(797쪽 각주 21). 아래는 같은 정의로 다시 계산한 값과, 조건을 하나씩 바꾼 감도다. 감도 가운데 N_A 척도를 환산하지 않으면 R_B 가 {N['rb_nf']}, 확률오차를 바꾸지 않으면 {N['rb_pe']} 로 커지지만, 어느 조합도 표 I 과 정확히 맞지 않는다. 검토 목록이 정해지지 않은 상태에서 표 I 에 맞는 조건을 골라 쓰지 않았다.</p>" if ko else
-               f"<p>The \"Recommended values\" row of Table I in {esc(HF_CITE)} (second to last, p. 794) reports R_B {N['hf_rb']}, IQ {N['hf_iq']}% and SI {N['hf_si']}% (n = {N['hf_n']}); the text (p. 795) says five constants in \"eight reviews from 1929 to 1969\" were set against the 1973 values. Probable errors were multiplied by 1.48 (p. 797, note 21). Below are the same indices recomputed with their definitions, and sensitivity variants that change one condition at a time. Leaving N_A on its original scale raises R_B to {N['rb_nf']}, and leaving probable errors unconverted to {N['rb_pe']}, but no combination reproduces Table I exactly. With the list of reviews unknown, no condition was picked to match it.</p>")
+    hf_lead = (f"<p>{esc(HF_CITE)} 의 표 I 「Recommended values」 줄(끝에서 두 번째, 794쪽)은 R_B {N['hf_rb']}, IQ {N['hf_iq']}%, SI {N['hf_si']}%(n = {N['hf_n']})를 보고했다. 본문(795쪽)에 따르면 다섯 상수를 「1929~1969년 검토 8개」에서 1973 값과 견주었다. 확률오차는 1.48 배해 표준편차로 바꿨다(797쪽 각주 21). H&F 는 8개를 나열하지 않았지만, 그 참고문헌(3·17·19·28·29번)이 가리키는 검토 7개(1929·1941·1952·1955·1957·1963·1969)에 다섯 상수를 모두 실은 1950 서한을 더하면 8개다. 아래는 이 8개로 같은 정의에 따라 다시 계산한 값과, 조건을 하나씩 바꾼 감도다. IQ·SI 는 표 I 과 같은 건수이고(표 I 은 소수점 아래를 버린 값) R_B 만 다르다. N_A 척도를 환산하지 않으면 R_B 가 {N['rb_nf']}, 확률오차를 바꾸지 않으면 {N['rb_pe']} 로 커지지만 그때는 IQ·SI 가 어긋난다. 1957 을 빼고 조정마다 한 번씩만 세면 R_B {N['rb_no57']}, IQ {N['iq_no57']}%, SI {N['si_no57']}% 다.</p>" if ko else
+               f"<p>The \"Recommended values\" row of Table I in {esc(HF_CITE)} (second to last, p. 794) reports R_B {N['hf_rb']}, IQ {N['hf_iq']}% and SI {N['hf_si']}% (n = {N['hf_n']}); the text (p. 795) says five constants in \"eight reviews from 1929 to 1969\" were set against the 1973 values. Probable errors were multiplied by 1.48 (p. 797, note 21). They did not list the eight, but the seven reviews their references point to (refs. 3, 17, 19, 28, 29: 1929, 1941, 1952, 1955, 1957, 1963, 1969) plus the 1950 letter, which gives all five constants, make eight. Below are the indices recomputed for these eight with their definitions, and sensitivity variants that change one condition at a time. IQ and SI give the same counts as Table I (which drops the decimals); only R_B differs. Leaving N_A on its original scale raises R_B to {N['rb_nf']}, and leaving probable errors unconverted to {N['rb_pe']}, but IQ and SI then no longer match. Counting each adjustment once (without 1957) gives R_B {N['rb_no57']}, IQ {N['iq_no57']}% and SI {N['si_no57']}%.</p>")
     body = (f'<h1>{esc(t["title"])}</h1><p class="lead">{esc(t["lead"])}</p>' + takeaway(lang, tk) +
             f'<h2>{t["fig"]}</h2><figure><div class="legend"><span style="--c:var(--s1)">{"CODATA 이전 검토" if ko else "Reviews before CODATA"}</span><span style="--c:var(--s3)">{"CODATA 판 1969~2018" if ko else "CODATA editions 1969–2018"}</span></div>{chart(D, lang, H)}<figcaption>{esc(cap)}</figcaption></figure>' +
             f'<h2>{t["hf"]}</h2><div class="prose">{hf_lead}</div>' + hf_table(D, lang, t, table, esc) +
@@ -214,7 +220,7 @@ def build(lang, base, H, out_root):
 
 def method_body(lang, esc, takeaway):
     if lang == "ko":
-        tk = ["값은 원 논문 표의 쪽 이미지에서 손으로 옮겼고, 값을 모르는 독립 판독자가 같은 쪽을 다시 읽어 30개 모두 일치했다.",
+        tk = ["값은 원 논문 표의 쪽 이미지에서 손으로 옮겼고, 1929~1963 논문의 30개는 값을 모르는 독립 판독자가 같은 쪽을 다시 읽어 모두 일치했다. 1957 단행본의 5개는 쪽 이미지와 HathiTrust 문자층을 대조했다.",
               "±의 뜻은 판마다 다르다: 1929·1941·1950 은 확률오차, 1952·1955 는 표준오차, 1963 이후는 표준편차. 확률오차는 1.4826 배해 표준 불확도로 쓴다.",
               "아보가드로 상수는 원자량 척도가 화학 → 물리 → 통합(¹²C) 으로 바뀌어, Cohen & DuMond(1965)의 환산 계수로 통합 척도에 맞췄다."]
         return ("<div class=\"prose\"><h1>CODATA 이전 — 방법·한계</h1>" + takeaway("ko", tk) + """
@@ -233,11 +239,12 @@ def method_body(lang, esc, takeaway):
 <li>N_A: 1929·1941 은 옛 화학 척도(O = 16), 1950~1955 는 물리 척도(¹⁶O = 16), 1963 부터 통합 척도(¹²C = 12)다. Cohen & DuMond(1965) 547쪽의 「물리 척도 질량 ÷ 통합 척도 질량 = 1.000317917 ± 0.000000017」, 548쪽의 「옛 화학 척도 ÷ 통합 척도 = 1.000043 ± 0.000005」로 나눠 통합 척도에 맞췄다. 1929 의 N₀ 줄에는 척도가 적혀 있지 않아 표 a 의 원자량 정의(O = 16.0000)에서 화학 척도로 보았다. 1965 의 화학 척도 계수를 1929·1941 에 적용하는 것은 가정이다. 두 계수는 정확한 수로 쓰고 그 불확도(최대 5 ppm)는 전파하지 않았다. 전파해도 N_A 불확도는 0.02% 미만 커지고 지수는 소수 둘째 자리까지 같다.</li></ul>
 <h2>지수</h2><p>z = (기준 판 값 − 옛 값) / 옛 표준 불확도. 기준 판의 불확도는 넣지 않는다(H&F 의 정의). 사분위 지수(IQ)는 |z| < 0.6745, 놀람 지수(SI)는 |z| > 2.326 인 비율이다(H&F 는 0.675·2.33 으로 적었다). Birge 비 R_B 는 H&F 식 (1)(792쪽)대로 R_B² = Σz²/(N−1) 이다. H&F 의 식은 집단 평균에 대한 잔차로 적혀 있으나, 권고값 줄은 1973 값에 대한 잔차로 계산했다고 적었으므로(795쪽) z 를 그대로 넣는다. 제곱평균제곱근 √(Σz²/N) 도 함께 싣는다. 1969 판 값은 이 사이트의 1969 판 자료를 쓴다.</p>
 <h2>검증</h2><ul>
-<li>값 30개(1929~1963 검토 6개 × 5)를 쪽 이미지에서 옮긴 뒤, 값을 모르는 독립 판독자가 같은 쪽을 그림으로 다시 읽었다. 값·±·지수·±의 뜻 모두 30/30 일치.</li>
+<li>값 30개(1929~1963 논문 6편 × 5)를 쪽 이미지에서 옮긴 뒤, 값을 모르는 독립 판독자가 같은 쪽을 그림으로 다시 읽었다. 값·±·지수·±의 뜻 모두 30/30 일치.</li>
+<li>1957 단행본(HathiTrust 공유 저작물 사본, 표 8-7, 267쪽)의 5개는 쪽 이미지와 HathiTrust 문자층을 대조했다. 다섯 값과 ± 모두 1955 표 XIII 과 같다.</li>
 <li>Birge 1941 의 두 판(Rep. Prog. Phys. 와 Rev. Mod. Phys.)에서 다섯 값이 같다.</li>
 <li>연도별 ppm 편차는 H&F 그림 3(1952~1973)과 대체로 맞는다(예: 1952 h −147 ppm, N_A +126 ppm, 1973 기준).</li></ul>
 <h2>한계</h2><ul>
-<li>H&F 는 검토 8개를 나열하지 않았다. 표 I 의 참고문헌에서 특정되는 검토는 1929·1941·1952·1955·1957·1963·1969 의 7개이고, 1957 판(Cohen, Crowe & DuMond, <i>The Fundamental Constants of Physics</i>, Interscience)은 이 사이트에 없다. 1950 서한은 H&F 가 광속 그림에만 인용했다. 본값은 보유한 7개, 1950 을 뺀 6개는 감도다.</li>
+<li>H&F 는 검토 8개를 나열하지 않았다. 표 I 의 참고문헌에서 특정되는 검토는 1929·1941·1952·1955·1957·1963·1969 의 7개이고, 1950 서한은 광속 그림에만 인용했다. 본값의 8개는 여기에 1950 을 더한 것으로, IQ·SI 가 표 I 과 같아지는 조합이다. 이 목록 자체는 추정이다. 1957 판은 1955 값을 다시 실은 것이라 같은 조정이 두 번 세어진다. 1957 을 뺀 7개와 1950 을 뺀 7개는 감도 표에 있다.</li>
 <li>검토들은 같은 실험 자료를 이어 쓰므로 독립이 아니다. 1952 와 1955 는 같은 1952 자료를 다시 분석했다.</li>
 <li>1973·2022 판도 참값이 아니다.</li>
 <li>원 논문의 표는 학술지에 실린 것이다. 이 사이트는 값(숫자)과 쪽만 싣고 PDF 는 싣지 않는다.</li></ul>
@@ -261,11 +268,12 @@ def method_body(lang, esc, takeaway):
 <li>N_A: the old chemical scale (O = 16) in 1929 and 1941, the physical scale (¹⁶O = 16) in 1950–1955, the unified scale (¹²C = 12) from 1963. Values are divided by "mass on physical scale / mass on unified scale = 1.000317917 ± 0.000000017" (Cohen & DuMond 1965, p. 547) and "old chemical scale / unified scale = 1.000043 ± 0.000005" (p. 548). The 1929 N₀ line states no scale; the chemical scale is inferred from the definition of atomic weights in Table a (O = 16.0000). Applying the 1965 chemical-scale factor to 1929 and 1941 is an assumption. Both factors are used as exact numbers and their uncertainty (at most 5 ppm) is not propagated; propagating it would enlarge the N_A uncertainties by less than 0.02% and leave the indices unchanged to two decimals.</li></ul>
 <h2>Indices</h2><p>z = (reference value − earlier value) / earlier standard uncertainty; the reference's uncertainty is not included (Henrion & Fischhoff's definition). The interquartile index (IQ) is the share with |z| < 0.6745, the surprise index (SI) the share with |z| > 2.326 (written 0.675 and 2.33 by Henrion & Fischhoff). The Birge ratio follows Henrion & Fischhoff's eq. (1) (p. 792), R_B² = Σz²/(N−1). Their equation is written with residuals about the group mean, but for the recommended values they state that residuals were taken relative to the 1973 estimates (p. 795), so z is used as it is. The root mean square √(Σz²/N) is given too. The 1969 values are the site's 1969 edition.</p>
 <h2>Checks</h2><ul>
-<li>The 30 values (six reviews from 1929 to 1963 × 5) were transcribed from page images; an independent reader who did not know them read the same pages from images again. Values, ±, exponents and kinds of ± agree 30/30.</li>
+<li>The 30 values (six papers from 1929 to 1963 × 5) were transcribed from page images; an independent reader who did not know them read the same pages from images again. Values, ±, exponents and kinds of ± agree 30/30.</li>
+<li>The five values of the 1957 book (HathiTrust public-domain copy, Table 8-7, p. 267) were read from the page image and checked against HathiTrust's text layer. All five values and their ± equal Table XIII of the 1955 paper.</li>
 <li>The two 1941 papers of Birge (Rep. Prog. Phys. and Rev. Mod. Phys.) give the same five values.</li>
 <li>The ppm deviations by year broadly match Henrion & Fischhoff's Fig. 3 (1952–1973): for example 1952 h −147 ppm and N_A +126 ppm against 1973.</li></ul>
 <h2>Limits</h2><ul>
-<li>Henrion & Fischhoff did not list their eight reviews. The reviews identifiable from the references of Table I are seven, 1929, 1941, 1952, 1955, 1957, 1963 and 1969, and the 1957 one (Cohen, Crowe & DuMond, <i>The Fundamental Constants of Physics</i>, Interscience) is not held. They cite the 1950 letter only for their speed-of-light figure. The main set is the seven reviews held; the six without 1950 are a sensitivity check.</li>
+<li>Henrion & Fischhoff did not list their eight reviews. The reviews identifiable from the references of Table I are seven, 1929, 1941, 1952, 1955, 1957, 1963 and 1969; they cite the 1950 letter only for their speed-of-light figure. The main set of eight adds 1950 to these, the combination for which IQ and SI equal Table I; the list itself is an inference. Because the 1957 book reprints the 1955 values, the same adjustment is counted twice. The seven without 1957 and the seven without 1950 are in the sensitivity table.</li>
 <li>The reviews reuse the same experimental data and are not independent; 1952 and 1955 reanalyze the same 1952 data.</li>
 <li>The 1973 and 2022 values are not the true values either.</li>
 <li>The tables were published in journals; the site gives only the values (numbers) and pages, not the PDFs.</li></ul>

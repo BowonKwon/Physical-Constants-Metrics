@@ -14,9 +14,9 @@ Outputs (data/derived/)
 
 Conventions (owner decisions D1-D6, 2026-11-06)
   * Five constants of the "Recommended values" row of H&F's Table I (second to last, p. 794): alpha^-1, h, e, m_e, N_A.
-  * Main set: the seven reviews held, 1929, 1941, 1950, 1952, 1955, 1963, 1969 (35 values). H&F counted
-    "eight reviews from 1929 to 1969" (40 values) without listing them; their references also include the
-    1957 book of Cohen, Crowe & DuMond, which is not held.
+  * Main set (1.3.1): eight reviews, 1929, 1941, 1950, 1952, 1955, 1957, 1963, 1969 (40 values) — the count of H&F's
+    "eight reviews from 1929 to 1969". The 1957 book (Cohen, Crowe & DuMond, Table 8-7, p. 267) reprints the
+    1955 values exactly; with it the IQ and SI of H&F's Table I are reproduced. Without 1957 is a sensitivity variant.
   * A probable error (PE) is turned into a standard uncertainty by 1/Phi^-1(0.75) = 1.4826022 (PE/0.6745); H&F used 1.48.
   * The scale factors are applied as exact numbers; their own uncertainty (at most 5 ppm) is not propagated.
   * N_A is put on the unified scale with the factors of the 1965 paper; for 1929 and 1941 (old chemical scale)
@@ -48,7 +48,7 @@ PE_FACTOR = Decimal(1) / Decimal(str(stats.norm.ppf(0.75)))   # 1.4826
 PE_FACTOR_HF = Decimal("1.48")
 IQ_K = stats.norm.ppf(0.75)
 SI_K = stats.norm.ppf(0.99)   # 2.326; H&F printed 2.33
-MAIN = [1929, 1941, 1950, 1952, 1955, 1963, 1969]
+MAIN = [1929, 1941, 1950, 1952, 1955, 1957, 1963, 1969]   # 1.3.1: with the 1957 book, H&F's eight reviews
 HF_PRINTED = dict(n=40, rb="7.42", iq="22%", si="57%", source="Henrion & Fischhoff, Am. J. Phys. 54, 791 (1986), p. 794, Table I")
 C_1950_CM_S = Decimal("2.997902E10")   # Phys. Rev. 82, 556, Table I: c = 299790.2 km/s
 
@@ -136,6 +136,7 @@ def main():
     write("pre_codata_values.csv", table)
 
     variants = [("main", MAIN, PE_FACTOR, True),
+                ("without 1957 (each adjustment once)", [y for y in MAIN if y != 1957], PE_FACTOR, True),
                 ("without 1950 (only reviews H&F cite)", [y for y in MAIN if y != 1950], PE_FACTOR, True),
                 ("PE factor 1.48 (H&F)", MAIN, PE_FACTOR_HF, True),
                 ("N_A not put on the unified scale", MAIN, PE_FACTOR, False),
@@ -148,7 +149,7 @@ def main():
             out.append(dict(variant=label, reference=ref, reviews=" ".join(map(str, revs)), n=s["n"],
                             rb_hf=f"{s['rb_hf']:.2f}", rb_rms=f"{s['rb_rms']:.2f}",
                             iq=f"{s['iq']:.3f}", si=f"{s['si']:.3f}"))
-    out.append(dict(variant="H&F printed", reference=1973, reviews="eight reviews 1929-1969 (not listed)",
+    out.append(dict(variant="H&F printed", reference=1973, reviews="eight reviews 1929-1969 (not listed by H&F)",
                     n=HF_PRINTED["n"], rb_hf=HF_PRINTED["rb"], rb_rms="", iq=HF_PRINTED["iq"], si=HF_PRINTED["si"]))
     write("pre_codata_hf.csv", out)
     for o in out:
