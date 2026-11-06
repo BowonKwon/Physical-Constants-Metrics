@@ -1,6 +1,6 @@
 {
  "name": "physical-constants-metrics",
- "version": "1.3",
+ "version": "1.3.1",
  "created": "2026-11-06",
  "licenses": [
   {
@@ -174,12 +174,12 @@
   },
   {
    "path": "pre_codata_reviews.csv",
-   "description": "Recommended values before CODATA as transcribed: α⁻¹, h, e, mₑ, N_A in the 1929, 1941, 1950, 1952, 1955 and 1963 reviews, value and ± as printed, kind of ± (probable error, standard error, standard deviation), atomic-weight scale, page of the paper. Values transcribed from the original papers (cited per row); CC BY 4.0 covers the editor's computations.",
+   "description": "Recommended values before CODATA as transcribed: α⁻¹, h, e, mₑ, N_A in the 1929, 1941, 1950, 1952, 1955, 1957 and 1963 reviews, value and ± as printed, kind of ± (probable error, standard error, standard deviation), atomic-weight scale, page of the paper. Values transcribed from the original papers (cited per row); CC BY 4.0 covers the editor's computations.",
    "format": "csv"
   },
   {
    "path": "pre_codata_values.csv",
-   "description": "The same values in SI units, on the unified scale and with standard uncertainties, with z and ppm against the 1973 and 2022 editions (35 rows with 1969). Values transcribed from the original papers (cited per row); CC BY 4.0 covers the editor's computations.",
+   "description": "The same values in SI units, on the unified scale and with standard uncertainties, with z and ppm against the 1973 and 2022 editions (40 rows with 1969). Values transcribed from the original papers (cited per row); CC BY 4.0 covers the editor's computations.",
    "format": "csv"
   },
   {

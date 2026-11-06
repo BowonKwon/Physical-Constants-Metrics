@@ -24,6 +24,11 @@ review,qid,value_si,u_std_si,printed_kind,atomic_scale,page,source,z_vs_1973,ppm
 1955,e,1.602060e-19,3.0e-24,SE,,378,"Cohen, DuMond, Layton & Rollett, Rev. Mod. Phys. 27, 363-380 (1955)",4.307,-80.6,3.888,-72.8
 1955,me,9.1083e-31,3e-35,SE,,378,"Cohen, DuMond, Layton & Rollett, Rev. Mod. Phys. 27, 363-380 (1955)",4.113,-135.5,3.612,-119.0
 1955,NA,6.022945203e+23,1.599491494e+19,SE,physical,378,"Cohen, DuMond, Layton & Rollett, Rev. Mod. Phys. 27, 363-380 (1955)",-5.628,149.5,-5.029,133.6
+1957,alpha_inv,137.0373,0.0006,SE,,267,"Cohen, Crowe & DuMond, The Fundamental Constants of Physics (Interscience, 1957)",-2.100,9.2,-2.168,9.5
+1957,h,6.62517e-34,2.3e-38,SE,,267,"Cohen, Crowe & DuMond, The Fundamental Constants of Physics (Interscience, 1957)",4.374,-151.8,3.914,-135.8
+1957,e,1.602060e-19,3.0e-24,SE,,267,"Cohen, Crowe & DuMond, The Fundamental Constants of Physics (Interscience, 1957)",4.307,-80.6,3.888,-72.8
+1957,me,9.1083e-31,3e-35,SE,,267,"Cohen, Crowe & DuMond, The Fundamental Constants of Physics (Interscience, 1957)",4.113,-135.5,3.612,-119.0
+1957,NA,6.022945203e+23,1.599491494e+19,SE,physical,267,"Cohen, Crowe & DuMond, The Fundamental Constants of Physics (Interscience, 1957)",-5.628,149.5,-5.029,133.6
 1963,alpha_inv,137.0388,0.0006,SD,,590,"Cohen & DuMond, Rev. Mod. Phys. 37, 537-594 (1965)",-4.600,20.1,-4.668,20.4
 1963,h,6.62559e-34,1.6e-38,SD,,590,"Cohen & DuMond, Rev. Mod. Phys. 37, 537-594 (1965)",3.663,-88.4,3.001,-72.5
 1963,e,1.60210e-19,2e-24,SD,,590,"Cohen & DuMond, Rev. Mod. Phys. 37, 537-594 (1965)",4.460,-55.7,3.832,-47.8
