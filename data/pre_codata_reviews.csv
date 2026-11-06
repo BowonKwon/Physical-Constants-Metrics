@@ -1,0 +1,31 @@
+review,values_as_of,source,doi,page,table,qid,printed_value,printed_unc,exp10,unit,unc_kind,atomic_scale,note
+1929,1929-01-01,"Birge, Rev. Mod. Phys. 1, 1-73 (1929)",10.1103/RevModPhys.1.1,63,Table c,alpha_inv,137.294,0.11,0,,PE,,printed 137.29 with guard digit 4 below the line
+1929,1929-01-01,"Birge, Rev. Mod. Phys. 1, 1-73 (1929)",10.1103/RevModPhys.1.1,59,Table a (M),h,6.547,0.008,-27,erg s,PE,,
+1929,1929-01-01,"Birge, Rev. Mod. Phys. 1, 1-73 (1929)",10.1103/RevModPhys.1.1,59,Table a (K),e_emu,1.59108,0.0016,-20,abs-emu,PE,,printed e/c = 1.5910 with guard digit 8; e = (4.770 +- 0.005)e-10 abs-esu on the same line
+1929,1929-01-01,"Birge, Rev. Mod. Phys. 1, 1-73 (1929)",10.1103/RevModPhys.1.1,62,Table c,me,9.03510,0.010,-28,g,PE,,"mass of electron (spectroscopic), m0 = e/c(e/m)sp; guard digits 10; deflection value 8.99425 +- 0.014 not used"
+1929,1929-01-01,"Birge, Rev. Mod. Phys. 1, 1-73 (1929)",10.1103/RevModPhys.1.1,61,Table b (M),NA,6.06436,0.006,23,mol^-1,PE,chemical,printed 6.064 with guard digits 36; N0 = Fc/e; scale not stated on the line, chemical inferred from Table a atomic weights (O = 16.0000, p59)
+1941,1941-08,"Birge, Rep. Prog. Phys. 8, 90-134 (1941)",10.1088/0034-4885/8/1/307,130,Table c,alpha_inv,137.0302,0.016,0,,PE,,printed 137.030 with guard digit 2; same in Rev. Mod. Phys. 13 p236
+1941,1941-08,"Birge, Rep. Prog. Phys. 8, 90-134 (1941)",10.1088/0034-4885/8/1/307,129,Table c,h,6.6242,0.0024,-27,erg s,PE,,printed 6.624 +- 0.002 with guard digits 2 and 4; same in Rev. Mod. Phys. 13 p236
+1941,1941-08,"Birge, Rep. Prog. Phys. 8, 90-134 (1941)",10.1088/0034-4885/8/1/307,127,Table a (K),e_emu,1.602033,0.00034,-20,abs-emu,PE,,printed 1.60203 with guard digit 3; e' = 4.80251 +- 0.0010 e-10 abs-esu; same in Rev. Mod. Phys. 13 p234
+1941,1941-08,"Birge, Rep. Prog. Phys. 8, 90-134 (1941)",10.1088/0034-4885/8/1/307,130,Table c,me,9.10660,0.0032,-28,g,PE,,m = e/(e/m); printed 9.1066 with guard digit 0; same in Rev. Mod. Phys. 13 p237 (Table c continued)
+1941,1941-08,"Birge, Rep. Prog. Phys. 8, 90-134 (1941)",10.1088/0034-4885/8/1/307,127,Table a (K),NA,6.02283,0.0011,23,mol^-1,PE,chemical,printed 6.0228 with guard digit 3; same in Rev. Mod. Phys. 13 p234
+1950,1950-12,"DuMond & Cohen, Phys. Rev. 82, 555-556 (1951)",10.1103/PhysRev.82.555.3,556,Table I,alpha_inv,137.0429,0.0009,0,,PE,,"p555: 'the probable errors being all computed by the ellipsoid method'"
+1950,1950-12,"DuMond & Cohen, Phys. Rev. 82, 555-556 (1951)",10.1103/PhysRev.82.555.3,556,Table I,h,6.62377,0.00018,-27,erg s,PE,,
+1950,1950-12,"DuMond & Cohen, Phys. Rev. 82, 555-556 (1951)",10.1103/PhysRev.82.555.3,556,Table I,e_esu,4.80223,0.00007,-10,esu,PE,,only esu printed; converted with c = 299790.2 km/s of the same table
+1950,1950-12,"DuMond & Cohen, Phys. Rev. 82, 555-556 (1951)",10.1103/PhysRev.82.555.3,556,Table I,me,9.10721,0.00025,-28,g,PE,,
+1950,1950-12,"DuMond & Cohen, Phys. Rev. 82, 555-556 (1951)",10.1103/PhysRev.82.555.3,556,Table I,NA,6.02544,0.00011,23,mol^-1,PE,physical,
+1952,1952-11,"DuMond & Cohen, Rev. Mod. Phys. 25, 691-708 (1953)",10.1103/RevModPhys.25.691,707,II. Output values,alpha_inv,137.0377,0.0016,0,,SE,,p706: 'the standard error by external consistency'
+1952,1952-11,"DuMond & Cohen, Rev. Mod. Phys. 25, 691-708 (1953)",10.1103/RevModPhys.25.691,706,II. Output values,h,6.6252,0.0005,-27,erg s,SE,,
+1952,1952-11,"DuMond & Cohen, Rev. Mod. Phys. 25, 691-708 (1953)",10.1103/RevModPhys.25.691,706,II. Output values,e_emu,1.60207,0.00007,-20,emu,SE,,e = 4.80288 +- 0.00021 e-10 esu on the line above
+1952,1952-11,"DuMond & Cohen, Rev. Mod. Phys. 25, 691-708 (1953)",10.1103/RevModPhys.25.691,706,II. Output values,me,9.1085,0.0006,-28,g,SE,,
+1952,1952-11,"DuMond & Cohen, Rev. Mod. Phys. 25, 691-708 (1953)",10.1103/RevModPhys.25.691,706,II. Output values,NA,6.02472,0.00036,23,mol^-1,SE,physical,
+1955,1955,"Cohen, DuMond, Layton & Rollett, Rev. Mod. Phys. 27, 363-380 (1955)",10.1103/RevModPhys.27.363,378,Table XIII,alpha_inv,137.0373,0.0006,0,,SE,,Table XIII caption: 'the quantity following each +- sign is the standard error'
+1955,1955,"Cohen, DuMond, Layton & Rollett, Rev. Mod. Phys. 27, 363-380 (1955)",10.1103/RevModPhys.27.363,378,Table XIII,h,6.62517,0.00023,-27,erg s,SE,,
+1955,1955,"Cohen, DuMond, Layton & Rollett, Rev. Mod. Phys. 27, 363-380 (1955)",10.1103/RevModPhys.27.363,378,Table XIII,e_emu,1.60206,0.00003,-20,emu,SE,,e = 4.80286 +- 0.00009 e-10 esu
+1955,1955,"Cohen, DuMond, Layton & Rollett, Rev. Mod. Phys. 27, 363-380 (1955)",10.1103/RevModPhys.27.363,378,Table XIII,me,9.1083,0.0003,-28,g,SE,,
+1955,1955,"Cohen, DuMond, Layton & Rollett, Rev. Mod. Phys. 27, 363-380 (1955)",10.1103/RevModPhys.27.363,378,Table XIII,NA,6.02486,0.00016,23,mol^-1,SE,physical,
+1963,1963,"Cohen & DuMond, Rev. Mod. Phys. 37, 537-594 (1965)",10.1103/RevModPhys.37.537,590,Table XVII,alpha_inv,137.0388,0.0006,0,,SD,,Table XVII caption: 'the standard deviation error in the final digits'
+1963,1963,"Cohen & DuMond, Rev. Mod. Phys. 37, 537-594 (1965)",10.1103/RevModPhys.37.537,590,Table XVII,h,6.62559,0.00016,-34,J s,SD,,
+1963,1963,"Cohen & DuMond, Rev. Mod. Phys. 37, 537-594 (1965)",10.1103/RevModPhys.37.537,590,Table XVII,e_C,1.60210,0.00002,-19,C,SD,,
+1963,1963,"Cohen & DuMond, Rev. Mod. Phys. 37, 537-594 (1965)",10.1103/RevModPhys.37.537,590,Table XVII,me,9.10908,0.00013,-31,kg,SD,,
+1963,1963,"Cohen & DuMond, Rev. Mod. Phys. 37, 537-594 (1965)",10.1103/RevModPhys.37.537,590,Table XVII,NA,6.02252,0.00009,26,kmol^-1,SD,unified,

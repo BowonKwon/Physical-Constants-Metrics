@@ -4,7 +4,7 @@
 
 - **사이트:** https://bowonkwon.github.io/Physical-Constants-Metrics/ ([한국어](https://bowonkwon.github.io/Physical-Constants-Metrics/ko/) · [English](https://bowonkwon.github.io/Physical-Constants-Metrics/en/))
 - **읽기:** 핵심 결과를 글로 읽는 면 — [한국어](https://bowonkwon.github.io/Physical-Constants-Metrics/ko/reading.html) · [English](https://bowonkwon.github.io/Physical-Constants-Metrics/en/reading.html)
-- **판:** 1.2.1 (2026. 11. 6.) 표 A2 출판본 대조. 1.2 (2026. 11. 4.) — 허블 상수 장(H0 추정값의 정밀도 반감기·기준값 대비 놀람 지수·t 분포 자유도, 연대기, 방법). 1.1.3 (2026. 11. 4.) 같은 층 면 사이 이동(위치 표시줄·같은 계열 목록·이전/다음). 1.1.2 (2026. 11. 3.) 공개본 점검 반영(표시·표기). 1.1.1(2026. 11. 2.) 영어 면 교정과 계산 코드 정비, 1.1(원자량 장)도 같은 날, 1.0은 2026. 11. 1.
+- **판:** 1.3 (2026. 11. 6.) — CODATA 이전 장(1929~1969년 권고값, Henrion & Fischhoff 재계산). 1.2.1 (2026. 11. 6.) 표 A2 출판본 대조. 1.2 (2026. 11. 4.) — 허블 상수 장(H0 추정값의 정밀도 반감기·기준값 대비 놀람 지수·t 분포 자유도, 연대기, 방법). 1.1.3 (2026. 11. 4.) 같은 층 면 사이 이동(위치 표시줄·같은 계열 목록·이전/다음). 1.1.2 (2026. 11. 3.) 공개본 점검 반영(표시·표기). 1.1.1(2026. 11. 2.) 영어 면 교정과 계산 코드 정비, 1.1(원자량 장)도 같은 날, 1.0은 2026. 11. 1.
 - **다른 공개 자료:** https://bowonkwon.github.io/
 
 ## 무엇이 들어 있나
@@ -19,6 +19,13 @@
 | M6 정의값 전환 | 측정값이 정의값이 된 상수(빛의 속력 1983, 2019년 SI 개정)와 그 반대(진공 투자율·몰질량 상수) |
 
 M2~M4의 분모는 서로 정확한 환산 관계가 없도록 고른 핵심 상수 17개입니다(같은 규칙에 맞는 후보 3개를 더한 민감도 결과도 싣습니다). 상수별 면은 표시용 상수 11개와 민감도 후보 3개를 더해 31개입니다. Henrion & Fischhoff(1986)의 보정 지표를 이 자료로 다시 계산한 면이 따로 있습니다.
+
+## 1.3 — CODATA 이전 장 (2026. 11. 6.)
+
+- CODATA 가 생기기 전의 권고값 — Birge 1929·1941, DuMond·Cohen 1950·1952, Cohen 외 1955, Cohen·DuMond 1963 — 에서 다섯 상수(α⁻¹·h·e·mₑ·N_A)를 원 논문 표의 쪽 이미지에서 옮겼습니다(30개, 행마다 쪽·±의 뜻·원자량 척도). 값을 모르는 독립 판독자가 같은 쪽을 다시 읽어 30개 모두 일치했습니다.
+- ±의 뜻은 판마다 다릅니다(확률오차·표준오차·표준편차). 확률오차는 1.4826 배해 표준 불확도로 쓰고, 아보가드로 상수는 Cohen·DuMond(1965)의 환산 계수로 통합 척도(¹²C)에 맞췄습니다.
+- Henrion & Fischhoff(1986) 표 I 의 계산을 1973 기준으로 다시 했습니다: 35개에서 놀람 지수 54%·사분위 지수 26%·Birge 비 R_B 4.36(H&F 식 (1); 그들은 40개에서 57%·22%·7.42). 그들이 검토 8개를 나열하지 않았고 인용한 1957년 단행본을 이 사이트가 갖고 있지 않아 정확히 재현되지 않았고, 차이는 감도 표에 그대로 두었습니다. 2022 기준으로는 놀람 지수 57% 입니다.
+- 지표 면의 H&F 재계산 면과 선행 연구 면에서 「출판본 대조 전」「다음 판 이후」 문장을 고쳤습니다. 기존 장의 수치는 바뀌지 않았습니다.
 
 ## 1.2.1 — 표 A2 출판본 대조 (2026. 11. 6.)
 
@@ -90,7 +97,7 @@ src/    fetch_raw.py → parse_codata.py → handcheck.py → metrics.py → bui
 How often did the error bars that scientists published miss the next edition's value? This site joins the nine editions of the CODATA recommended values of the fundamental physical constants (1973–2022) and the 1969 adjustment that preceded them, and turns the changes in values and uncertainties into metrics. Every metric carries its definition, formula, denominator and caveats; every number carries its sample size and a 95% interval.
 
 - **Site:** https://bowonkwon.github.io/Physical-Constants-Metrics/en/ · **Reading:** [en/reading.html](https://bowonkwon.github.io/Physical-Constants-Metrics/en/reading.html)
-- **Version:** 1.2.1 (Nov 6, 2026), Table A2 checked against the published version; 1.2 (Nov 4, 2026), Hubble-constant chapter (precision half-life, surprise against a reference and Student-t degrees of freedom of published H0 estimates; chronology; method); 1.1.3 (Nov 4, 2026), navigation between pages of the same level; 1.1.2 (Nov 3, 2026) review of the public site applied (display and notation); 1.1.1 (Nov 2, 2026) English corrections and code fixes and 1.1 (atomic-weights chapter) the same day, 1.0 on Nov 1, 2026
+- **Version:** 1.3 (Nov 6, 2026), before-CODATA chapter (recommended values 1929–1969, Henrion & Fischhoff recomputed); 1.2.1 (Nov 6, 2026), Table A2 checked against the published version; 1.2 (Nov 4, 2026), Hubble-constant chapter (precision half-life, surprise against a reference and Student-t degrees of freedom of published H0 estimates; chronology; method); 1.1.3 (Nov 4, 2026), navigation between pages of the same level; 1.1.2 (Nov 3, 2026) review of the public site applied (display and notation); 1.1.1 (Nov 2, 2026) English corrections and code fixes and 1.1 (atomic-weights chapter) the same day, 1.0 on Nov 1, 2026
 - **Other public materials:** https://bowonkwon.github.io/en/
 
 | Metric | Contents |
@@ -103,6 +110,8 @@ How often did the error bars that scientists published miss the next edition's v
 | M6 Exact-value transitions | Constants that became exact (speed of light 1983; the 2019 SI revision) and the reverse (vacuum magnetic permeability, molar mass constant) |
 
 The denominator of M2–M4 is 17 core constants, chosen so that none is an exact function of the others (a sensitivity check adds three candidates meeting the same rule); the constant pages add 11 display constants and the 3 candidates (31 in all). A separate page recomputes Henrion & Fischhoff's (1986) calibration indices on these data.
+
+**1.3: before-CODATA chapter.** Five constants (α⁻¹, h, e, mₑ, N_A) were transcribed from page images of the tables of the recommended values that preceded CODATA: Birge 1929 and 1941, DuMond and Cohen 1950 and 1952, Cohen et al. 1955, Cohen and DuMond 1963 (30 values, each with page, kind of ± and atomic-weight scale). An independent reader who did not know the values read the same pages again; all 30 agree. The ± means different things in different reviews (probable error, standard error, standard deviation); probable errors are multiplied by 1.4826, and the Avogadro constant is put on the unified (¹²C) scale with the factors of Cohen and DuMond (1965). Henrion & Fischhoff's (1986) Table I calculation was redone against 1973: surprise index 54%, interquartile index 26% and Birge ratio R_B 4.36 (their eq. (1)) for 35 values (theirs: 57%, 22% and 7.42 for 40). They did not list their eight reviews, and the site does not hold the 1957 book they cite, so the calculation is not reproduced exactly; the differences are left in a sensitivity table. Against 2022 the surprise index is 57%. The H&F recalculation page and the prior-work page no longer say the check against the published paper and the 1929–1963 values are pending. No number of the earlier chapters changed.
 
 **1.2.1: Table A2 checked against the published version.** Table A2 of Faerber & López-Corredoira (2020) was read from the arXiv version; all 164 rows of the table in the published (MDPI web) version were compared for year, value, error as printed and reference number, and all agree. No number changed; the sentences on the method and data pages and the CSV header that said the check was pending are updated. The method page now gives the pages where the two reference values were checked (Planck Results VI, p. 16, Table 2; Riess et al. 2022, pp. 1 and 33) instead of saying the check could not be done.
 

@@ -25,7 +25,7 @@ DER = ROOT / "data" / "derived"
 # hand-maintained map of the 31 quantities; kept outside data/derived so that clearing derived/ cannot lose it
 QMAP = ROOT / "data" / "manual" / "quantity_map.csv"
 OUT = ROOT / "site"
-VERSION = "1.2.1"
+VERSION = "1.3"
 BUILD_DATE = "2026-11-06"
 REPO = "https://github.com/BowonKwon/Physical-Constants-Metrics"
 PUBLIC_DATA = ["constants_long.csv", "quantity_map.csv", "m1_halflife.csv", "m2_pairs.csv", "m2_summary.csv",
@@ -69,7 +69,7 @@ NOTE_KO = {
 
 T = {
     "ko": dict(site="물리 상수 메트릭스", tagline="과학자들이 밝힌 오차 막대는 다음 판의 값을 얼마나 자주 놓쳤나 — CODATA 기본 물리 상수 1969~2022",
-               home="홈", metrics="지표", constants="상수", atomic="원자량", hubble="허블 상수", reading="읽기", data="데이터", method="방법·한계", prior="선행 연구", lang_other="English",
+               home="홈", metrics="지표", constants="상수", atomic="원자량", hubble="허블 상수", early="CODATA 이전", reading="읽기", data="데이터", method="방법·한계", prior="선행 연구", lang_other="English",
                version="판", built="생성일", hub="공개 자료 전체", definition="정의", formula="공식", denominator="분모", howto="읽는 법", caveat="한계",
                download="CSV 내려받기", edition="판", value="값", u="표준불확도", urel="상대 불확도", exact="정의값", printed="원 표기", source="원자료 위치",
                z_prev="직전 판 대비 z", z_latest="z = (2022 판 − 이 판)/σ", core="핵심 상수", display="표시용 상수", cand="민감도 후보", layer="층", symbol="기호", unit="단위",
@@ -77,7 +77,7 @@ T = {
                normal="정규 기대", observed="관측", rate="비율", threshold="기준", pairs="판 쌍", quantities="상수", subset="묶음",
                basis="한국어 이름 근거"),
     "en": dict(site="Physical Constants Metrics", tagline="How often did the error bars scientists published miss the next edition's value? CODATA fundamental constants, 1969–2022",
-               home="Home", metrics="Metrics", constants="Constants", atomic="Atomic weights", hubble="Hubble constant", reading="Reading", data="Data", method="Method & limits", prior="Prior work", lang_other="한국어",
+               home="Home", metrics="Metrics", constants="Constants", atomic="Atomic weights", hubble="Hubble constant", early="Before CODATA", reading="Reading", data="Data", method="Method & limits", prior="Prior work", lang_other="한국어",
                version="Version", built="Built", hub="All public materials:", definition="Definition", formula="Formula", denominator="Denominator", howto="How to read it", caveat="Caveats",
                download="Download CSV", edition="Edition", value="Value", u="Standard uncertainty", urel="Relative standard uncertainty", exact="Exact", printed="As printed", source="Source location",
                z_prev="z vs previous edition", z_latest="z = (2022 − this)/σ", core="Core constant", display="Display constant", cand="Sensitivity candidate", layer="Layer", symbol="Symbol", unit="Unit",
@@ -287,7 +287,7 @@ def page(lang, title, body, depth=1, active="", leaf=None):
     other = "en" if lang == "ko" else "ko"
     hub = "" if lang == "ko" else "en/"
     nav = [("home", "index.html", t["home"]), ("metrics", "metrics/index.html", t["metrics"]),
-           ("constants", "constants/index.html", t["constants"]), ("atomic", "atomic/index.html", t["atomic"]), ("hubble", "hubble/index.html", t["hubble"]), ("reading", "reading.html", t["reading"]),
+           ("constants", "constants/index.html", t["constants"]), ("atomic", "atomic/index.html", t["atomic"]), ("hubble", "hubble/index.html", t["hubble"]), ("early", "early/index.html", t["early"]), ("reading", "reading.html", t["reading"]),
            ("prior", "prior.html", t["prior"]), ("method", "method.html", t["method"]), ("data", "data.html", t["data"])]
     on = ' class="on"'
     navh = "".join(f'<a href="{root}{lang}/{h}"{on if k == active else ""}>{n}</a>' for k, h, n in nav)
@@ -661,7 +661,7 @@ def build():
                                 dict(title="Taylor, Parker & Langenberg 1969", path=SOURCES["tpl1969"]["url"])],
                        resources=[dict(path=f, description=DATA_DESC[f][1], format="csv") for f in PUBLIC_DATA] +
                        [dict(path=f, description=__import__("aw_site").DESC[f][1] + ". Atomic-weight values © IUPAC/CIAAW (not covered by CC BY 4.0): republication with full reference, ©, IUPAC or CIAAW and year; translations need prior approval from the relevant IUPAC National Adhering Organization; commercial use by arrangement with the CIAAW Secretariat. CC BY 4.0 covers only the editor's computations (z, aggregates, conversions).",
-                             format="csv") for f in __import__("aw_site").PUBLIC] + __import__("h0_site").datapackage_resources())
+                             format="csv") for f in __import__("aw_site").PUBLIC] + __import__("h0_site").datapackage_resources() + __import__("pre_site").datapackage_resources())
     datapackage["sources"] += [dict(title="Faerber & López-Corredoira 2020, Table A2 (CC BY 4.0)", path=__import__("h0_registry").H0_SOURCES["faerber"]["url"]),
                                dict(title="Huchra, Estimates of the Hubble Constant (aggregates only)", path=__import__("h0_registry").H0_SOURCES["huchra"]["url"])]
     (OUT / "data" / "raw_manifest.json").write_bytes(manifest_bytes)
@@ -714,7 +714,9 @@ def build():
             '<h2>원자량 장 <span class="tag">1.1</span></h2><div class="cards"><a class="card" href="atomic/index.html"><b>원자량 — 표준 원자량의 개정 기록</b><small>CIAAW 1902~2024, 개정 701건. 불확도를 확장 범위로 정의하는 기록에 같은 질문을 던진다</small></a></div>' if lang == "ko" else
             '<h2>Atomic-weights chapter <span class="tag">1.1</span></h2><div class="cards"><a class="card" href="atomic/index.html"><b>Atomic weights — the revision record</b><small>CIAAW 1902–2024, 701 revisions. The same question, asked of a record that defines uncertainty as an expanded range</small></a></div>') + (
             '<h2>허블 상수 장 <span class="tag">1.2</span></h2><div class="cards"><a class="card" href="hubble/index.html"><b>허블 상수 — 발표된 H0 추정값과 그 오차</b><small>Huchra 목록 1929~2010(집계만)과 표 A2 1976~2019. 판 대신 개별 측정의 기록에, 두 기준값(Planck 2018·Riess 외 2022)을 나란히 두고 같은 질문을 던진다</small></a></div>' if lang == "ko" else
-            '<h2>Hubble-constant chapter <span class="tag">1.2</span></h2><div class="cards"><a class="card" href="hubble/index.html"><b>Hubble constant — published H0 estimates and their errors</b><small>Huchra’s list 1929–2010 (aggregates only) and Table A2 1976–2019. The same question, asked of individual measurements against two references (Planck 2018, Riess et al. 2022)</small></a></div>')
+            '<h2>Hubble-constant chapter <span class="tag">1.2</span></h2><div class="cards"><a class="card" href="hubble/index.html"><b>Hubble constant — published H0 estimates and their errors</b><small>Huchra’s list 1929–2010 (aggregates only) and Table A2 1976–2019. The same question, asked of individual measurements against two references (Planck 2018, Riess et al. 2022)</small></a></div>') + (
+            '<h2>CODATA 이전 장 <span class="tag">1.3</span></h2><div class="cards"><a class="card" href="early/index.html"><b>CODATA 이전 — 1929~1969년 권고값</b><small>Birge·DuMond·Cohen 의 검토 6개에서 다섯 상수를 원 논문 표로 옮기고, Henrion & Fischhoff(1986)의 지표를 1973·2022 기준으로 다시 계산한다</small></a></div>' if lang == "ko" else
+            '<h2>Before-CODATA chapter <span class="tag">1.3</span></h2><div class="cards"><a class="card" href="early/index.html"><b>Before CODATA — recommended values 1929–1969</b><small>Five constants transcribed from the tables of six reviews by Birge, DuMond and Cohen, and Henrion & Fischhoff’s (1986) indices recomputed against 1973 and 2022</small></a></div>')
         (base / "index.html").write_text(page(lang, t["home"], body, 1, "home"), encoding="utf-8")
 
         # ---------- metric pages
@@ -777,13 +779,13 @@ def build():
         all73 = next(r for r in hf if r["reference"] == "1973" and r["qid"] == "ALL")
         all22 = next(r for r in hf if r["reference"] == "2022" and r["qid"] == "ALL")
         if lang == "ko":
-            hfb = f"""<h1>Henrion & Fischhoff (1986) 지표 재계산</h1><p class="lead">이들의 표 I 마지막 줄은 1929~1969년 권고값 여덟 개 검토의 상수 다섯 개(α⁻¹, e, h, mₑ, N_A)를 1973 판 값과 견주어 사분위 지수(IQ) 22%, 놀람 지수(SI) 57% 를 보고했다(정규 기대 50%, 2%). 이 사이트는 1969 판까지만 갖고 있어 같은 계산의 일부를 다시 하고, 기준을 2022 판으로 옮긴 계산을 함께 싣는다. 그들과 1973 보고서 표 34.2 처럼 α 가 아닌 α⁻¹ 로 계산한다.</p>
+            hfb = f"""<h1>Henrion & Fischhoff (1986) 지표 재계산</h1><p class="lead">이들의 표 I 「Recommended values」 줄(끝에서 두 번째, 794쪽)은 1929~1969년 권고값 여덟 개 검토의 상수 다섯 개(α⁻¹, e, h, mₑ, N_A)를 1973 판 값과 견주어 사분위 지수(IQ) 22%, 놀람 지수(SI) 57% 를 보고했다(정규 기대 50%, 2%). 이 사이트는 1969 판까지만 갖고 있어 같은 계산의 일부를 다시 하고, 기준을 2022 판으로 옮긴 계산을 함께 싣는다. 그들과 1973 보고서 표 34.2 처럼 α 가 아닌 α⁻¹ 로 계산한다.</p>
 <div class="prose"><ul><li>1969 판 → 1973 판 기준 (그들과 같은 기준, 상수 5개): {esc(all73['z_old'])}.</li><li>1969~2018 판 → 2022 판 기준 (상수 5개, 측정값이던 판만 {esc(all22['edition'])}): {esc(all22['z_old'])}.</li></ul>
-<p>z = (기준 판 값 − 옛 값) / 옛 불확도. IQ 는 |z|<0.674, SI 는 |z| > 2.326 인 비율, RMS 는 z 의 제곱평균제곱근이다. 1969→1973 의 e·h·mₑ·N_A 변화를 ppm 으로 바꾸면 −1.56·−3.02·−2.63·−20.6 으로, 1973 보고서 표 34.2 의 −1.6·−3.0·−2.6·−21 과 맞는다. α⁻¹ 는 +0.146 ppm(표 34.2: +0.15). 원 논문 표 I 의 22%·57% 는 공개 사본(OCR)에서 읽은 값이고 출판본과 대조하지 못했다. 1929~1963 판(Birge, DuMond–Cohen 등)은 다음 판 이후에 넣을 예정이다.</p></div>"""
+<p>z = (기준 판 값 − 옛 값) / 옛 불확도. IQ 는 |z|<0.674, SI 는 |z| > 2.326 인 비율, RMS 는 z 의 제곱평균제곱근이다. 1969→1973 의 e·h·mₑ·N_A 변화를 ppm 으로 바꾸면 −1.56·−3.02·−2.63·−20.6 으로, 1973 보고서 표 34.2 의 −1.6·−3.0·−2.6·−21 과 맞는다. α⁻¹ 는 +0.146 ppm(표 34.2: +0.15). 원 논문 표 I 의 22%·57% 는 출판본 794쪽에서 확인했다. 1929~1963 검토(Birge, DuMond·Cohen)를 원 논문 표에서 옮겨 같은 지표를 다시 계산한 결과는 <a href="../early/index.html">CODATA 이전 장</a>에 있다.</p></div>"""
         else:
-            hfb = f"""<h1>Henrion & Fischhoff (1986) indices, recomputed</h1><p class="lead">In the last row of their Table I, they compared five constants (α⁻¹, e, h, mₑ, N_A) in eight reviews from 1929 to 1969 with the 1973 values and reported an interquartile index of 22% and a surprise index of 57% (normal: 50% and 2%). This site reaches back only to 1969, so it repeats part of that calculation and adds the same calculation against the 2022 edition. As in their paper and in Table 34.2 of the 1973 report, α⁻¹ is used rather than α.</p>
+            hfb = f"""<h1>Henrion & Fischhoff (1986) indices, recomputed</h1><p class="lead">In the "Recommended values" row of their Table I (second to last, p. 794), they compared five constants (α⁻¹, e, h, mₑ, N_A) in eight reviews from 1929 to 1969 with the 1973 values and reported an interquartile index of 22% and a surprise index of 57% (normal: 50% and 2%). This site reaches back only to 1969, so it repeats part of that calculation and adds the same calculation against the 2022 edition. As in their paper and in Table 34.2 of the 1973 report, α⁻¹ is used rather than α.</p>
 <div class="prose"><ul><li>1969 edition against 1973 (their reference, five constants): {esc(all73['z_old'])}.</li><li>1969–2018 editions against 2022 (five constants, editions in which they were measured, {esc(all22['edition'])}): {esc(all22['z_old'])}.</li></ul>
-<p>z = (reference value − earlier value) / earlier uncertainty. IQ is the share with |z| < 0.674, SI the share with |z| > 2.326, RMS the root mean square of z. The 1969→1973 changes of e, h, mₑ and N_A are −1.56, −3.02, −2.63 and −20.6 ppm, matching −1.6, −3.0, −2.6 and −21 in Table 34.2 of the 1973 report; α⁻¹ changes by +0.146 ppm (table: +0.15). The 22% and 57% of their Table I were read from a public OCR copy and have not been checked against the published version. The 1929–1963 reviews (Birge, DuMond–Cohen and others) are planned for a later version.</p></div>"""
+<p>z = (reference value − earlier value) / earlier uncertainty. IQ is the share with |z| < 0.674, SI the share with |z| > 2.326, RMS the root mean square of z. The 1969→1973 changes of e, h, mₑ and N_A are −1.56, −3.02, −2.63 and −20.6 ppm, matching −1.6, −3.0, −2.6 and −21 in Table 34.2 of the 1973 report; α⁻¹ changes by +0.146 ppm (table: +0.15). The 22% and 57% of their Table I were checked on p. 794 of the published version. The same indices recomputed from the 1929–1963 reviews (Birge, DuMond and Cohen), transcribed from the original tables, are in the <a href="../early/index.html">before-CODATA chapter</a>.</p></div>"""
         si22 = pct(all22["z_old"].split("SI=")[1].split()[0], 0)
         hftk = ([f"1969→1973 에서 다섯 상수 가운데 아보가드로 상수 하나가 옛 σ 의 3.1배를 움직였다. 나머지 넷은 0.5배 안이다.", f"2022 판을 기준으로 하면 1969~2018 판의 다섯 상수 {all22['edition'].split('=')[1]}건 중 {si22}% 가 98% 구간 밖이다(정규 기대 2%)."] if lang == "ko" else
                 [f"From 1969 to 1973, one of the five constants, the Avogadro constant, moved by 3.1 old σ; the other four by less than 0.5.", f"Against the 2022 edition, {si22}% of {all22['edition'].split('=')[1]} values of the five constants in the 1969–2018 editions lie outside their 98% interval (normal: 2%)."])
@@ -844,6 +846,8 @@ def build():
         # ---------- 1.2 Hubble-constant chapter
         import h0_site
         h0_site.build(lang, base, dict(page=page, table=table, takeaway=takeaway, esc=esc, fmt_sci=fmt_sci, sup=sup, spec_block=spec_block, N=N), OUT)
+        import pre_site
+        pre_site.build(lang, base, dict(page=page, table=table, takeaway=takeaway, esc=esc), OUT)
 
         # ---------- reading, prior, method, data
         (base / "reading.html").write_text(page(lang, t["reading"], reading_page(lang, N), 1, "reading"), encoding="utf-8")
@@ -853,7 +857,7 @@ def build():
         lic = ("<p>파생 표(아래 CSV)는 CC BY 4.0. 원 수치는 NIST가 공개한 CODATA 권고값과 1969년 논문의 표에서 옮겼고, 각 행에 원자료 위치를 적었다. NIST의 원 파일(ASCII 표·PDF)은 이 저장소에 싣지 않는다 — NIST는 표준참조자료(SRD)의 복제에 사전 허락을 요구한다고 밝힌다. 원 파일의 주소·내려받은 날짜·SHA-256 은 <a href='../data/raw_manifest.json'>raw_manifest.json</a> 에 있다.</p>" if lang == "ko"
                else "<p>The derived tables below are CC BY 4.0. The underlying values were taken from the CODATA recommended values published by NIST and from the 1969 paper's table; every row records its source location. NIST's original files (ASCII tables, PDFs) are not included: NIST states that its Standard Reference Data may not be reproduced without prior permission. Their URLs, retrieval dates and SHA-256 hashes are in <a href='../data/raw_manifest.json'>raw_manifest.json</a>.</p>")
         import h0_site as _h0
-        ncsv = len(PUBLIC_DATA) + len(__import__("aw_site").PUBLIC) + len(_h0.PUBLIC)
+        ncsv = len(PUBLIC_DATA) + len(__import__("aw_site").PUBLIC) + len(_h0.PUBLIC) + len(__import__("pre_site").PUBLIC)
         dtk = ([f"파생 CSV {ncsv}개와 datapackage.json 을 내려받을 수 있다. 엮은이가 계산한 부분은 CC BY 4.0 이다(원자량 값 자체는 IUPAC/CIAAW 조건을, 허블 상수 표 A2 의 값은 CC BY 4.0 출처 표시를 따른다).", "NIST 원 파일과 Huchra 목록 원 파일은 싣지 않는다. NIST 파일은 주소·날짜·해시로 같은 파일을 다시 받을 수 있고, Huchra 목록은 집계만 싣는다."] if lang == "ko" else
                [f"{ncsv} derived CSV files and datapackage.json can be downloaded; the editor's computations are CC BY 4.0 (atomic-weight values themselves follow IUPAC/CIAAW's conditions; the Table A2 values of the Hubble chapter carry their CC BY 4.0 attribution).", "Neither NIST's original files nor Huchra's list is included; the NIST files can be fetched again from their URLs, dates and hashes, and Huchra's list appears only in aggregate."])
         import aw_site as _aw
@@ -861,7 +865,7 @@ def build():
                  "<h2>Atomic-weights chapter</h2><p>Atomic-weight values are taken from CIAAW's table of historical standard atomic weights. CIAAW and IUPAC permit republication without formal permission provided the full reference, the © symbol, the name IUPAC or CIAAW and the year are prominently visible. Publication of a translation requires prior approval from the relevant IUPAC National Adhering Organization, and commercial use requires contacting the CIAAW Secretariat. This site reproduces only the atomic-weight values (numbers) and their printed notation and writes its own explanations. Rights and conditions for the atomic-weight values remain with CIAAW/IUPAC; the site's CC BY 4.0 covers only the editor's computations (z, aggregates, conversions). Source: " + esc(_aw.AW_SOURCE["credit"]) + "</p>")
         awtab = table([t["file"], t["desc"]], _aw.data_rows(lang, esc), cls="")
         h0tab = table([t["file"], t["desc"]], _h0.data_rows(lang, esc), cls="")
-        body = f"<h1>{t['data']}</h1>{takeaway(lang, dtk)}{lic}" + table([t["file"], t["desc"]], rows, cls="") + awlic + awtab + _h0.data_license(lang, esc) + h0tab + '<p class="files"><a href="../data/datapackage.json">datapackage.json</a></p>'
+        body = f"<h1>{t['data']}</h1>{takeaway(lang, dtk)}{lic}" + table([t["file"], t["desc"]], rows, cls="") + awlic + awtab + _h0.data_license(lang, esc) + h0tab + __import__("pre_site").data_license(lang, esc) + table([t["file"], t["desc"]], __import__("pre_site").data_rows(lang, esc), cls="") + '<p class="files"><a href="../data/datapackage.json">datapackage.json</a></p>'
         (base / "data.html").write_text(page(lang, t["data"], body, 1, "data"), encoding="utf-8")
 
     (OUT / "index.html").write_text('<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="refresh" content="0; url=ko/index.html"><link rel="canonical" href="ko/index.html"><title>물리 상수 메트릭스 · Physical Constants Metrics</title></head><body><p><a href="ko/index.html">한국어</a> · <a href="en/index.html" lang="en">English</a></p></body></html>', encoding="utf-8")
@@ -969,14 +973,14 @@ def prior_page(lang):
     if lang == "ko":
         return """<div class="prose"><h1>선행 연구</h1><p class="lead">같은 질문을 먼저 다룬 연구를 소개한다. 수치는 각 문헌에서 옮겼다.</p>
 <div class="takeaway"><b>핵심</b><ul><li>보고된 불확도가 실제 이동이나 측정 간 차이보다 작다는 결과는 1986년(권고값·개별 측정)과 2017년(측정 약 41,000건) 연구에서 서로 다른 자료로 나왔다.</li><li>이 사이트는 권고값 판을 2022 판까지 이어 같은 질문을 다시 센다.</li></ul></div>
-<h2>Henrion & Fischhoff (1986)</h2><p>M. Henrion, B. Fischhoff, "Assessing uncertainty in physical constants", <i>American Journal of Physics</i> 54(9), 791–798. 주관적 확률 판단의 보정(calibration)을 재는 심리학 지표 — 사분위 지수와 놀람 지수 — 를 빛의 속력·중력 상수 등의 개별 측정과 1929~1969년 권고값에 적용했다. 권고값 상수 다섯 개 × 검토 여덟 개를 1973 판 기준으로 보면 놀람 지수가 57% 였다(정규 기대 2%; 공개 사본에서 읽은 값으로 출판본 대조 전). 이 사이트는 같은 지표를 1969 판부터 2022 판까지 다시 계산한다(<a href="metrics/hf.html">재계산</a>).</p>
+<h2>Henrion & Fischhoff (1986)</h2><p>M. Henrion, B. Fischhoff, "Assessing uncertainty in physical constants", <i>American Journal of Physics</i> 54(9), 791–798. 주관적 확률 판단의 보정(calibration)을 재는 심리학 지표 — 사분위 지수와 놀람 지수 — 를 빛의 속력·중력 상수 등의 개별 측정과 1929~1969년 권고값에 적용했다. 권고값 상수 다섯 개 × 검토 여덟 개를 1973 판 기준으로 보면 놀람 지수가 57% 였다(정규 기대 2%; 출판본 794쪽 표 I). 이 사이트는 같은 지표를 1969 판부터 2022 판까지 다시 계산하고(<a href="metrics/hf.html">재계산</a>), 1929~1963 검토의 값을 원 논문에서 옮겨 그들의 계산도 다시 해 본다(<a href="early/index.html">CODATA 이전 장</a>).</p>
 <h2>Bailey (2017)</h2><p>D. C. Bailey, "Not Normal: the uncertainties of scientific measurements", <i>Royal Society Open Science</i> 4, 160600. 의학·핵물리·입자물리·실험실 간 비교의 측정 약 41,000 건, 양 약 3,200 개에서 같은 양의 측정 쌍마다 z 를 구하고 Student-t 를 맞췄다. 기본 상수 부분(양 7개, 측정 320개, 쌍 9,098개)의 자유도는 ν = 1.81 ± 0.15 다. 개별 측정끼리의 비교라는 점에서 권고값 판끼리를 비교하는 이 사이트와 단위가 다르다. 자료는 Dryad(doi:10.5061/dryad.jb3mj, CC0)에 있다.</p>
 <h2>Shlyakhter (1994)</h2><p>A. I. Shlyakhter, "Uncertainty estimates in scientific models: lessons from trends in physical measurements, population and energy projections", B. M. Ayyub, M. M. Gupta 편 <i>Uncertainty Modelling and Analysis: Theory and Applications</i>(Elsevier, 1994), 477쪽 이하. 같은 양의 연속 측정에서 정규화 편차의 분포를 지수분포로 맞추고, 과거 오차에서 불확도를 넓히는 계수를 정하자고 제안했다.</p>
 <h2>Particle Data Group</h2><p>입자의 질량·수명 등에 대해 판별 평균값의 변천을 그린 그림(history plot)을 낸다. 이 사이트는 아직 PDG 자료를 다루지 않는다.</p>
 <h2>CODATA 의 자기 점검</h2><p>CODATA 보고서는 판마다 직전 판과의 비교를 싣는다(예: 2022 보고서의 「Comparison of 2022 and 2018 CODATA recommended values」, 1973 보고서의 표 34.2 는 1963·1969 조정값과 비교). 1969년 Taylor–Parker–Langenberg 보고서도 1950년대 이후 α⁻¹ 의 변천을 그림으로 보이며 「어떤 상수 집합도 복음처럼 받아들여서는 안 된다」고 적었다.</p></div>"""
     return """<div class="prose"><h1>Prior work</h1><p class="lead">Earlier studies of the same question. Figures are taken from each publication.</p>
 <div class="takeaway"><b>Takeaway</b><ul><li>Studies in 1986 (recommended values and individual measurements) and 2017 (some 41,000 measurements) found, on different data, that reported uncertainties are smaller than the actual moves or the differences between measurements.</li><li>This site asks the same question again, following recommended values through the 2022 edition.</li></ul></div>
-<h2>Henrion & Fischhoff (1986)</h2><p>M. Henrion and B. Fischhoff, "Assessing uncertainty in physical constants", <i>American Journal of Physics</i> 54(9), 791–798. They applied the calibration indices of the psychology of subjective probability — the interquartile index and the surprise index — to individual measurements of the speed of light, the gravitational constant and others, and to recommended values from 1929 to 1969. For five constants in eight reviews, against the 1973 values, the surprise index was 57% (normal: 2%; read from a public copy, not yet checked against the published version). This site recomputes the same indices from 1969 to 2022 (<a href="metrics/hf.html">recalculation</a>).</p>
+<h2>Henrion & Fischhoff (1986)</h2><p>M. Henrion and B. Fischhoff, "Assessing uncertainty in physical constants", <i>American Journal of Physics</i> 54(9), 791–798. They applied the calibration indices of the psychology of subjective probability — the interquartile index and the surprise index — to individual measurements of the speed of light, the gravitational constant and others, and to recommended values from 1929 to 1969. For five constants in eight reviews, against the 1973 values, the surprise index was 57% (normal: 2%; p. 794, Table I of the published version). This site recomputes the same indices from 1969 to 2022 (<a href="metrics/hf.html">recalculation</a>) and redoes their calculation from the 1929–1963 reviews, transcribed from the original papers (<a href="early/index.html">before-CODATA chapter</a>).</p>
 <h2>Bailey (2017)</h2><p>D. C. Bailey, "Not Normal: the uncertainties of scientific measurements", <i>Royal Society Open Science</i> 4, 160600. About 41,000 measurements of some 3,200 quantities in medicine, nuclear and particle physics and interlaboratory comparisons; z for every pair of measurements of the same quantity, fitted with Student-t. For the fundamental constants (7 quantities, 320 measurements, 9,098 pairs) ν = 1.81 ± 0.15. Individual measurements are compared, whereas this site compares editions of recommended values. Data on Dryad (doi:10.5061/dryad.jb3mj, CC0).</p>
 <h2>Shlyakhter (1994)</h2><p>A. I. Shlyakhter, "Uncertainty estimates in scientific models: lessons from trends in physical measurements, population and energy projections", in B. M. Ayyub and M. M. Gupta (eds.), <i>Uncertainty Modelling and Analysis: Theory and Applications</i> (Elsevier, 1994), pp. 477ff. Fitted an exponential distribution to normalized deviations of successive measurements and proposed widening uncertainties by factors drawn from past errors.</p>
 <h2>Particle Data Group</h2><p>Publishes history plots of its averages for particle masses, lifetimes and other properties. This site does not yet use PDG data.</p>

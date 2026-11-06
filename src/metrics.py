@@ -244,7 +244,7 @@ HF_QUANTITIES = ["alpha_inv", "e", "h", "me", "NA"]  # alpha^-1, as in their tab
 
 
 def hf_repro(data):
-    """The five constants of Henrion & Fischhoff (1986) table I, last row: alpha^-1, e, h, m_e, N_A.
+    """The five constants of Henrion & Fischhoff (1986) table I, "Recommended values" row (second to last): alpha^-1, e, h, m_e, N_A.
     z = (x_ref - x_i)/u_i. Reference 1973 (their choice) and 2022 (this site)."""
     out = []
     for ref, earlier in ((1973, [1969]), (2022, [1969, 1973, 1986, 1998, 2002, 2006, 2010, 2014, 2018])):
