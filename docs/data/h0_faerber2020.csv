@@ -1,6 +1,6 @@
 # Faerber, T.; López-Corredoira, M. A Chi-Squared Analysis of the Measurements of Two Cosmological Parameters over Time. Universe 2020, 6, 114. doi:10.3390/universe6080114. CC BY 4.0. Table A2 read from arXiv:2008.04035v1.
 # Rows as printed in Appendix Table A2 of the arXiv preprint (pages 13-17); err_as_printed keeps the
-# original error cell. Comparison with the published (MDPI) table: not done in this session.
+# original error cell. Checked against the published (MDPI) table: all 164 rows agree (2026-11-06).
 row,page,year,h0,err_plus,err_minus,err_as_printed,ref_no,ref_label,ref_text,note
 1,13,1976,78,8,8,8,66,Jaakkola and Le Denmat,"Jaakkola, T.; Le Denmat, G. Remarks on the low value obtained for the Hubble constant. Mon. Not. R. Astron. Soc. 1976, 176, 307–313.",
 2,13,1976,50.3,4.3,4.3,4.3,67,Sandage and Tammann,"Sandage, A.; Tammann, G. Steps toward the Hubble constant. VII-Distances to NGC 2403, M101, and the Virgo cluster using 21 centimeter line widths compared with optical methods: The global value of H sub 0. Astrophys. J. 1976, 210, 7–24.",
