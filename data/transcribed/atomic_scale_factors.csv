@@ -1,0 +1,3 @@
+from_scale,factor_mass_ratio_to_unified,unc,source,page,note
+physical,1.000317917,0.000000017,"Cohen & DuMond, Rev. Mod. Phys. 37, 537 (1965)",547,mass on physical scale (16O=16) / mass on unified scale (12C=12); N_A(unified) = N_A(physical) / factor
+chemical,1.000043,0.000005,"Cohen & DuMond, Rev. Mod. Phys. 37, 537 (1965)",548,mass on old chemical scale (O=16) / mass on unified scale; uncertainty from the indefinite natural oxygen; applied to 1929 and 1941 as an assumption
