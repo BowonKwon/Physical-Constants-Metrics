@@ -177,6 +177,48 @@ def sources_list(lang, esc):
     return f'<ul>{items}</ul>'
 
 
+BURGESS = '<a href="https://doi.org/10.1063/1.4926441">Burgess, J. Phys. Chem. Ref. Data 44, 030401 (2015)</a>'
+COHEN81 = '<a href="https://garfield.library.upenn.edu/classics1981/A1981MC68300001.pdf">E. R. Cohen, "This Week\'s Citation Classic", Current Contents no. 35 (Aug. 31, 1981)</a>'
+
+
+def timeline(lang):
+    """1.3.2: who issued recommended values before CODATA. Facts from Burgess (2015), sec. 3 (pp. 030401-2 to -3),
+    Cohen (1981, Citation Classic on the 1965 review) and the title page of the 1957 book."""
+    if lang == "ko":
+        rows = [
+            ("1923·1926", "1919년 IUPAC 가 승인한 『International Critical Tables』 사업이 스미스소니언 연구소 Fowle 의 지휘로 모은 기본 상수 값을 1923년에 채택해 1926년 제1권에 표로 실었다. 참고문헌·평가·논의는 붙지 않았다."),
+            ("1926", "Birge 가 『Science』에서 이 표의 값이 서로 맞지 않는 곳과 오차의 원인, 상수 사이의 의존 관계를 짚었다."),
+            ("1928", "미국 국가연구회의(NRC)에 물리 상수 위원회가 생겼다. 위원장은 Birge 였고, 결과물은 대부분 그가 혼자 냈다."),
+            ("1929", "Birge 의 첫 종합 검토가 『Reviews of Modern Physics』 제1권의 첫 논문으로 실렸다. 1941년에 두 편으로 다시 갱신했다. 이 장의 첫 두 검토다."),
+            ("1940~1965", "NRC 가 기본 상수·환산 계수 위원회를 두었다. DuMond 와 Cohen 이 1947·1950·1952·1955·1959·1965년에 주요 갱신을 냈다. 이 장의 1950~1963 값이 이 계열이다."),
+            ("1957", "Cohen·Crowe·DuMond 의 단행본 『The Fundamental Constants of Physics』(Interscience). 표 8-7 은 1955년 조정값을 그대로 다시 실었다."),
+            ("1965", "Cohen & DuMond 검토. Cohen 의 1981년 회고에 따르면, 그때 수소 광학 스펙트럼의 미세 구조에서 얻은 미세 구조 상수는 마이크로파 초미세 분리(수소 메이저) 측정에서 얻은 값과 22 ppm 달랐고, 이는 측정의 예상 불확도를 훨씬 넘었다. 그런데도 이 검토의 값은 IUPAP 의 승인을 받고 IUPAC 가 일반 사용을 권고했다."),
+            ("1966·1969", "국제과학협의회(ICSU)가 1966년 CODATA 를 세우고 1969년 기본 상수 작업반을 꾸렸다. 같은 해 Taylor·Parker·Langenberg 가 초전도체의 조셉슨 효과로 e/h 를 새로 재서 독립 검토를 냈다(이 사이트의 1969 판). Cohen 은 이 검토가 미세 구조 자료가 틀렸음을 분명히 보였고, 그 오차의 원인은 1981년까지 밝혀지지 않았다고 적었다."),
+            ("1973", "Cohen 과 Taylor 가 첫 CODATA 권고값을 냈다. 그 뒤의 판은 이 사이트의 다른 장에서 다룬다."),
+        ]
+        h = "연대기 — 권고값을 낸 사람들, 1923~1973"
+        quote = ("<p>Cohen 은 같은 회고를 이렇게 맺었다. 「지난 30년 동안 기본 물리 상수의 수치가 이렇게 자주 바뀌었다는 것은 아이러니일지 모르지만, 중요한 것은 목표에 이르는 것이 아니라 궁극의 참을 찾아가는 일이다.」 "
+                 "(원문: “It is perhaps ironic that the numerical values of the fundamental physical constants should change as often as they have over the past three decades, but it is the seeking for ultimate truth, rather than the attainment of the goal, that is important.”)</p>")
+        src = f"<p class=\"note\">출처: {BURGESS} 3절(030401-2~3쪽), {COHEN81}, 1957 단행본 속표지(HathiTrust 사본). 1965 항목의 22 ppm 과 그 해석은 Cohen 의 회고이며 이 사이트가 다시 계산한 값이 아니다.</p>"
+    else:
+        rows = [
+            ("1923, 1926", "The International Critical Tables, a project IUPAC approved in 1919, adopted values of the fundamental constants, prepared under the direction of Frederick E. Fowle of the Smithsonian Institution, in 1923 and printed them as a table in volume 1 in 1926, with no references, evaluation or discussion."),
+            ("1926", "Birge, in Science, pointed out inconsistencies in those values, sources of error and the interdependencies of the constants."),
+            ("1928", "The U.S. National Research Council set up a Committee on Physical Constants, chaired by Birge, who produced most of its output himself."),
+            ("1929", "Birge's first comprehensive review appeared as the first article in volume 1 of Reviews of Modern Physics; he updated it in two papers in 1941. These are the first two reviews in this chapter."),
+            ("1940–1965", "The NRC set up a Committee of Fundamental Constants and Conversion Factors. DuMond and Cohen produced major updates in 1947, 1950, 1952, 1955, 1959 and 1965; the 1950–1963 values in this chapter come from this series."),
+            ("1957", "Cohen, Crowe and DuMond, The Fundamental Constants of Physics (Interscience). Its Table 8-7 reprints the 1955 adjustment unchanged."),
+            ("1965", "The Cohen & DuMond review. As Cohen recalled in 1981, a value of the fine-structure constant from the fine structure of the hydrogen optical spectrum then differed by 22 parts per million from one derived from the microwave hyperfine separation (hydrogen maser), well outside the expected uncertainties. Even so, the review's values were endorsed by IUPAP and recommended for general use by IUPAC."),
+            ("1966, 1969", "The International Council of Science established CODATA in 1966 and its Task Group on Fundamental Constants in 1969. That year Taylor, Parker and Langenberg published an independent review built on their Josephson-effect measurement of e/h (this site's 1969 edition). Cohen wrote that it showed clearly that the fine-structure data were in error, and that the source of the error had not been identified by 1981."),
+            ("1973", "Cohen and Taylor produced the first CODATA recommended values. The later editions are covered in the other chapters of this site."),
+        ]
+        h = "Timeline — who issued recommended values, 1923–1973"
+        quote = ("<p>Cohen ended the same note: “It is perhaps ironic that the numerical values of the fundamental physical constants should change as often as they have over the past three decades, but it is the seeking for ultimate truth, rather than the attainment of the goal, that is important.”</p>")
+        src = f"<p class=\"note\">Sources: {BURGESS}, sec. 3 (pp. 030401-2 to -3); {COHEN81}; title page of the 1957 book (HathiTrust copy). The 22 ppm in the 1965 entry and its reading are Cohen's recollection, not a value recomputed on this site.</p>"
+    dl = "".join(f"<dt>{y}</dt><dd>{x}</dd>" for y, x in rows)
+    return f'<h2>{h}</h2><div class="prose"><dl>{dl}</dl>{quote}{src}</div>'
+
+
 def leaf(lang, t, cur):
     return dict(crumbs=[(("홈" if lang == "ko" else "Home"), "../index.html"), (t["nav"], "index.html")], cur=cur,
                 groups=[(t["nav"], [(t["glance"], "index.html"), (t["method"], "method.html")])])
@@ -208,6 +250,7 @@ def build(lang, base, H, out_root):
                f"<p>The \"Recommended values\" row of Table I in {esc(HF_CITE)} (second to last, p. 794) reports R_B {N['hf_rb']}, IQ {N['hf_iq']}% and SI {N['hf_si']}% (n = {N['hf_n']}); the text (p. 795) says five constants in \"eight reviews from 1929 to 1969\" were set against the 1973 values. Probable errors were multiplied by 1.48 (p. 797, note 21). They did not list the eight, but the seven reviews their references point to (refs. 3, 17, 19, 28, 29: 1929, 1941, 1952, 1955, 1957, 1963, 1969) plus the 1950 letter, which gives all five constants, make eight. Below are the indices recomputed for these eight with their definitions, and sensitivity variants that change one condition at a time. IQ and SI give the same counts as Table I (which drops the decimals); only R_B differs. Leaving N_A on its original scale raises R_B to {N['rb_nf']}, and leaving probable errors unconverted to {N['rb_pe']}, but IQ and SI then no longer match. Counting each adjustment once (without 1957) gives R_B {N['rb_no57']}, IQ {N['iq_no57']}% and SI {N['si_no57']}%.</p>")
     body = (f'<h1>{esc(t["title"])}</h1><p class="lead">{esc(t["lead"])}</p>' + takeaway(lang, tk) +
             f'<h2>{t["fig"]}</h2><figure><div class="legend"><span style="--c:var(--s1)">{"CODATA 이전 검토" if ko else "Reviews before CODATA"}</span><span style="--c:var(--s3)">{"CODATA 판 1969~2018" if ko else "CODATA editions 1969–2018"}</span></div>{chart(D, lang, H)}<figcaption>{esc(cap)}</figcaption></figure>' +
+            timeline(lang) +
             f'<h2>{t["hf"]}</h2><div class="prose">{hf_lead}</div>' + hf_table(D, lang, t, table, esc) +
             f'<h2>{t["values"]}</h2>' + values_table(D, lang, t, table, esc) +
             f'<h2>{"원 논문" if ko else "Papers"}</h2><div class="prose">{sources_list(lang, esc)}</div>' +
