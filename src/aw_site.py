@@ -228,7 +228,9 @@ def element_takeaway(lang, sym, rows, pairs, el):
 def credit(lang, H):
     esc = H["esc"]
     lab = "자료 출처" if lang == "ko" else "Source"
-    return f'<p class="src" style="margin-top:2rem;font-size:.82rem;color:var(--fg3)">{lab}: {esc(AW_SOURCE["credit"])}</p>'
+    text, url = esc(AW_SOURCE["credit"]), esc(AW_SOURCE["url"])
+    text = text.replace(url, f'<a href="{url}">{url}</a>')  # the address in the required credit line is a link
+    return f'<p class="src" style="margin-top:2rem;font-size:.82rem;color:var(--fg3)">{lab}: {text}</p>'
 
 
 def build(lang, base, H, out_root):
