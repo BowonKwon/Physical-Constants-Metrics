@@ -26,7 +26,7 @@ DER = ROOT / "data" / "derived"
 QMAP = ROOT / "data" / "manual" / "quantity_map.csv"
 OUT = ROOT / "site"
 VERSION = "1.3.3"
-BUILD_DATE = "2026-11-10"
+BUILD_DATE = "2026-11-11"
 REPO = "https://github.com/BowonKwon/Physical-Constants-Metrics"
 PUBLIC_DATA = ["constants_long.csv", "quantity_map.csv", "m1_halflife.csv", "m2_pairs.csv", "m2_summary.csv",
                "m3_vs_latest.csv", "m3_summary.csv", "m4_tail.csv", "m5_funnel.csv", "m6_events.csv",
@@ -1008,7 +1008,7 @@ def method_page(lang, N):
 <h2>한계</h2><ul><li>연속한 판은 같은 실험 자료를 공유해 독립이 아니다. 공유는 이동을 작게 만드는 쪽으로 작용한다.</li>
 <li>최근 판은 서로 맞지 않는 입력 자료의 불확도를 키워서(확장 인자) 조정한다. 권고 불확도에 이미 그런 판단이 들어 있다.</li>
 <li>2022 판은 참값이 아니다.</li>
-<li>한국어 상수 이름 가운데 진공에서의 빛의 속력·플랑크 상수·기본 전하·볼츠만 상수·아보가드로 상수는 국가표준기본법 시행령 별표 1 의 표기다. 나머지 26개는 한국물리학회 물리학 용어집(2020년 수정 반영판)과 대조했다. 용어집과 같은 것이 4개, 띄어쓰기나 문장 부호만 다른 것이 4개, 낱말이 다른 것이 2개(전자·뮤온의 「이상 자기 모멘트」 — 용어집은 「비정상 자기 모멘트」), 용어집에 통째 표제어가 없는 것이 16개다. 상수 면마다 근거를 적었다.</li></ul>
+<li>한국어 상수 이름 가운데 진공에서의 빛의 속력·플랑크 상수·기본 전하·볼츠만 상수·아보가드로 상수는 국가표준기본법 시행령 별표 1 의 표기다. 나머지 26개는 한국물리학회 물리학 용어집(2020년 수정 반영판)과 대조했다. 용어집 표제어와 같은 것이 5개, 용어집의 낱말을 따라 지은 것이 5개(전자·뮤온의 「비정상 자기 모멘트」, 「핵마그네톤」 단위로 적은 자기 모멘트 셋), 용어집에 통째 표제어가 없어 CODATA 영어 이름을 옮긴 것이 16개다. 이 판에서 여섯 이름을 용어집에 맞춰 고쳤다 — 「이상 자기 모멘트」를 「비정상 자기 모멘트」로(둘), 「핵 마그네톤」을 「핵마그네톤」으로(셋), 「슈테판-볼츠만」을 「슈테판·볼츠만」으로. 상수 면마다 근거를 적었다.</li></ul>
 <h2>재현</h2><p>모든 표는 저장소의 <code>src/</code> 에서 만든다: <code>fetch_raw.py</code>(원 파일 내려받기·해시) → <code>parse_codata.py</code>(파싱·보정·대응) → <code>handcheck.py</code>(대조) → <code>metrics.py</code>(지표) → <code>build_site.py</code>(사이트).</p></div>"""
     return f"""<div class="prose"><h1>Method & limits</h1>
 <div class="takeaway"><b>Takeaway</b><ul><li>The 1969, 1973 and 1986 values were transcribed by hand from page images of the published tables, later editions from NIST's tables; every value used was checked against a separately typeset version.</li><li>The checks found three rows of NIST's archived 2002 ASCII table that differ from the published report; the published values are used.</li><li>Editions are not independent and the 2022 values are not the true values; every number should be read with both in mind.</li></ul></div>
@@ -1029,7 +1029,7 @@ def method_page(lang, N):
 <h2>Limits</h2><ul><li>Consecutive editions share experimental data and are not independent; sharing pulls the moves toward zero.</li>
 <li>Recent adjustments expand the uncertainties of mutually inconsistent input data (expansion factors), so recommended uncertainties already contain such judgments.</li>
 <li>The 2022 values are not the true values.</li>
-<li>Korean names: the speed of light in vacuum, Planck constant, elementary charge, Boltzmann constant and Avogadro constant follow Table 1 of the Enforcement Decree of the Korean Framework Act on National Standards; the other 26 Korean names were compared with the Korean Physical Society's glossary of physics terms (the edition with the 2020 revisions): 4 are the same, 4 differ only in spacing or punctuation, 2 use a different word (the magnetic-moment anomaly of the electron and of the muon) and 16 have no entry as a whole. The Korean page of each constant gives the basis.</li></ul>
+<li>Korean names: the speed of light in vacuum, Planck constant, elementary charge, Boltzmann constant and Avogadro constant follow Table 1 of the Enforcement Decree of the Korean Framework Act on National Standards; the other 26 Korean names were compared with the Korean Physical Society's glossary of physics terms (the edition with the 2020 revisions): 5 are the same as a glossary entry, 5 are built from glossary terms, and 16 have no entry as a whole and render the CODATA English name. Six names were changed in this version to follow the glossary (the two magnetic-moment anomalies, the three moments in nuclear magnetons, and the punctuation of the Stefan–Boltzmann constant). The Korean page of each constant gives the basis.</li></ul>
 <h2>Reproduction</h2><p>Every table is made by <code>src/</code> in the repository: <code>fetch_raw.py</code> (download and hash the source files) → <code>parse_codata.py</code> (parse, correct, map) → <code>handcheck.py</code> (checks) → <code>metrics.py</code> (metrics) → <code>build_site.py</code> (site).</p></div>"""
 
 
