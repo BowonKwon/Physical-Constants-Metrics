@@ -4,7 +4,7 @@
 
 - **사이트:** https://bowonkwon.github.io/Physical-Constants-Metrics/ ([한국어](https://bowonkwon.github.io/Physical-Constants-Metrics/ko/) · [English](https://bowonkwon.github.io/Physical-Constants-Metrics/en/))
 - **읽기:** 핵심 결과를 글로 읽는 면 — [한국어](https://bowonkwon.github.io/Physical-Constants-Metrics/ko/reading.html) · [English](https://bowonkwon.github.io/Physical-Constants-Metrics/en/reading.html)
-- **판:** 1.3.3 (2026. 11. 11.) 알루미늄 1969년 값을 원 보고서로 확인, 한국어 상수 이름을 용어집과 대조해 여섯 개를 고침. 1.3.2 (2026. 11. 6.) CODATA 이전 장에 연대기(1923~1973) 추가. 1.3.1 (2026. 11. 6.) 1957 단행본을 더해 H&F 의 검토 8개로 재계산. 1.3 (2026. 11. 6.) — CODATA 이전 장(1929~1969년 권고값, Henrion & Fischhoff 재계산). 1.2.1 (2026. 11. 6.) 표 A2 출판본 대조. 1.2 (2026. 11. 4.) — 허블 상수 장(H0 추정값의 정밀도 반감기·기준값 대비 놀람 지수·t 분포 자유도, 연대기, 방법). 1.1.3 (2026. 11. 4.) 같은 층 면 사이 이동(위치 표시줄·같은 계열 목록·이전/다음). 1.1.2 (2026. 11. 3.) 공개본 점검 반영(표시·표기). 1.1.1(2026. 11. 2.) 영어 면 교정과 계산 코드 정비, 1.1(원자량 장)도 같은 날, 1.0은 2026. 11. 1.
+- **판:** 1.3.4 (2026. 11. 13.) 좁은 화면의 그림 글자 크기와 상수 기호의 아래 첨자 표기를 고침. 1.3.3 (2026. 11. 11.) 알루미늄 1969년 값을 원 보고서로 확인, 한국어 상수 이름을 용어집과 대조해 여섯 개를 고침. 1.3.2 (2026. 11. 6.) CODATA 이전 장에 연대기(1923~1973) 추가. 1.3.1 (2026. 11. 6.) 1957 단행본을 더해 H&F 의 검토 8개로 재계산. 1.3 (2026. 11. 6.) — CODATA 이전 장(1929~1969년 권고값, Henrion & Fischhoff 재계산). 1.2.1 (2026. 11. 6.) 표 A2 출판본 대조. 1.2 (2026. 11. 4.) — 허블 상수 장(H0 추정값의 정밀도 반감기·기준값 대비 놀람 지수·t 분포 자유도, 연대기, 방법). 1.1.3 (2026. 11. 4.) 같은 층 면 사이 이동(위치 표시줄·같은 계열 목록·이전/다음). 1.1.2 (2026. 11. 3.) 공개본 점검 반영(표시·표기). 1.1.1(2026. 11. 2.) 영어 면 교정과 계산 코드 정비, 1.1(원자량 장)도 같은 날, 1.0은 2026. 11. 1.
 - **다른 공개 자료:** https://bowonkwon.github.io/
 
 ## 무엇이 들어 있나
@@ -19,6 +19,11 @@
 | M6 정의값 전환 | 측정값이 정의값이 된 상수(빛의 속력 1983, 2019년 SI 개정)와 그 반대(진공 투자율·몰질량 상수) |
 
 M2~M4의 분모는 서로 정확한 환산 관계가 없도록 고른 핵심 상수 17개입니다(같은 규칙에 맞는 후보 3개를 더한 민감도 결과도 싣습니다). 상수별 면은 표시용 상수 11개와 민감도 후보 3개를 더해 31개입니다. Henrion & Fischhoff(1986)의 보정 지표를 이 자료로 다시 계산한 면이 따로 있습니다.
+
+## 1.3.4 — 좁은 화면의 그림, 아래 첨자 (2026. 11. 13.)
+
+- 폭 640px 이하 화면에서는 그림을 최소 640px 폭으로 두고 그림 상자를 옆으로 밀어 보게 했습니다. 그림 글자도 조금 키웠습니다. 폭 390px 화면에서 그림 글자가 약 4px 로 작아지던 것이 약 9px 이 됩니다.
+- 상수 기호의 아래 첨자를 한 규칙으로 맞췄습니다. 본문·표·제목에서는 아래 첨자로(mₑ 와 N_A 를 같은 꼴로), 그림 안 글자도 아래 첨자로 적고, 꾸밈을 쓸 수 없는 곳(탭 제목·말풍선)은 밑줄 꼴(m_e, N_A)로 적습니다. 자료 파일(CSV)의 기호 칸은 그대로입니다. 수치와 지수는 바뀌지 않았습니다.
 
 ## 1.3.3 — 원 보고서·용어집 대조 (2026. 11. 11.)
 
@@ -112,7 +117,7 @@ src/    fetch_raw.py → parse_codata.py → handcheck.py → metrics.py → bui
 How often did the error bars that scientists published miss the next edition's value? This site joins the nine editions of the CODATA recommended values of the fundamental physical constants (1973–2022) and the 1969 adjustment that preceded them, and turns the changes in values and uncertainties into metrics. Every metric carries its definition, formula, denominator and caveats; every number carries its sample size and a 95% interval.
 
 - **Site:** https://bowonkwon.github.io/Physical-Constants-Metrics/en/ · **Reading:** [en/reading.html](https://bowonkwon.github.io/Physical-Constants-Metrics/en/reading.html)
-- **Version:** 1.3.3 (Nov 11, 2026), the 1969 aluminium value checked against the original report and the Korean names of the constants compared with a glossary and six of them changed; 1.3.2 (Nov 6, 2026), a timeline (1923–1973) added to the before-CODATA chapter; 1.3.1 (Nov 6, 2026), the 1957 book added and H&F recomputed with eight reviews; 1.3 (Nov 6, 2026), before-CODATA chapter (recommended values 1929–1969, Henrion & Fischhoff recomputed); 1.2.1 (Nov 6, 2026), Table A2 checked against the published version; 1.2 (Nov 4, 2026), Hubble-constant chapter (precision half-life, surprise against a reference and Student-t degrees of freedom of published H0 estimates; chronology; method); 1.1.3 (Nov 4, 2026), navigation between pages of the same level; 1.1.2 (Nov 3, 2026) review of the public site applied (display and notation); 1.1.1 (Nov 2, 2026) English corrections and code fixes and 1.1 (atomic-weights chapter) the same day, 1.0 on Nov 1, 2026
+- **Version:** 1.3.4 (Nov 13, 2026), chart labels on narrow screens and subscripts in constant symbols; 1.3.3 (Nov 11, 2026), the 1969 aluminium value checked against the original report and the Korean names of the constants compared with a glossary and six of them changed; 1.3.2 (Nov 6, 2026), a timeline (1923–1973) added to the before-CODATA chapter; 1.3.1 (Nov 6, 2026), the 1957 book added and H&F recomputed with eight reviews; 1.3 (Nov 6, 2026), before-CODATA chapter (recommended values 1929–1969, Henrion & Fischhoff recomputed); 1.2.1 (Nov 6, 2026), Table A2 checked against the published version; 1.2 (Nov 4, 2026), Hubble-constant chapter (precision half-life, surprise against a reference and Student-t degrees of freedom of published H0 estimates; chronology; method); 1.1.3 (Nov 4, 2026), navigation between pages of the same level; 1.1.2 (Nov 3, 2026) review of the public site applied (display and notation); 1.1.1 (Nov 2, 2026) English corrections and code fixes and 1.1 (atomic-weights chapter) the same day, 1.0 on Nov 1, 2026
 - **Other public materials:** https://bowonkwon.github.io/en/
 
 | Metric | Contents |
@@ -125,6 +130,8 @@ How often did the error bars that scientists published miss the next edition's v
 | M6 Exact-value transitions | Constants that became exact (speed of light 1983; the 2019 SI revision) and the reverse (vacuum magnetic permeability, molar mass constant) |
 
 The denominator of M2–M4 is 17 core constants, chosen so that none is an exact function of the others (a sensitivity check adds three candidates meeting the same rule); the constant pages add 11 display constants and the 3 candidates (31 in all). A separate page recomputes Henrion & Fischhoff's (1986) calibration indices on these data.
+
+**1.3.4: charts on narrow screens, subscripts.** On screens 640 px wide or less, charts keep a minimum width of 640 px inside a figure box that scrolls sideways, and their labels are a little larger; on a 390 px screen the labels grow from about 4 px to about 9 px. Subscripts in constant symbols follow one rule: true subscripts in text, tables, headings and inside the charts (mₑ and N_A now look alike), and the underscore form (m_e, N_A) where no markup is possible (tab titles, tooltips). The symbol column of the data files (CSV) is unchanged. No numbers or indices changed.
 
 **1.3.3: checks against the original report and a glossary.** Atomic-weight chapter: the CIAAW CSV gives 28.9815 for aluminium in 1969 and the site has used 26.9815; the 1969 report (*Pure Appl. Chem.* 21, 91 (1970)) prints 26.9815 in both Table XIV (p. 105) and Table XV (p. 106), and the corrections file (`aw_corrections.csv`) now says so. The 26 Korean names of constants that did not come from a statute were compared with the Korean Physical Society's glossary of physics terms (the edition with the 2020 revisions) and the result is on each constant's Korean page; six Korean names were changed to follow the glossary (the two magnetic-moment anomalies, the three moments in nuclear magnetons, and the punctuation of the Stefan–Boltzmann constant), and the 16 with no glossary entry keep the names rendered from CODATA. The CIAAW address in the credit line of the atomic-weight pages is now a link. No numbers or indices changed.
 

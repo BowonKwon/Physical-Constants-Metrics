@@ -69,6 +69,8 @@ figure{margin:1.2rem 0;background:var(--card);border:1px solid var(--line);borde
 figcaption{font-size:.86rem;color:var(--fg2);margin-top:.5rem;line-height:1.5}
 svg{max-width:100%;height:auto;display:block}svg text{font-family:var(--body);fill:var(--fg2);font-size:12px}svg .grid{stroke:var(--grid)}svg .ref{stroke:var(--ref);stroke-dasharray:4 4}
 svg .hit{fill:transparent}svg .hit:hover+.dot,svg .dot:hover{stroke:var(--fg);stroke-width:2}
+/* 1.3.4 narrow screens: the 900-wide charts keep a minimum width inside a sideways-scrolling figure and the labels are a little larger (as in Classical Music Metrics 1.4) */
+@media(max-width:640px){figure{overflow-x:auto}figure svg[viewBox^="0 0 900 "]{min-width:640px}figure svg[viewBox^="0 0 900 "] text{font-size:13px}}
 .legend{display:flex;gap:1.1rem;font-size:.86rem;color:var(--fg2);flex-wrap:wrap;margin:.2rem 0 .4rem}.legend span::before{content:"";display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:.4rem;vertical-align:-1px;background:var(--c)}
 .legend span.dash::before{height:0;border-top:2px dashed var(--c);border-radius:0;vertical-align:3px}
 .takeaway{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent2);border-radius:10px;padding:.75rem 1.1rem .8rem;margin:.4rem 0 1.4rem;box-shadow:var(--shadow);max-width:80ch}
@@ -92,7 +94,7 @@ footer{border-top:1px solid var(--line);color:var(--fg3);font-size:.82rem;paddin
 <li>2002 판 ASCII 보관본은 볼츠만 상수를 1.380 6504(24)×10⁻²³으로 적었으나, 같은 판의 PDF 표와 출판된 보고서(Rev. Mod. Phys. 77, 1)는 1.380 6505(24)×10⁻²³이다. 출판본 값을 쓴다. 같은 보관본의 전자 자기 모멘트와 양성자 비전하도 마지막 자리가 출판본과 달라 함께 보정했다(통계에는 쓰지 않는 행).</li>
 <li>1998~2006 ASCII 표에는 기본 전하 행이 없다. 같은 수치인 전자볼트(J) 행을 썼다.</li>
 <li>1998 판 ASCII의 진공 투자율 행은 지수가 빠져 있어(정의값 4π×10⁻⁷) 복원했다.</li></ul>
-<h2>상수 선정</h2><p>통계의 분모인 핵심 상수 17개는 서로 정확한 환산 관계가 없도록 골랐다. 예컨대 2019년 이전에는 e = √(2αh/(μ₀c)), mₑ = 2R∞h/(cα²) 이므로 α·h·R∞ 를 넣으면 e·mₑ 는 뺀다. 아보가드로 상수는 몰 플랑크 상수 관계로 h와 묶여 있어 뺐다. 상대 원자 질량(전자·양성자·중성자·중양성자·알파 입자)을 넣고, 그 비인 양성자–전자 질량비는 뺐다. PDG에서 받아 쓰는 양(타우 질량, 페르미 결합 상수, 약한 혼합각)은 넣지 않았다. 빛의 속력은 1969·1973 판에서 측정값이었으므로 그 두 판의 관계식에는 c가 측정값으로 더 들어가지만, 측정값인 판이 둘뿐이라 핵심 상수에 넣지 않았다. μ₀·M_u는 2014 판까지 정의값이었다.</p>
+<h2>상수 선정</h2><p>통계의 분모인 핵심 상수 17개는 서로 정확한 환산 관계가 없도록 골랐다. 예컨대 2019년 이전에는 e = √(2αh/(μ<sub>0</sub>c)), m<sub>e</sub> = 2R∞h/(cα²) 이므로 α·h·R∞ 를 넣으면 e·m<sub>e</sub> 는 뺀다. 아보가드로 상수는 몰 플랑크 상수 관계로 h와 묶여 있어 뺐다. 상대 원자 질량(전자·양성자·중성자·중양성자·알파 입자)을 넣고, 그 비인 양성자–전자 질량비는 뺐다. PDG에서 받아 쓰는 양(타우 질량, 페르미 결합 상수, 약한 혼합각)은 넣지 않았다. 빛의 속력은 1969·1973 판에서 측정값이었으므로 그 두 판의 관계식에는 c가 측정값으로 더 들어가지만, 측정값인 판이 둘뿐이라 핵심 상수에 넣지 않았다. μ<sub>0</sub>·M<sub>u</sub>는 2014 판까지 정의값이었다.</p>
 <p>17개는 설계 단계에서 고른 목록이다. 같은 규칙(정확한 관계 없음, 측정값인 판 4개 이상, PDG 채택값 아님)에 맞지만 넣지 않은 양이 더 있다 — 헬리온·삼중수소핵의 상대 원자 질량, 중양성자 자기 모멘트, 규소 격자 간격 등. 앞의 셋을 더한 20개로 다시 계산한 값을 M2·M3 면에 민감도로 적었다(<code>sens_candidates.csv</code>). 정확한 관계가 없다는 것이 통계적으로 독립이라는 뜻은 아니다.</p>
 <h2>통계</h2><ul><li>비율(M2·M3)과 M4의 신뢰구간: 상수를 통째로 다시 뽑는 군집 부트스트랩, 10,000회(M4는 2,000회), 시드 2026, 백분위 95%. M1의 구간은 회귀 기울기의 t(n−2) 구간이다.</li>
 <li>M4는 값이 한 자리도 바뀌지 않은 판 쌍(z = 0)을 빼고 맞춘다. 남기면 중심 0 Student-t의 우도가 척도 0 쪽으로 무한대가 되어 최대우도 추정량이 없다.</li>
@@ -103,7 +105,7 @@ footer{border-top:1px solid var(--line);color:var(--fg3);font-size:.82rem;paddin
 <li>2022 판은 참값이 아니다.</li>
 <li>한국어 상수 이름 가운데 진공에서의 빛의 속력·플랑크 상수·기본 전하·볼츠만 상수·아보가드로 상수는 국가표준기본법 시행령 별표 1의 표기다. 나머지 26개는 한국물리학회 물리학 용어집(2020년 수정 반영판)과 대조했다. 용어집 표제어와 같은 것이 5개, 용어집의 낱말을 따라 지은 것이 5개(전자·뮤온의 「비정상 자기 모멘트」, 「핵마그네톤」 단위로 적은 자기 모멘트 셋), 용어집에 통째 표제어가 없어 CODATA 영어 이름을 옮긴 것이 16개다. 이 판에서 여섯 이름을 용어집에 맞춰 고쳤다 — 「이상 자기 모멘트」를 「비정상 자기 모멘트」로(둘), 「핵 마그네톤」을 「핵마그네톤」으로(셋), 「슈테판-볼츠만」을 「슈테판·볼츠만」으로. 상수 면마다 근거를 적었다.</li></ul>
 <h2>재현</h2><p>모든 표는 저장소의 <code>src/</code> 에서 만든다: <code>fetch_raw.py</code>(원 파일 내려받기·해시) → <code>parse_codata.py</code>(파싱·보정·대응) → <code>handcheck.py</code>(대조) → <code>metrics.py</code>(지표) → <code>build_site.py</code>(사이트).</p></div></main>
-<footer>물리 상수 메트릭스 · 판 1.3.3 · 생성일 2026-11-11 · <a href="https://github.com/BowonKwon/Physical-Constants-Metrics">GitHub</a> · 공개 자료 전체 <a href="https://bowonkwon.github.io/">bowonkwon.github.io</a></footer>
+<footer>물리 상수 메트릭스 · 판 1.3.4 · 생성일 2026-11-13 · <a href="https://github.com/BowonKwon/Physical-Constants-Metrics">GitHub</a> · 공개 자료 전체 <a href="https://bowonkwon.github.io/">bowonkwon.github.io</a></footer>
 <script>
 (function(){var k="pcm-theme",r=document.documentElement,b=document.getElementById("theme");function ap(v){if(v)r.setAttribute("data-theme",v);else r.removeAttribute("data-theme");if(b)b.textContent=v==="dark"?"\u263E":v==="light"?"\u2600":"\u25D1"}var cur=localStorage.getItem(k)||"";ap(cur);if(b)b.addEventListener("click",function(){cur=cur===""?"light":cur==="light"?"dark":"";if(cur)localStorage.setItem(k,cur);else localStorage.removeItem(k);ap(cur)})})();
 document.querySelectorAll('table.sort').forEach(function(t){t.querySelectorAll('th').forEach(function(th,i){th.addEventListener('click',function(){

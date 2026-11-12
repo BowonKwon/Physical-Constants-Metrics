@@ -18,6 +18,7 @@ from pathlib import Path
 import numpy as np
 from scipy import stats
 
+import notation
 from registry import EDITIONS, LATEST, METRICS, SOURCES
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -25,8 +26,8 @@ DER = ROOT / "data" / "derived"
 # hand-maintained map of the 31 quantities; kept outside data/derived so that clearing derived/ cannot lose it
 QMAP = ROOT / "data" / "manual" / "quantity_map.csv"
 OUT = ROOT / "site"
-VERSION = "1.3.3"
-BUILD_DATE = "2026-11-11"
+VERSION = "1.3.4"
+BUILD_DATE = "2026-11-13"
 REPO = "https://github.com/BowonKwon/Physical-Constants-Metrics"
 PUBLIC_DATA = ["constants_long.csv", "quantity_map.csv", "m1_halflife.csv", "m2_pairs.csv", "m2_summary.csv",
                "m3_vs_latest.csv", "m3_summary.csv", "m4_tail.csv", "m5_funnel.csv", "m6_events.csv",
@@ -151,6 +152,8 @@ figure{margin:1.2rem 0;background:var(--card);border:1px solid var(--line);borde
 figcaption{font-size:.86rem;color:var(--fg2);margin-top:.5rem;line-height:1.5}
 svg{max-width:100%;height:auto;display:block}svg text{font-family:var(--body);fill:var(--fg2);font-size:12px}svg .grid{stroke:var(--grid)}svg .ref{stroke:var(--ref);stroke-dasharray:4 4}
 svg .hit{fill:transparent}svg .hit:hover+.dot,svg .dot:hover{stroke:var(--fg);stroke-width:2}
+/* 1.3.4 narrow screens: the 900-wide charts keep a minimum width inside a sideways-scrolling figure and the labels are a little larger (as in Classical Music Metrics 1.4) */
+@media(max-width:640px){figure{overflow-x:auto}figure svg[viewBox^="0 0 900 "]{min-width:640px}figure svg[viewBox^="0 0 900 "] text{font-size:13px}}
 .legend{display:flex;gap:1.1rem;font-size:.86rem;color:var(--fg2);flex-wrap:wrap;margin:.2rem 0 .4rem}.legend span::before{content:"";display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:.4rem;vertical-align:-1px;background:var(--c)}
 .legend span.dash::before{height:0;border-top:2px dashed var(--c);border-radius:0;vertical-align:3px}
 .takeaway{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent2);border-radius:10px;padding:.75rem 1.1rem .8rem;margin:.4rem 0 1.4rem;box-shadow:var(--shadow);max-width:80ch}
@@ -280,6 +283,7 @@ def page(lang, title, body, depth=1, active="", leaf=None):
     body = text_fix(body, lang)
     if leaf:   # 1.1.3: breadcrumb, same-series list and previous/next on leaf pages
         body = leaf_html(lang, leaf, body)
+    body, title = notation.apply(body), notation.sym_plain(title)   # 1.3.4: one subscript rule (src/notation.py)
     if lang == "en" and title[:1].islower():   # 1.1.2: sentence case for lowercase CODATA names in the tab title
         title = title[0].upper() + title[1:]
     t = T[lang]

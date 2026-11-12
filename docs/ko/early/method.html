@@ -69,6 +69,8 @@ figure{margin:1.2rem 0;background:var(--card);border:1px solid var(--line);borde
 figcaption{font-size:.86rem;color:var(--fg2);margin-top:.5rem;line-height:1.5}
 svg{max-width:100%;height:auto;display:block}svg text{font-family:var(--body);fill:var(--fg2);font-size:12px}svg .grid{stroke:var(--grid)}svg .ref{stroke:var(--ref);stroke-dasharray:4 4}
 svg .hit{fill:transparent}svg .hit:hover+.dot,svg .dot:hover{stroke:var(--fg);stroke-width:2}
+/* 1.3.4 narrow screens: the 900-wide charts keep a minimum width inside a sideways-scrolling figure and the labels are a little larger (as in Classical Music Metrics 1.4) */
+@media(max-width:640px){figure{overflow-x:auto}figure svg[viewBox^="0 0 900 "]{min-width:640px}figure svg[viewBox^="0 0 900 "] text{font-size:13px}}
 .legend{display:flex;gap:1.1rem;font-size:.86rem;color:var(--fg2);flex-wrap:wrap;margin:.2rem 0 .4rem}.legend span::before{content:"";display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:.4rem;vertical-align:-1px;background:var(--c)}
 .legend span.dash::before{height:0;border-top:2px dashed var(--c);border-radius:0;vertical-align:3px}
 .takeaway{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent2);border-radius:10px;padding:.75rem 1.1rem .8rem;margin:.4rem 0 1.4rem;box-shadow:var(--shadow);max-width:80ch}
@@ -83,7 +85,7 @@ footer{border-top:1px solid var(--line);color:var(--fg3);font-size:.82rem;paddin
 <header><a class="brand" href="../../ko/index.html">물리 상수 메트릭스</a><nav><a href="../../ko/index.html">홈</a><a href="../../ko/metrics/index.html">지표</a><a href="../../ko/constants/index.html">상수</a><a href="../../ko/atomic/index.html">원자량</a><a href="../../ko/hubble/index.html">허블 상수</a><a href="../../ko/early/index.html" class="on">CODATA 이전</a><a href="../../ko/reading.html">읽기</a><a href="../../ko/prior.html">선행 연구</a><a href="../../ko/method.html">방법·한계</a><a href="../../ko/data.html">데이터</a></nav>
 <div class="right"><button id="theme" class="theme" type="button" aria-label="화면 테마">◑</button><a class="lang" href="../../en/early/method.html">English</a></div></header>
 <main class="wide"><nav class="crumbs" aria-label="위치"><a href="../index.html">홈</a> <span class='sep' aria-hidden='true'>›</span> <a href="index.html">CODATA 이전</a> <span class='sep' aria-hidden='true'>›</span> <span aria-current='page'>방법·한계</span></nav><div class="leaf"><aside class="sibs"><nav aria-label="같은 계열"><p class="sg">CODATA 이전 <small>(2)</small></p><ol><li><a href="index.html">한눈에 보기</a></li><li><a href="method.html" aria-current="page">방법·한계</a></li></ol></nav></aside><div class="leafbody"><details class="sibs-m"><summary>이 계열의 다른 면 (2)</summary><nav aria-label="같은 계열"><p class="sg">CODATA 이전 <small>(2)</small></p><ol><li><a href="index.html">한눈에 보기</a></li><li><a href="method.html" aria-current="page">방법·한계</a></li></ol></nav></details><div class="prose"><h1>CODATA 이전 — 방법·한계</h1><div class="takeaway"><b>핵심</b><ul><li>값은 원 논문 표의 쪽 이미지에서 손으로 옮겼고, 1929~1963 논문의 30개는 값을 모르는 독립 판독자가 같은 쪽을 다시 읽어 모두 일치했다. 1957 단행본의 5개는 쪽 이미지와 HathiTrust 문자층을 대조했다.</li><li>±의 뜻은 판마다 다르다: 1929·1941·1950은 확률오차, 1952·1955는 표준오차, 1963 이후는 표준편차. 확률오차는 1.4826 배해 표준 불확도로 쓴다.</li><li>아보가드로 상수는 원자량 척도가 화학 → 물리 → 통합(¹²C)으로 바뀌어, Cohen &amp; DuMond(1965)의 환산 계수로 통합 척도에 맞췄다.</li></ul></div>
-<h2>무엇을 옮겼나</h2><p>Henrion & Fischhoff(1986) 표 I 「Recommended values」 줄의 다섯 상수 — α⁻¹, h, e, mₑ, N_A — 를, 원 논문이 그 조정의 결과로 내놓은 값(adopted value, least-squares adjusted output value)에서 옮겼다. 여러 판으로 실린 값(예: 1929년 분광·편향 두 전자 질량)은 그 논문이 다른 상수를 계산하는 데 쓴 쪽(분광)을 택했다. 줄 아래 작게 찍힌 보조 자릿수(guard digits)는 원문 설명대로 값의 일부로 쓴다.</p>
+<h2>무엇을 옮겼나</h2><p>Henrion & Fischhoff(1986) 표 I 「Recommended values」 줄의 다섯 상수 — α⁻¹, h, e, m<sub>e</sub>, N<sub>A</sub> — 를, 원 논문이 그 조정의 결과로 내놓은 값(adopted value, least-squares adjusted output value)에서 옮겼다. 여러 판으로 실린 값(예: 1929년 분광·편향 두 전자 질량)은 그 논문이 다른 상수를 계산하는 데 쓴 쪽(분광)을 택했다. 줄 아래 작게 찍힌 보조 자릿수(guard digits)는 원문 설명대로 값의 일부로 쓴다.</p>
 <h2>±의 뜻 — 원문 문장</h2><ul>
 <li>1929 Birge: 「The real probable error in each constant is of course that indicated in the table」(61쪽).</li>
 <li>1941 Birge: 표 c 각주가 「the probable error in a derived quantity」를 계산하는 법을 적는다(Rep. Prog. Phys. 129쪽, Rev. Mod. Phys. 237쪽). 전체에 대한 정의 문장은 찾지 못했다.</li>
@@ -94,21 +96,21 @@ footer{border-top:1px solid var(--line);color:var(--fg3);font-size:.82rem;paddin
 <p>확률오차는 정규분포의 사분위 반폭이므로 표준 불확도 = 확률오차 ÷ Φ⁻¹(0.75) ≈ 확률오차 ÷ 0.6745다. 계산에는 1/Φ⁻¹(0.75) = 1.4826022를 쓴다. H&F는 1.48을 썼고, 두 값의 차이는 지표를 거의 바꾸지 않는다(감도 표).</p>
 <h2>단위와 원자량 척도</h2><ul>
 <li>e는 전자기 단위(emu) 값이 실린 경우 그것을 쓴다(1 emu = 10 C). esu 값은 그 시대의 빛의 속력에 따라 달라지기 때문이다. 1950은 esu만 실려 있어 같은 표의 c(299 790.2 km/s)로 바꿨다.</li>
-<li>h는 erg s → J s, mₑ 는 g → kg로 바꿨다.</li>
-<li>N_A: 1929·1941은 옛 화학 척도(O = 16), 1950~1955는 물리 척도(¹⁶O = 16), 1963부터 통합 척도(¹²C = 12)다. Cohen & DuMond(1965) 547쪽의 「물리 척도 질량 ÷ 통합 척도 질량 = 1.000317917 ± 0.000000017」, 548쪽의 「옛 화학 척도 ÷ 통합 척도 = 1.000043 ± 0.000005」로 나눠 통합 척도에 맞췄다. 1929의 N₀ 줄에는 척도가 적혀 있지 않아 표 a의 원자량 정의(O = 16.0000)에서 화학 척도로 보았다. 1965의 화학 척도 계수를 1929·1941에 적용하는 것은 가정이다. 두 계수는 정확한 수로 쓰고 그 불확도(최대 5 ppm)는 전파하지 않았다. 전파해도 N_A 불확도는 0.02% 미만 커지고 지수는 소수 둘째 자리까지 같다.</li></ul>
+<li>h는 erg s → J s, m<sub>e</sub> 는 g → kg로 바꿨다.</li>
+<li>N<sub>A</sub>: 1929·1941은 옛 화학 척도(O = 16), 1950~1955는 물리 척도(¹⁶O = 16), 1963부터 통합 척도(¹²C = 12)다. Cohen & DuMond(1965) 547쪽의 「물리 척도 질량 ÷ 통합 척도 질량 = 1.000317917 ± 0.000000017」, 548쪽의 「옛 화학 척도 ÷ 통합 척도 = 1.000043 ± 0.000005」로 나눠 통합 척도에 맞췄다. 1929의 N<sub>0</sub> 줄에는 척도가 적혀 있지 않아 표 a의 원자량 정의(O = 16.0000)에서 화학 척도로 보았다. 1965의 화학 척도 계수를 1929·1941에 적용하는 것은 가정이다. 두 계수는 정확한 수로 쓰고 그 불확도(최대 5 ppm)는 전파하지 않았다. 전파해도 N<sub>A</sub> 불확도는 0.02% 미만 커지고 지수는 소수 둘째 자리까지 같다.</li></ul>
 <h2>지수</h2><p>z = (기준 판 값 − 옛 값) / 옛 표준 불확도. 기준 판의 불확도는 넣지 않는다(H&F의 정의). 사분위 지수(IQ)는 |z| &lt; 0.6745, 놀람 지수(SI)는 |z| &gt; 2.326인 비율이다(H&F는 0.675·2.33으로 적었다). Birge 비 R_B는 H&F 식 (1)(792쪽)대로 R_B² = Σz²/(N−1)이다. H&F의 식은 집단 평균에 대한 잔차로 적혀 있으나, 권고값 줄은 1973 값에 대한 잔차로 계산했다고 적었으므로(795쪽) z를 그대로 넣는다. 제곱평균제곱근 √(Σz²/N)도 함께 싣는다. 1969 판 값은 이 사이트의 1969 판 자료를 쓴다.</p>
 <h2>검증</h2><ul>
 <li>값 30개(1929~1963 논문 6편 × 5)를 쪽 이미지에서 옮긴 뒤, 값을 모르는 독립 판독자가 같은 쪽을 그림으로 다시 읽었다. 값·±·지수·±의 뜻 모두 30/30 일치.</li>
 <li>1957 단행본(HathiTrust 공유 저작물 사본, 표 8-7, 267쪽)의 5개는 쪽 이미지와 HathiTrust 문자층을 대조했다. 다섯 값과 ± 모두 1955 표 XIII과 같다.</li>
 <li>Birge 1941의 두 판(Rep. Prog. Phys. 와 Rev. Mod. Phys.)에서 다섯 값이 같다.</li>
-<li>연도별 ppm 편차는 H&F 그림 3(1952~1973)과 대체로 맞는다(예: 1952 h −147 ppm, N_A +126 ppm, 1973 기준).</li></ul>
+<li>연도별 ppm 편차는 H&F 그림 3(1952~1973)과 대체로 맞는다(예: 1952 h −147 ppm, N<sub>A</sub> +126 ppm, 1973 기준).</li></ul>
 <h2>한계</h2><ul>
 <li>H&F는 검토 8개를 나열하지 않았다. 표 I의 참고문헌에서 특정되는 검토는 1929·1941·1952·1955·1957·1963·1969의 7개이고, 1950 서한은 광속 그림에만 인용했다. 본값의 8개는 여기에 1950을 더한 것으로, IQ·SI가 표 I과 같아지는 조합이다. 이 목록 자체는 추정이다. 1957 판은 1955 값을 다시 실은 것이라 같은 조정이 두 번 세어진다. 1957을 뺀 7개와 1950을 뺀 7개는 감도 표에 있다.</li>
 <li>검토들은 같은 실험 자료를 이어 쓰므로 독립이 아니다. 1952와 1955는 같은 1952 자료를 다시 분석했다.</li>
 <li>1973·2022 판도 참값이 아니다.</li>
 <li>원 논문의 표는 학술지에 실린 것이다. 이 사이트는 값(숫자)과 쪽만 싣고 PDF는 싣지 않는다.</li></ul>
 <h2>재현</h2><p><code>data/transcribed/pre_codata_reviews.csv</code>(전사) → <code>src/pre_codata.py</code>(환산·지수) → <code>src/pre_site.py</code>(이 면).</p></div><nav class="pn" aria-label="이전·다음"><a rel="prev" href="index.html">← 한눈에 보기</a></nav></div></div></main>
-<footer>물리 상수 메트릭스 · 판 1.3.3 · 생성일 2026-11-11 · <a href="https://github.com/BowonKwon/Physical-Constants-Metrics">GitHub</a> · 공개 자료 전체 <a href="https://bowonkwon.github.io/">bowonkwon.github.io</a></footer>
+<footer>물리 상수 메트릭스 · 판 1.3.4 · 생성일 2026-11-13 · <a href="https://github.com/BowonKwon/Physical-Constants-Metrics">GitHub</a> · 공개 자료 전체 <a href="https://bowonkwon.github.io/">bowonkwon.github.io</a></footer>
 <script>
 (function(){var k="pcm-theme",r=document.documentElement,b=document.getElementById("theme");function ap(v){if(v)r.setAttribute("data-theme",v);else r.removeAttribute("data-theme");if(b)b.textContent=v==="dark"?"\u263E":v==="light"?"\u2600":"\u25D1"}var cur=localStorage.getItem(k)||"";ap(cur);if(b)b.addEventListener("click",function(){cur=cur===""?"light":cur==="light"?"dark":"";if(cur)localStorage.setItem(k,cur);else localStorage.removeItem(k);ap(cur)})})();
 document.querySelectorAll('table.sort').forEach(function(t){t.querySelectorAll('th').forEach(function(th,i){th.addEventListener('click',function(){
