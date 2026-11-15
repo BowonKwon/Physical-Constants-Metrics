@@ -127,6 +127,8 @@ def chart_bars(items, H, W=900, Hh=260, unit="", lang="en"):
     o = [f'<svg viewBox="0 0 {W} {Hh}" role="img" aria-label="{"막대그래프" if lang == "ko" else "Bar chart"}">']
     step = max(1, int(math.ceil(vmax / 5 / 5) * 5))
     for v in range(0, int(vmax) + step, step):
+        if v > vmax * 1.05:
+            continue
         y = Tp + (1 - v / (vmax * 1.05)) * (Hh - Tp - B)
         o.append(f'<line class="grid" x1="{Lm}" x2="{W-R}" y1="{y:.1f}" y2="{y:.1f}"/><text x="{Lm-6}" y="{y+4:.1f}" text-anchor="end">{v}</text>')
     for i, (lab, v) in enumerate(items):
@@ -174,6 +176,8 @@ def chart_element(rows, lang, H, W=900, Hh=320):
     te = int(round(math.log10(top)))
     for t in [0.0] + [sgn * 10.0 ** k for k in range(e + 1, te + 1, max(1, (te - e) // 3 or 1)) for sgn in (1, -1)]:
         lab = "0" if t == 0 else ("−" if t < 0 else "+") + sup(int(round(math.log10(abs(t)))))
+        if t != 0 and abs(Y(t) - Y(0)) < 17:
+            lab = ""   # 1.3.5: the first step from zero can sit on top of the 0 label; its grid line stays
         o.append(f'<line class="{"ref" if t == 0 else "grid"}" x1="{Lm}" x2="{W-R}" y1="{Y(t):.1f}" y2="{Y(t):.1f}"/><text x="{Lm-6}" y="{Y(t)+4:.1f}" text-anchor="end">{lab}</text>')
     for yv in range(1900, 2030, 20):
         o.append(f'<text x="{X(yv):.1f}" y="{Hh-14}" text-anchor="middle">{yv}</text>')
@@ -269,8 +273,8 @@ def build(lang, base, H, out_root):
     cards = "".join(f'<a class="card" href="{m["id"]}.html"><b>{m["id"].upper()} · {esc(m[lang]["name"])}</b><small>{esc(m[lang]["short"])}</small></a>' for m in AW_METRICS)
     elcards = "".join(f'<a class="card{"" if els[s]["has_standard_atomic_weight"] == "1" else " d"}" href="el/{s}.html"><b>{s} · {esc(name(s))}</b><small>Z={Z.get(s, "")} · {els[s]["n_revisions"]}{"회" if lang == "ko" else "×"} · {esc(els[s]["current"]) if els[s]["current"] != "n/a" else t["kinds"]["withdrawn"]}</small></a>'
                       for s in sorted(els, key=lambda s: Z.get(s, 999)))
-    cap = ("점 하나가 개정 하나(직전 권고에 불확도가 있었던 것). 주황 점은 새 값이 직전 범위 밖에 놓인 개정, 세모는 ±8 을 넘어 잘린 값." if lang == "ko"
-           else "One dot per revision whose previous recommendation had an uncertainty. Orange: new value outside the previous range; triangles: clipped beyond ±8.")
+    cap = ("세로축은 z_옛 = (새 값 − 직전 값) ÷ 직전 불확도다. ±1 점선 사이에 있으면 새 값이 직전 권고의 범위 안에 놓였다는 뜻이고, 밖이면 범위 밖으로 옮겨 갔다는 뜻이다. 세로축은 고른 간격이고, ±8 을 넘는 값은 가장자리에 붙여 그렸다. 점 하나가 개정 하나(직전 권고에 불확도가 있었던 것). 주황 점은 새 값이 직전 범위 밖에 놓인 개정, 세모는 ±8 을 넘어 잘린 값." if lang == "ko"
+           else "The vertical axis is z_old = (new value − previous value) ÷ previous uncertainty. Between the dashed lines at ±1 the new value lies within the range of the previous recommendation; outside them it moved out of that range. The axis is linear, and values beyond ±8 are drawn at its edge. One dot per revision whose previous recommendation had an uncertainty. Orange: new value outside the previous range; triangles: clipped beyond ±8.")
     body = (f'<h1>{esc(t["title"])}</h1><p class="lead">{esc(t["lead"])}</p>' + takeaway(lang, tk) + stats +
             f'<figure>{chart_z(pairs, lang, H)}<figcaption>{esc(cap)}</figcaption></figure>' + GLOSS[lang] +
             f'<h2>{t["metrics"]}</h2><div class="cards">{cards}</div><h2>{t["elements"]}</h2><div class="cards">{elcards}</div>' + credit(lang, H))
@@ -343,8 +347,8 @@ def build(lang, base, H, out_root):
             return f'<a href="https://doi.org/{esc(r["doi"])}">{esc(r["doi"])}</a>'
         tab = [[r["year"], vt(r), t["kinds"][r["kind"]], r["scale"], v12(r), zmap.get((s, r["year"]), ""), doi(r)] for r in rs]
         tag = "" if el["has_standard_atomic_weight"] == "1" else f'<span class="tag">{t["no_saw"]}</span>'
-        cap2 = ("현재 값(또는 마지막 값)에서의 상대 편차, 대칭 로그 축. 막대는 불확도(확장 범위), 빈 원은 불확도 없는 값, 주황 사각은 구간." if lang == "ko"
-                else "Relative deviation from the current (or last) value, symmetric-log axis. Bars: uncertainty (expanded range); open circles: no uncertainty; orange boxes: intervals.")
+        cap2 = ("세로축은 현재 값(또는 마지막 값)에서 떨어진 정도를 그 값에 대한 비율로 나타낸 것이고, 0이 현재 값이다(대칭 로그 축). 막대는 불확도(확장 범위), 빈 원은 불확도 없는 값, 주황 사각은 구간. 「1961 기준 변경」은 원자량의 척도가 산소 = 16에서 ¹²C = 12로 바뀐 해다(그 전 값은 ¹²C 척도로 환산해 그렸다). 대칭 로그 축은 0 근처에서는 거의 일정한 간격으로, 바깥으로 갈수록 10배마다 한 칸에 가깝게 그린다(둘 사이에 뚜렷한 경계는 없다). 그래서 0을 가로지르는 막대는 위아래 길이가 달라 보이고, 바깥쪽 눈금에서는 막대 길이를 눈으로 견주기 어렵다. 상수 면의 빈 원(오차 막대가 2022 판 값에 닿지 않은 판)과는 뜻이 다르다." if lang == "ko"
+                else "The vertical axis is the distance from the current (or last) value as a fraction of that value; 0 is the current value (symmetric-log axis). Bars: uncertainty (expanded range); open circles: no uncertainty; orange boxes: intervals. '1961 scale change' marks the year the scale of atomic weights changed from oxygen = 16 to ¹²C = 12 (earlier values are drawn converted to the ¹²C scale). A symmetric-log axis is almost evenly spaced near zero and comes close to one step per factor of ten further out (with no sharp boundary between the two), so a bar that crosses zero looks uneven above and below, and bar lengths are hard to compare by eye in the outer steps. On the constant pages an open circle means something else (an error bar that does not reach the 2022 value).")
         body = (f'<p><span class="tag k">{"원자량" if lang == "ko" else "Atomic weight"}</span>{tag}</p><h1>{s} · {esc(name(s))}</h1><p class="lead" lang="{"en" if lang == "ko" else "ko"}">{esc(el["element"] if lang == "ko" else KO.get(s, ""))}</p>' +
                 takeaway(lang, element_takeaway(lang, s, rs, pairs, el)) +
                 (f'<figure>{chart_element(rs, lang, H)}<figcaption>{esc(cap2)}</figcaption></figure>' if len([r for r in rs if r["value_12C"]]) >= 2 else "") +

@@ -26,8 +26,8 @@ DER = ROOT / "data" / "derived"
 # hand-maintained map of the 31 quantities; kept outside data/derived so that clearing derived/ cannot lose it
 QMAP = ROOT / "data" / "manual" / "quantity_map.csv"
 OUT = ROOT / "site"
-VERSION = "1.3.4"
-BUILD_DATE = "2026-11-13"
+VERSION = "1.3.5"
+BUILD_DATE = "2026-11-15"
 REPO = "https://github.com/BowonKwon/Physical-Constants-Metrics"
 PUBLIC_DATA = ["constants_long.csv", "quantity_map.csv", "m1_halflife.csv", "m2_pairs.csv", "m2_summary.csv",
                "m3_vs_latest.csv", "m3_summary.csv", "m4_tail.csv", "m5_funnel.csv", "m6_events.csv",
@@ -117,6 +117,7 @@ header .brand{font-family:var(--display);font-weight:600;font-size:1.05rem;color
 header nav{display:flex;gap:.9rem;flex-wrap:wrap}header nav a{color:var(--fg2);font-size:.92rem;padding:.2rem 0;border-bottom:2px solid transparent}
 header nav a:hover{text-decoration:none;color:var(--fg)}header nav a.on{color:var(--fg);border-bottom-color:var(--accent2)}
 header .right{margin-left:auto;display:flex;gap:.6rem;align-items:center}
+header .hub{font-size:.88rem;color:var(--fg2);white-space:nowrap}header .hub:hover{color:var(--fg)}
 header .lang{font-size:.88rem;color:var(--fg2);border:1px solid var(--line);border-radius:999px;padding:.15rem .7rem}header .lang:hover{text-decoration:none;color:var(--fg)}
 .theme{border:1px solid var(--line);background:transparent;color:var(--fg2);border-radius:999px;width:30px;height:30px;cursor:pointer;font-size:.9rem;line-height:1;padding:0}
 main{max-width:1060px;margin:0 auto;padding:1.6rem 1.1rem 4rem;min-width:0}
@@ -153,7 +154,8 @@ figcaption{font-size:.86rem;color:var(--fg2);margin-top:.5rem;line-height:1.5}
 svg{max-width:100%;height:auto;display:block}svg text{font-family:var(--body);fill:var(--fg2);font-size:12px}svg .grid{stroke:var(--grid)}svg .ref{stroke:var(--ref);stroke-dasharray:4 4}
 svg .hit{fill:transparent}svg .hit:hover+.dot,svg .dot:hover{stroke:var(--fg);stroke-width:2}
 /* 1.3.4 narrow screens: the 900-wide charts keep a minimum width inside a sideways-scrolling figure and the labels are a little larger (as in Classical Music Metrics 1.4) */
-@media(max-width:640px){figure{overflow-x:auto}figure svg[viewBox^="0 0 900 "]{min-width:640px}figure svg[viewBox^="0 0 900 "] text{font-size:13px}}
+/* 1.3.5: the chart is drawn at its own size (text 11px, as laid out) instead of 640px with enlarged labels, which came out at 9px */
+@media(max-width:640px){figure{overflow-x:auto;-webkit-overflow-scrolling:touch}figure svg[viewBox^="0 0 900 "]{min-width:900px;max-width:none}}
 .legend{display:flex;gap:1.1rem;font-size:.86rem;color:var(--fg2);flex-wrap:wrap;margin:.2rem 0 .4rem}.legend span::before{content:"";display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:.4rem;vertical-align:-1px;background:var(--c)}
 .legend span.dash::before{height:0;border-top:2px dashed var(--c);border-radius:0;vertical-align:3px}
 .takeaway{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent2);border-radius:10px;padding:.75rem 1.1rem .8rem;margin:.4rem 0 1.4rem;box-shadow:var(--shadow);max-width:80ch}
@@ -303,7 +305,7 @@ def page(lang, title, body, depth=1, active="", leaf=None):
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@600&display=swap" rel="stylesheet">
 <style>{CSS}</style></head><body>
 <header><a class="brand" href="{root}{lang}/index.html">{t['site']}</a><nav>{navh}</nav>
-<div class="right"><button id="theme" class="theme" type="button" aria-label="{'화면 테마' if lang == 'ko' else 'Color theme'}">◑</button><a class="lang" href="{root}{other}/index.html">{t['lang_other']}</a></div></header>
+<div class="right"><a class="hub" href="https://bowonkwon.github.io/{'' if lang == 'ko' else 'en/'}">{'공개 자료 허브' if lang == 'ko' else 'All public materials'}</a><button id="theme" class="theme" type="button" aria-label="{'화면 테마' if lang == 'ko' else 'Color theme'}">◑</button><a class="lang" href="{root}{other}/index.html">{t['lang_other']}</a></div></header>
 <main{' class="wide"' if leaf else ""}>{body}</main>
 <footer>{t['site']} · {t['version']} {VERSION} · {t['built']} {BUILD_DATE} · <a href="{REPO}">GitHub</a> · {t['hub']} <a href="https://bowonkwon.github.io/{hub}">bowonkwon.github.io</a></footer>
 <script>{JS}</script></body></html>"""
@@ -352,7 +354,7 @@ def sup(e):
 
 def chart_uncertainty(qmap, long, lang, W=900, H=360):
     """G1: relative uncertainty by edition, one faint dot per core constant, median line."""
-    L, R, Tp, B = 64, 20, 16, 40
+    L, R, Tp, B = 64, 20, 28, 40   # 1.3.5: room for the name of the vertical axis
     pts = [(int(r["edition"]), float(r["u_rel"]), r["qid"]) for r in long
            if qmap[r["qid"]]["layer"] == "K" and r["exact"] == "0" and float(r["u_rel"]) > 0]
     ys = [p[1] for p in pts]
@@ -367,6 +369,7 @@ def chart_uncertainty(qmap, long, lang, W=900, H=360):
         o.append(f'<line class="grid" x1="{L}" x2="{W-R}" y1="{Y(t):.1f}" y2="{Y(t):.1f}"/><text x="{L-6}" y="{Y(t)+4:.1f}" text-anchor="end">{sup(int(round(math.log10(t))))}</text>')
     for e in EDITIONS:
         o.append(f'<text x="{X(e):.1f}" y="{H-14}" text-anchor="middle">{e}</text>')
+    o.append(f'<text x="{L}" y="13">{"상대 표준불확도(불확도 ÷ 값) · 아래일수록 정밀하다" if lang == "ko" else "relative standard uncertainty (uncertainty ÷ value) · lower = more precise"}</text>')
     name = "name_ko" if lang == "ko" else "name_en"
     for e, v, q in pts:
         o.append(f'<circle class="dot" cx="{X(e):.1f}" cy="{Y(v):.1f}" r="4" fill="var(--s1)" fill-opacity=".28" stroke="var(--card)" stroke-width="1" data-tip="{esc(qmap[q][name])} · {e}: {fmt_sci(v, 3)}"/>')
@@ -386,7 +389,7 @@ def chart_uncertainty(qmap, long, lang, W=900, H=360):
 
 def chart_tail(pairs, nu, s, lang, W=900, H=360):
     """G2: P(|z| > t) observed vs normal vs fitted Student-t, log y."""
-    L, R, Tp, B = 64, 120, 16, 40
+    L, R, Tp, B = 64, 120, 16, 54   # 1.3.5: room for the axis name under the ticks
     z = np.sort(np.abs([float(p["z"]) for p in pairs]))
     n = len(z)
     tmax = 7.0
@@ -399,8 +402,8 @@ def chart_tail(pairs, nu, s, lang, W=900, H=360):
     for t in log_ticks(lo, 1):
         o.append(f'<line class="grid" x1="{L}" x2="{W-R}" y1="{Y(t):.1f}" y2="{Y(t):.1f}"/><text x="{L-6}" y="{Y(t)+4:.1f}" text-anchor="end">{t:g}</text>')
     for t in range(0, 8):
-        o.append(f'<text x="{X(t):.1f}" y="{H-18}" text-anchor="middle">{t}</text>')
-    o.append(f'<text x="{(L + W - R) / 2:.0f}" y="{H-2}" text-anchor="middle">|z|</text>')
+        o.append(f'<text x="{X(t):.1f}" y="{H-B+18}" text-anchor="middle">{t}</text>')
+    o.append(f'<text x="{(L + W - R) / 2:.0f}" y="{H-8}" text-anchor="middle">{"|z| — 이동의 크기 ÷ 두 판의 불확도를 합친 값" if lang == "ko" else "|z|: size of the shift ÷ the combined uncertainty of the two editions"}</text>')
     ts = np.linspace(0, tmax, 141)
     normal = [2 * stats.norm.sf(t) for t in ts]
     tfit = [2 * stats.t.sf(t / s, nu) for t in ts]
@@ -461,16 +464,18 @@ def chart_miss(s3, lang, W=900, H=340):
 def chart_halflife(m1, qmap, lang, W=900):
     rows = [r for r in m1 if qmap[r["qid"]]["layer"] == "K"]
     rows.sort(key=lambda r: float(r["halflife_years"]) if r["halflife_years"] != "inf" else 1e9)
-    L, R, Tp, rh = 250, 30, 10, 26
-    H = Tp + rh * len(rows) + 40
+    name = "name_ko" if lang == "ko" else "name_en"
+    L = max(250, int(max(sum(12 if ord(ch) > 0x2E80 else 6.8 for ch in qmap[r["qid"]][name]) for r in rows)) + 18)   # 1.3.5: room for the longest name
+    R, Tp, rh = 30, 10, 26
+    H = Tp + rh * len(rows) + 46
     xmax = 25.0
 
     def X(v): return L + min(v, xmax) / xmax * (W - L - R)
     name = "name_ko" if lang == "ko" else "name_en"
     o = [f'<svg viewBox="0 0 {W} {H}" role="img" aria-label="{"상수별 반감기" if lang == "ko" else "Half-life by constant"}">']
     for v in range(0, 26, 5):
-        o.append(f'<line class="grid" x1="{X(v):.1f}" x2="{X(v):.1f}" y1="{Tp}" y2="{H-34}"/><text x="{X(v):.1f}" y="{H-18}" text-anchor="middle">{v}</text>')
-    o.append(f'<text x="{(L+W-R)/2:.0f}" y="{H-2}" text-anchor="middle">{"년" if lang == "ko" else "years"}</text>')
+        o.append(f'<line class="grid" x1="{X(v):.1f}" x2="{X(v):.1f}" y1="{Tp}" y2="{H-40}"/><text x="{X(v):.1f}" y="{H-24}" text-anchor="middle">{v}</text>')
+    o.append(f'<text x="{(L+W-R)/2:.0f}" y="{H-7}" text-anchor="middle">{"반감기(년) · 왼쪽일수록 빨리 정밀해졌다" if lang == "ko" else "half-life (years) · further left = made precise faster"}</text>')
     for i, r in enumerate(rows):
         y = Tp + rh * i + rh / 2
         o.append(f'<text x="{L-8}" y="{y+4:.1f}" text-anchor="end">{esc(qmap[r["qid"]][name])}</text>')
@@ -491,7 +496,7 @@ def chart_halflife(m1, qmap, lang, W=900):
 
 def chart_funnel(rows, lang, W=900, H=340):
     """G5: symmetric-log relative deviation from 2022 with ±1σ bars."""
-    L, R, Tp, B = 70, 20, 16, 40
+    L, R, Tp, B = 70, 20, 28, 40   # 1.3.5: room for the name of the vertical axis
     meas = [r for r in rows if r["exact"] == "0" or float(r["rel_dev"]) != 0]
     vals = [abs(float(r["rel_dev"])) + float(r["rel_u"]) for r in meas] or [1e-9]
     small = [float(r["rel_u"]) for r in meas if float(r["rel_u"]) > 0] or [1e-12]
@@ -504,7 +509,8 @@ def chart_funnel(rows, lang, W=900, H=340):
     def X(e): return L + (EDITIONS.index(e) + 0.5) / len(EDITIONS) * (W - L - R)
 
     def Y(v): return Tp + (fm - f(v)) / (2 * fm) * (H - Tp - B)
-    o = [f'<svg viewBox="0 0 {W} {H}" role="img" aria-label="{"수렴 그림" if lang == "ko" else "Convergence plot"}">']
+    o = [f'<svg viewBox="0 0 {W} {H}" role="img" aria-label="{"수렴 그림" if lang == "ko" else "Convergence plot"}">',
+         f'<text x="{L}" y="13">{"2022 판 값에서 떨어진 정도(값에 대한 비율) · 0이 2022 판 값" if lang == "ko" else "distance from the 2022 value (as a fraction of the value) · 0 = the 2022 value"}</text>']
     e = int(round(math.log10(lt)))
     ticks = [0.0] + [s * 10.0 ** k for k in range(e + 1, int(round(math.log10(top))) + 1, max(1, (int(round(math.log10(top))) - e) // 4 or 1)) for s in (1, -1)]
     for t in sorted(set(ticks)):
@@ -689,7 +695,7 @@ def build():
 <a class="stat" href="metrics/m2.html"><span class="n">{N['m2_r3']}%</span><span class="vs">정규분포 기대 0.27%</span><small>3배를 넘은 비율(|z| > 3) — 약 {N['m2_1in3']}번에 1번 (95% 구간 {N['m2_r3_ci']})</small></a>
 <a class="stat" href="metrics/m3.html"><span class="n">{N['m3_m2']}%</span><span class="vs">정규분포 기대 4.6%</span><small>옛 판의 ±2σ 범위(넉넉한 오차 막대)가 2022 판 값을 담지 못한 비율 — 10개 중 약 {N['m3_m2_10']}개 ({N['m3_n']}개 조합, 95% 구간 {N['m3_m2_ci']})</small></a>
 <a class="stat" href="metrics/m1.html"><span class="n">{N['m1_median']}년</span><small>상대 표준불확도의 반감기 — 불확도가 절반이 되는 데 걸린 햇수 (불확도가 줄어든 핵심 상수 {N['m1_n_dec']}개의 중앙값)</small></a></div>"""
-            g1cap = f"점 하나가 (판, 핵심 상수) 하나, 선은 판별 중앙값. 세로축은 로그. 중앙값은 1969 판 {fmt_sci(med[0][1])}(상수 {med[0][2]}개), 2022 판 {fmt_sci(med[-1][1])}({med[-1][2]}개). 판마다 들어간 상수가 달라(예: 양성자 전하 반지름은 2002 판부터) 중앙값이 판 사이에서 거꾸로 오르기도 한다."
+            g1cap = f"판별 상대 표준불확도, 1969~2022. 세로축은 불확도를 값으로 나눈 수다(10⁻⁶이면 값의 백만분의 1). 아래로 갈수록 정밀하고, 눈금 한 칸이 10배다(로그 축). 점 하나가 (판, 핵심 상수) 하나, 선은 판별 중앙값. 중앙값은 1969 판 {fmt_sci(med[0][1])}(상수 {med[0][2]}개), 2022 판 {fmt_sci(med[-1][1])}({med[-1][2]}개). 판마다 들어간 상수가 달라(예: 양성자 전하 반지름은 2002 판부터) 중앙값이 판 사이에서 거꾸로 오르기도 한다."
             intro2 = """<div class="prose"><p>불확도는 반세기 동안 만 배 이상 줄었다. 그런데 판이 바뀔 때 값이 움직인 폭은 그 불확도로 설명되는 범위를 자주 넘었다. 이 사이트는 그 비율을 상수별·판별로 공개하고, 같은 질문을 먼저 던진 연구(Henrion & Fischhoff 1986, Bailey 2017)와 나란히 둔다. 수치마다 표본 수와 95% 구간을 붙였다. 「과학자가 과신했다」는 해석은 측정 설계를 들여다본 결과가 아니므로 지표 면에는 쓰지 않는다 — <a href="reading.html">읽기</a>에서 유보와 함께 다룬다.</p></div>"""
         else:
             hero = f"""<div class="hero"><h1>{t['site']}</h1><p class="lead">How often did the error bars that scientists published miss the next edition's value? This site joins the nine editions of the CODATA recommended values of the fundamental physical constants (1973–2022) and the 1969 adjustment that preceded them, and counts how values and uncertainties changed from edition to edition.</p></div>"""
@@ -698,7 +704,7 @@ def build():
 <a class="stat" href="metrics/m2.html"><span class="n">{N['m2_r3']}%</span><span class="vs">normal expectation 0.27%</span><small>Beyond three times (|z| > 3), about once in {N['m2_1in3']} (95% interval {N['m2_r3_ci']})</small></a>
 <a class="stat" href="metrics/m3.html"><span class="n">{N['m3_m2']}%</span><span class="vs">normal expectation 4.6%</span><small>Earlier ±2σ ranges (generous error bars) that miss the 2022 value, about {N['m3_m2_10']} in 10 ({N['m3_n']} combinations, 95% interval {N['m3_m2_ci']})</small></a>
 <a class="stat" href="metrics/m1.html"><span class="n">{N['m1_median']} years</span><small>Half-life of the relative standard uncertainty: years for it to halve (median over the {N['m1_n_dec']} core constants whose uncertainty declined)</small></a></div>"""
-            g1cap = f"One dot per (edition, core constant); the line is the median per edition. Log scale. Median {fmt_sci(med[0][1])} in 1969 ({med[0][2]} constants), {fmt_sci(med[-1][1])} in 2022 ({med[-1][2]}). The set of constants changes between editions (the proton charge radius enters in 2002, for example), so the median can rise from one edition to the next."
+            g1cap = f"Relative standard uncertainty by edition, 1969–2022. The vertical axis is the uncertainty divided by the value (10⁻⁶ is one millionth of the value); lower is more precise, and each step is a factor of ten (log scale). One dot per (edition, core constant); the line is the median per edition. Median {fmt_sci(med[0][1])} in 1969 ({med[0][2]} constants), {fmt_sci(med[-1][1])} in 2022 ({med[-1][2]}). The set of constants changes between editions (the proton charge radius enters in 2002, for example), so the median can rise from one edition to the next."
             intro2 = """<div class="prose"><p>Uncertainties shrank by more than four orders of magnitude in half a century. Yet the moves between editions often exceeded what those uncertainties allow. This site publishes those rates by constant and by edition, next to the earlier studies that asked the same question (Henrion & Fischhoff 1986; Bailey 2017). Every number carries its sample size and a 95% interval. "Scientists were overconfident" is an interpretation that would require looking into the measurements themselves, so the metric pages do not use it; the <a href="reading.html">Reading</a> page takes it up with its qualifications.</p></div>"""
         cards = "".join(f'<a class="card" href="metrics/{m["id"]}.html"><b>{m["id"].upper()} · {esc(m[lang]["name"])}</b><small>{esc(m[lang]["short"])}</small></a>' for m in METRICS)
         cards += f'<a class="card" href="metrics/hf.html"><b>{"재계산" if lang == "ko" else "Recalculation"} · Henrion & Fischhoff</b><small>{"1986년 논문의 지표를 이 자료로 다시 계산" if lang == "ko" else "Their 1986 indices recomputed on these data"}</small></a>'
@@ -735,7 +741,7 @@ def build():
             parts = [f'<p><span class="tag k">{m["id"].upper()}</span></p><h1>{esc(d["name"])}</h1><p class="lead">{esc(d["short"])}</p>',
                      takeaway(lang, [x.format(**N) for x in m["takeaway"][lang]]), spec_block(m, lang, N)]
             if m["id"] == "m1":
-                parts.append(f'<figure>{chart_halflife(m1, qmap, lang)}<figcaption>{"점은 반감기, 가로선은 95% 구간(화살표는 25년 넘게 열린 구간)." if lang == "ko" else "Dot: half-life. Bar: 95% interval (arrow: the interval extends beyond 25 years)."}</figcaption></figure>')
+                parts.append(f'<figure>{chart_halflife(m1, qmap, lang)}<figcaption>{"점은 반감기(불확도가 절반이 되는 데 걸린 햇수), 가로선은 95% 구간(화살표는 25년 넘게 열린 구간). 왼쪽에 있을수록 빨리 정밀해진 상수다." if lang == "ko" else "Dot: half-life (the years it took the uncertainty to halve). Bar: 95% interval (arrow: the interval extends beyond 25 years). Further left = made precise faster."}</figcaption></figure>')
                 rows = []
                 for r in sorted(m1, key=lambda r: (qmap[r["qid"]]["layer"], r["qid"])):
                     hl = r["halflife_years"]
@@ -747,19 +753,20 @@ def build():
                 parts.append(table([t["name"], t["layer"], t["n_ed"] + ("" if lang == "ko" else " (n)"), ("기간" if lang == "ko" else "Span"), f'{t["urel"]} ({"처음" if lang == "ko" else "first"})',
                                     f'{t["urel"]} ({"마지막" if lang == "ko" else "last"})', t["halflife"], t["ci"], "R²"], rows, num_cols=(2, 4, 5, 6, 7, 8)))
             if m["id"] == "m2":
-                parts.append(f'<figure><div class="legend"><span style="--c:var(--s1)">{"관측" if lang == "ko" else "Observed"}</span><span style="--c:var(--s2)">{"정규분포" if lang == "ko" else "Normal"}</span><span style="--c:var(--s3)">Student-t ({"값이 바뀐 쌍에 맞춤" if lang == "ko" else "fitted to pairs with a change"})</span></div>{chart_tail(kp, float(t4[0]["nu"]), float(t4[0]["scale"]), lang)}<figcaption>{"|z| 가 가로축 값을 넘는 판 쌍의 비율(세로축 로그). 점은 |z| > 1·2·3 의 관측 비율." if lang == "ko" else "Share of pairs whose |z| exceeds the value on the horizontal axis (log vertical axis). Dots: observed shares above 1, 2 and 3."}</figcaption></figure>')
+                parts.append(f'<figure><div class="legend"><span style="--c:var(--s1)">{"관측" if lang == "ko" else "Observed"}</span><span style="--c:var(--s2)">{"정규분포" if lang == "ko" else "Normal"}</span><span style="--c:var(--s3)">Student-t ({"값이 바뀐 쌍에 맞춤" if lang == "ko" else "fitted to pairs with a change"})</span></div>{chart_tail(kp, float(t4[0]["nu"]), float(t4[0]["scale"]), lang)}<figcaption>{"|z| 가 가로축 값을 넘는 판 쌍의 비율(세로축 로그). 점은 |z| > 1·2·3 의 관측 비율. 읽는 법: 오른쪽으로 갈수록 큰 이동이고, 선이 오른쪽에서 높이 떠 있을수록 큰 이동이 잦다. 관측 선이 정규분포 곡선보다 위에 있으면, 밝힌 불확도가 맞을 때 기대되는 것보다 큰 이동이 많았다는 뜻이다. Student-t 는 정규분포보다 꼬리(큰 값이 나올 몫)가 두꺼운 분포이고, 자유도 ν 가 작을수록 꼬리가 두껍다." if lang == "ko" else "Share of pairs whose |z| exceeds the value on the horizontal axis (log vertical axis). Dots: observed shares above 1, 2 and 3. Reading: further right is a larger shift, and the higher a line stays on the right, the more often large shifts occur. Where the observed line lies above the normal curve, large shifts were more frequent than the stated uncertainties would lead one to expect. Student-t has heavier tails (more room for large values) than the normal distribution; the smaller its degrees of freedom ν, the heavier the tails."}</figcaption></figure>')
                 lab = {"core: all consecutive pairs": ("전체 판 쌍", "all pairs"), "core: 1998-2022 (4-year gaps)": ("1998~2022 (4년 간격)", "1998–2022 (4-year gaps)"),
                        "core: 1969-1998 (4-13-year gaps)": ("1969~1998 (4~13년 간격)", "1969–1998 (4–13-year gaps)")}
-                rows = [[lab[r["subset"]][0 if lang == "ko" else 1], "z" if r["measure"] == "z" else "z_old", f'|z| > {r["threshold"]}', r["n_pairs"], r["n_quantities"],
+                rows = [[lab[r["subset"]][0 if lang == "ko" else 1], "z" if r["measure"] == "z" else ("z_옛" if lang == "ko" else "z_old"), f'|z| > {r["threshold"]}', r["n_pairs"], r["n_quantities"],
                          r["exceed"], pct(r["rate"]), ci_pct(r["ci_low"], r["ci_high"]), pct(r["normal"], 2)] for r in s2]
                 parts.append(table([t["subset"], "z", cap(t["threshold"]), cap(t["pairs"]), cap(t["quantities"]), "n", cap(t["rate"]) + " %", t["ci"], cap(t["normal"]) + " %"], rows, num_cols=(3, 4, 5, 6, 8)))
                 big = sorted(kp, key=lambda p: -abs(float(p["z"])))[:12]
                 parts.append(f'<h3>{"이동이 컸던 판 쌍" if lang == "ko" else "Largest moves"}</h3>')
-                parts.append(table([t["name"], t["edition"], "z", "z_old"], [[f'<a href="../constants/{p["qid"]}.html">{esc(qmap[p["qid"]][name])}</a>', f'{p["ed_from"]}→{p["ed_to"]}', p["z"], p["z_old"]] for p in big], num_cols=(2, 3)))
+                parts.append("<p class='note'>" + ("z_옛은 이동을 옛 판의 표준불확도 하나로 나눈 값이다(z 는 두 판의 불확도를 합쳐 나눈다)." if lang == "ko" else "z_old divides the shift by the earlier edition's standard uncertainty alone (z divides by the two editions' uncertainties combined).") + "</p>")
+                parts.append(table([t["name"], t["edition"], "z", ("z_옛" if lang == "ko" else "z_old")], [[f'<a href="../constants/{p["qid"]}.html">{esc(qmap[p["qid"]][name])}</a>', f'{p["ed_from"]}→{p["ed_to"]}', p["z"], p["z_old"]] for p in big], num_cols=(2, 3)))
                 s = sens
                 parts.append(f'<div class="note">{"민감도 — 1998~2022 ASCII 표에서 이름이 바뀌지 않은 모든 행(서로 환산 관계인 행 포함)으로 같은 계산을 하면" if lang == "ko" else "Sensitivity: repeating the calculation over every 1998–2022 ASCII row whose name did not change (including rows that are conversions of one another) gives"} |z| > 1 {pct(s[0]["rate"])}%, |z| > 2 {pct(s[1]["rate"])}%, |z| > 3 {pct(s[2]["rate"])}% ({s[0]["n_pairs"]} {t["pairs"]}). {"같은 이동이 여러 행에 중복해 세어지므로 표본 수는 부풀어 있다." if lang == "ko" else "The same move is counted in many rows, so the count is inflated."}</div>')
             if m["id"] == "m3":
-                parts.append(f'<figure><div class="legend"><span style="--c:var(--s1)">±1σ {"밖" if lang == "ko" else "missed"}</span><span style="--c:var(--s2)">±2σ {"밖" if lang == "ko" else "missed"}</span><span class="dash" style="--c:var(--ref)">{"정규분포 기대(불확도가 맞을 때)" if lang == "ko" else "Normal expectation (if the uncertainties were right)"}</span></div>{chart_miss(s3, lang)}<figcaption>{"판별로 그 판과 2022 판에 모두 있는 핵심 상수 중 옛 오차 막대가 2022 판 값을 담지 못한 비율. 세로선은 상수 군집 부트스트랩 95% 구간." if lang == "ko" else "By edition, the share of core constants whose earlier error bar does not contain the 2022 value. Vertical bars: 95% cluster-bootstrap intervals."}</figcaption></figure>')
+                parts.append(f'<figure><div class="legend"><span style="--c:var(--s1)">±1σ {"밖" if lang == "ko" else "missed"}</span><span style="--c:var(--s2)">±2σ {"밖" if lang == "ko" else "missed"}</span><span class="dash" style="--c:var(--ref)">{"정규분포 기대(불확도가 맞을 때)" if lang == "ko" else "Normal expectation (if the uncertainties were right)"}</span></div>{chart_miss(s3, lang)}<figcaption>{"판별로 그 판과 2022 판에 모두 있는 핵심 상수 중 옛 오차 막대가 2022 판 값을 담지 못한 비율. 세로선은 상수 군집 부트스트랩 95% 구간(상수를 묶음으로 다시 뽑아 같은 계산을 되풀이했을 때 비율이 흔들리는 범위). 점이 점선보다 위에 있으면 기대보다 자주 놓쳤다는 뜻이다." if lang == "ko" else "By edition, the share of core constants whose earlier error bar does not contain the 2022 value. Vertical bars: 95% cluster-bootstrap intervals (the range over which the share moves when the constants are drawn again, as whole clusters, and the count repeated). A dot above the dashed line means the value was missed more often than expected."}</figcaption></figure>')
                 sub = {"1969-1986": ("1969~1986 묶음", "1969–1986 pooled"), "1998-2018": ("1998~2018 묶음", "1998–2018 pooled"), "all": ("전체", "all")}
                 rows = [[sub.get(r["subset"], (r["subset"], r["subset"]))[0 if lang == "ko" else 1], r["n"], r["n_quantities"], pct(r["miss_1sigma"], 0), cip(r["miss_1sigma_ci"]), pct(r["miss_2sigma"], 0), cip(r["miss_2sigma_ci"]),
                          pct(r["inside_iq"], 0), pct(r["surprise"], 0), r["median_abs_z"]] for r in s3]
@@ -836,7 +843,7 @@ def build():
 <h1>{esc(qm["symbol"])} · {esc(qm[name])}</h1><p class="lead" lang="{"en" if lang == "ko" else "ko"}">{esc(qm["name_en"] if lang == "ko" else qm["name_ko"])}</p>
 {takeaway(lang, ctk)}<div class="spec"><dl><dt>{t["unit"]}</dt><dd>{fmt_unit(qm["unit"]) if qm["unit"] != "1" else ("없음(무차원)" if lang == "ko" else "none (dimensionless)")}</dd>{basis}<dt>{"메모" if lang == "ko" else "Note"}</dt><dd>{esc(cap(note)) or "—"}</dd><dt>M1</dt><dd>{esc(hl_txt) or "—"}</dd></dl></div>
 <figure><div class="legend"><span style="--c:var(--s1)">{"판별 값 ±1σ" if lang == "ko" else "Value ±1σ by edition"}</span><span class="dash" style="--c:var(--ref)">2022</span></div>{chart_funnel(fr, lang)}
-<figcaption>{"2022 판 값에서의 상대 편차(대칭 로그 축). 속이 빈 원은 오차 막대가 2022 판 값에 닿지 않은 판, 네모는 정의값." if lang == "ko" else "Relative deviation from the 2022 value (symmetric-log axis). Open circles: the error bar does not reach the 2022 value. Squares: exact."}</figcaption></figure>
+<figcaption>{"2022 판 값에서의 상대 편차(대칭 로그 축). 속이 빈 원은 오차 막대가 2022 판 값에 닿지 않은 판, 네모는 정의값. 대칭 로그 축은 0 근처에서는 거의 일정한 간격으로, 바깥으로 갈수록 10배마다 한 칸에 가깝게 그린다(둘 사이에 뚜렷한 경계는 없다). 그래서 0을 가로지르는 막대는 위아래 길이가 달라 보이고, 바깥쪽 눈금에서는 막대 길이를 눈으로 견주기 어렵다. 원소 면의 빈 원(불확도 없는 값)과는 뜻이 다르다." if lang == "ko" else "Relative deviation from the 2022 value (symmetric-log axis). Open circles: the error bar does not reach the 2022 value. Squares: exact. A symmetric-log axis is almost evenly spaced near zero and comes close to one step per factor of ten further out (with no sharp boundary between the two), so a bar that crosses zero looks uneven above and below, and bar lengths are hard to compare by eye in the outer steps. On the element pages an open circle means something else (a value without an uncertainty)."}</figcaption></figure>
 {table(CONST_HEAD[lang], tab, num_cols=(2, 3, 5, 6))}"""
             (base / "constants" / f"{q}.html").write_text(page(lang, qm[name], body, 2, "constants", leaf=dict(
                 crumbs=[(t["home"], "../index.html"), (t["constants"], "index.html")], cur=f"{q}.html",
