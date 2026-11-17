@@ -46,13 +46,14 @@ def sym_plain(text: str) -> str:
 
 
 def sym_svg(text: str) -> str:
-    """Inside an SVG <text>: the subscript tspan is set at .75em and lowered by .4 of its own size (= .3 of
-    the text size); a run that follows is raised back by .3em of the text size."""
+    """Inside an SVG <text>: the subscript tspan is set at .85em and lowered by .353 of its own size (= .3 of
+    the text size); a run that follows is raised back by .3em of the text size. (1.3.6: .75em gave 9 px
+    subscripts on the 12 px chart text, under the 10 px floor for chart labels.)"""
     m = _TOK.search(text)
     if not m:
         return text
     base, sub = SYMBOLS[m.group(1)]
-    head = text[:m.start()] + base + f'<tspan dy=".4em" font-size=".75em">{sub}</tspan>'
+    head = text[:m.start()] + base + f'<tspan dy=".353em" font-size=".85em">{sub}</tspan>'
     rest = text[m.end():]
     return head + (f'<tspan dy="-.3em">{sym_svg(rest)}</tspan>' if rest else "")
 

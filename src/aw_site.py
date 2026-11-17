@@ -37,12 +37,12 @@ ZORDER = ("H He Li Be B C N O F Ne Na Mg Al Si P S Cl Ar K Ca Sc Ti V Cr Mn Fe C
 Z = {sym: i + 1 for i, sym in enumerate(ZORDER)}
 
 L = {
-    "ko": dict(nav="원자량", title="원자량 장 — 표준 원자량의 개정 기록", lead="CIAAW 가 1902년부터 권고해 온 표준 원자량이 어떻게 바뀌었는지, 그리고 새 값이 직전 권고의 불확도 범위 안에 있었는지를 센다. 물리 상수 장과 같은 질문을, 불확도를 다르게 정의하는 기록에 던진다.",
+    "ko": dict(nav="원자량", title="원자량 장 — 표준 원자량의 개정 기록", lead="CIAAW(국제순수·응용화학연맹의 동위원소 존재비·원자량 위원회)가 1902년부터 권고해 온 표준 원자량이 어떻게 바뀌었는지, 그리고 새 값이 직전 권고의 불확도 범위 안에 있었는지를 센다. 물리 상수 장과 같은 질문을, 불확도를 다르게 정의하는 기록에 던진다.",
                metrics="지표", elements="원소", year="연도", value="값(원 표기)", kind="표기", scale="척도", v12="¹²C 기준 값", zprev="직전 대비 z", doi="원 보고서",
                kinds={"unc": "값(불확도)", "interval": "구간", "none": "불확도 없음", "exact": "기준(정확)", "withdrawn": "철회"},
                credit_h="자료 출처", outside="직전 범위 밖", no_saw="표준 원자량 없음(방사성)", sym="기호", name="이름", nrev="개정", last="마지막 개정",
                cur="현재 값", download="CSV 내려받기"),
-    "en": dict(nav="Atomic weights", title="Atomic weights — the revision record of standard atomic weights", lead="How the standard atomic weights recommended by CIAAW since 1902 changed, and whether each new value lay within the previous recommendation's uncertainty range. The question of the physical-constants chapter, asked of a record that defines its uncertainties differently.",
+    "en": dict(nav="Atomic weights", title="Atomic weights — the revision record of standard atomic weights", lead="How the standard atomic weights recommended by CIAAW (the IUPAC Commission on Isotopic Abundances and Atomic Weights) since 1902 changed, and whether each new value lay within the previous recommendation's uncertainty range. The question of the physical-constants chapter, asked of a record that defines its uncertainties differently.",
                metrics="Metrics", elements="Elements", year="Year", value="Value (as printed)", kind="Notation", scale="Scale", v12="Value, ¹²C scale", zprev="z vs previous", doi="Report",
                kinds={"unc": "value(uncertainty)", "interval": "interval", "none": "no uncertainty", "exact": "reference (exact)", "withdrawn": "withdrawn"},
                credit_h="Source", outside="outside previous range", no_saw="No standard atomic weight (radioactive)", sym="Symbol", name="Name", nrev="Revisions", last="Latest revision",
@@ -87,20 +87,21 @@ def numbers():
 
 
 # ------------------------------------------------------------------ charts
-def chart_z(pairs, lang, H, W=900, Hh=340):
+def chart_z(pairs, lang, H, W=900, Hh=360):  # 1.3.6 (verification): 340 put the -1/0/+1 tick labels within a line height of each other
     """Revision z_prev by year, clipped at ±8, dashed lines at ±1 (edge of the previous range)."""
     esc = H["esc"]
-    Lm, R, Tp, B = 56, 150, 16, 40
+    Lm, R, Tp, B = 56, 150, 32, 40   # 1.3.6: room for the name of the vertical axis
     x0, x1, cap = 1950, 2026, 8.0
 
     def X(v): return Lm + (v - x0) / (x1 - x0) * (W - Lm - R)
 
     def Y(v): return Tp + (cap - max(-cap, min(cap, v))) / (2 * cap) * (Hh - Tp - B)
-    o = [f'<svg viewBox="0 0 {W} {Hh}" role="img" aria-label="{"연도별 개정 z" if lang == "ko" else "Revision z by year"}">']
+    o = [f'<svg viewBox="0 0 {W} {Hh}" role="img" aria-label="{"연도별 개정 z" if lang == "ko" else "Revision z by year"}">',
+         f'<text x="{Lm}" y="15">{"세로: z_옛 = (새 값 − 직전 값) ÷ 직전 불확도 · 0보다 위면 값이 올라간 개정" if lang == "ko" else "Vertical: z_prev = (new − previous) ÷ previous uncertainty · above 0 = revised upward"}</text>']
     for v in (-8, -4, -1, 0, 1, 4, 8):
         cls = "ref" if abs(v) == 1 else "grid"
         o.append(f'<line class="{cls}" x1="{Lm}" x2="{W-R}" y1="{Y(v):.1f}" y2="{Y(v):.1f}"/><text x="{Lm-6}" y="{Y(v)+4:.1f}" text-anchor="end">{v:+d}</text>'.replace(">+0<", ">0<"))
-    l1, l2 = (("직전 범위 경계", "(z = ±1)") if lang == "ko" else ("edge of previous", "range (z = ±1)"))
+    l1, l2 = (("직전 범위 경계", "(z = ±1)") if lang == "ko" else ("Edge of previous", "range (z = ±1)"))
     # one two-line label between the dashed lines at +1 and -1
     o.append(f'<text x="{W-R+6}" y="{Y(0)-3:.1f}"><tspan x="{W-R+6}">{l1}</tspan><tspan x="{W-R+6}" dy="1.15em">{l2}</tspan></text>')
     for yv in range(1950, 2030, 10):
@@ -119,12 +120,14 @@ def chart_z(pairs, lang, H, W=900, Hh=340):
     return "".join(o)
 
 
-def chart_bars(items, H, W=900, Hh=260, unit="", lang="en"):
+def chart_bars(items, H, W=900, Hh=260, unit="", lang="en", ylab=""):
     esc = H["esc"]
-    Lm, R, Tp, B = 46, 16, 16, 40
+    Lm, R, Tp, B = 46, 16, 30 if ylab else 16, 40   # 1.3.6: ylab = name of the vertical axis, inside the chart
     vmax = max(v for _, v in items) or 1
     bw = (W - Lm - R) / len(items)
     o = [f'<svg viewBox="0 0 {W} {Hh}" role="img" aria-label="{"막대그래프" if lang == "ko" else "Bar chart"}">']
+    if ylab:
+        o.append(f'<text x="{Lm}" y="15">{esc(ylab)}</text>')
     step = max(1, int(math.ceil(vmax / 5 / 5) * 5))
     for v in range(0, int(vmax) + step, step):
         if v > vmax * 1.05:
@@ -165,13 +168,14 @@ def chart_element(rows, lang, H, W=900, Hh=320):
 
     def fz(v): return math.copysign(math.log10(1 + abs(v) / lt), v)
     fm = fz(top)
-    Lm, R, Tp, B = 70, 20, 16, 40
+    Lm, R, Tp, B = 70, 20, 32, 40   # 1.3.6: room for the name of the vertical axis
     x0, x1 = 1898, 2028
 
     def X(v): return Lm + (v - x0) / (x1 - x0) * (W - Lm - R)
 
     def Y(v): return Tp + (fm - fz(v)) / (2 * fm) * (Hh - Tp - B)
-    o = [f'<svg viewBox="0 0 {W} {Hh}" role="img" aria-label="{"원자량 변천" if lang == "ko" else "Atomic weight history"}">']
+    o = [f'<svg viewBox="0 0 {W} {Hh}" role="img" aria-label="{"원자량 변천" if lang == "ko" else "Atomic weight history"}">',
+         f'<text x="{Lm}" y="15">{"세로: 현재 값에서 떨어진 정도(값에 대한 비율) · 0이 현재 값 · 위는 그보다 큰 값" if lang == "ko" else "Vertical: distance from the current value (as a fraction of it) · 0 = the current value · above = larger"}</text>']
     e = int(round(math.log10(lt)))
     te = int(round(math.log10(top)))
     for t in [0.0] + [sgn * 10.0 ** k for k in range(e + 1, te + 1, max(1, (te - e) // 3 or 1)) for sgn in (1, -1)]:
@@ -289,7 +293,7 @@ def build(lang, base, H, out_root):
             for r in long:
                 dec[int(r["year"]) // 10 * 10] = dec.get(int(r["year"]) // 10 * 10, 0) + 1
             items = [(f"{k}s" if lang == "en" else f"{k}년대", dec.get(k, 0)) for k in range(1900, 2030, 10)]
-            parts.append(f'<figure>{chart_bars([(a[:-1] if lang == "ko" else a[:-1], v) for a, v in items], H, lang=lang)}<figcaption>{"10년 단위 개정 건수." if lang == "ko" else "Revisions per decade."}</figcaption></figure>')
+            parts.append(f'<figure>{chart_bars([(a[:-1] if lang == "ko" else a[:-1], v) for a, v in items], H, lang=lang, ylab="세로: 개정 건수" if lang == "ko" else "Vertical: number of revisions")}<figcaption>{"10년 단위 개정 건수." if lang == "ko" else "Revisions per decade."}</figcaption></figure>')
             parts.append(table([("시대" if lang == "ko" else "Era"), ("개정" if lang == "ko" else "Revisions"), ("보고 연도" if lang == "ko" else "Report years"), ("한 해 평균" if lang == "ko" else "Per year")],
                                [[e["era"], e["revisions"], e["report_years"], e["revisions_per_year"]] for e in eras], num_cols=(1, 2, 3)))
             top = sorted([e for e in els.values() if e["has_standard_atomic_weight"] == "1"], key=lambda e: (-int(e["n_revisions"]), e["symbol"]))[:15]
@@ -306,7 +310,7 @@ def build(lang, base, H, out_root):
             dec = {}
             for e in saw:
                 dec[int(e["last"]) // 10 * 10] = dec.get(int(e["last"]) // 10 * 10, 0) + 1
-            parts.append(f'<figure>{chart_bars([(str(k), dec.get(k, 0)) for k in range(1960, 2030, 10)], H, lang=lang)}<figcaption>{"마지막 개정 연도(10년 단위)별 원소 수." if lang == "ko" else "Elements by decade of latest revision."}</figcaption></figure>')
+            parts.append(f'<figure>{chart_bars([(str(k), dec.get(k, 0)) for k in range(1960, 2030, 10)], H, lang=lang, ylab="세로: 원소 수" if lang == "ko" else "Vertical: number of elements")}<figcaption>{"마지막 개정 연도(10년 단위)별 원소 수." if lang == "ko" else "Elements by decade of latest revision."}</figcaption></figure>')
             old = sorted([e for e in saw if int(e["last"]) <= 1969], key=lambda e: e["last"])
             parts.append(table([t["sym"], t["name"], t["last"], t["cur"]], [[f'<a href="el/{e["symbol"]}.html">{e["symbol"]}</a>', esc(name(e["symbol"])), e["last"], esc(e["current"])] for e in old], num_cols=(2,)))
         if m["id"] == "a5":
@@ -319,9 +323,9 @@ def build(lang, base, H, out_root):
             groups=[(t["metrics"], [(f'{x["id"].upper()} · {x[lang]["name"]}', f'{x["id"]}.html') for x in AW_METRICS])])), encoding="utf-8")
 
     # element pages
-    head = {"ko": [("연도", "권고·개정한 해"), ("값(원 표기)", "CIAAW 가 발표한 그대로. 괄호 안은 마지막 자리의 불확도(확장 범위)"), ("표기", "값(불확도)·구간·불확도 없음"),
+    head = {"ko": [("연도", "권고·개정한 해"), ("값(원 표기)", "CIAAW(국제순수·응용화학연맹의 동위원소 존재비·원자량 위원회)가 발표한 그대로. 괄호 안은 마지막 자리의 불확도(확장 범위)"), ("표기", "값(불확도)·구간·불확도 없음"),
                    ("척도", "1961년 이전은 산소 = 16, 이후는 ¹²C = 12"), ("¹²C 기준 값", "1961년 이전 값에 15.9994/16 을 곱한 값"), ("직전 대비 z", "(새 값 − 직전 값) ÷ 직전 불확도"), ("원 보고서", "CIAAW 보고서 DOI")],
-            "en": [("Year", "year of the recommendation"), ("Value (as printed)", "as printed in CIAAW's table; digits in parentheses are the uncertainty (expanded range) in the last digits"), ("Notation", "value(uncertainty), interval or no uncertainty"),
+            "en": [("Year", "year of the recommendation"), ("Value (as printed)", "as printed in the table of CIAAW (the IUPAC Commission on Isotopic Abundances and Atomic Weights); digits in parentheses are the uncertainty (expanded range) in the last digits"), ("Notation", "value(uncertainty), interval or no uncertainty"),
                    ("Scale", "before 1961 oxygen = 16, from 1961 ¹²C = 12"), ("Value, ¹²C scale", "pre-1961 values multiplied by 15.9994/16"), ("z vs previous", "(new − previous) ÷ previous uncertainty"), ("Report", "DOI of the CIAAW report")]}
     zmap = {(p["symbol"], p["year_new"]): p["z_prev"] for p in pairs}
     for s in els:

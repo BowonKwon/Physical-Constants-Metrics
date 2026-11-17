@@ -80,7 +80,7 @@ METRICS = [{'id': 'm1',
                     '{m2_r3}%({m2_r3_ci}), 약 {m2_1in3}번에 1번으로 정규분포 기대 0.27%(370번에 1번)보다 훨씬 많다. 반대로 |z| > 1 은 {m2_r1}%({m2_r1_ci})로 정규분포 기대 31.7%보다 적다. '
                     '작은 이동은 드물고 큰 이동은 잦다.',
          'caveat': '연속한 두 판은 같은 실험 자료를 상당 부분 공유하므로 독립이 아니다. 새 자료가 없으면 값이 거의 그대로 남고(값이 한 자리도 바뀌지 않은 쌍이 {m2_zero}개), z 가 0 쪽으로 쏠린다. 그래서 |z| > 1 이 적은 것을 '
-                   '「불확도가 넉넉했다(오차 막대가 넓었다)」로 읽으면 안 된다. 큰 이동의 비율은 이런 사정에도 정규분포 기대보다 높다. 95% 구간은 상수를 통째로 다시 뽑는 군집 부트스트랩이다. 같은 선정 규칙에 맞는 후보 '
+                   '「불확도가 넉넉했다(오차 막대가 넓었다)」로 읽으면 안 된다. 큰 이동의 비율은 이런 사정에도 정규분포 기대보다 높다. 95% 구간은 상수를 통째로 다시 뽑는 군집 부트스트랩(한 상수에 딸린 판 쌍을 한 묶음으로 삼아 묶음째 무작위로 다시 뽑고 — 같은 묶음이 두 번 뽑히거나 빠질 수 있다 — 같은 계산을 되풀이해, 결과의 가운데 95%를 구간으로 잡는 방법)이다. 같은 선정 규칙에 맞는 후보 '
                    '3개(헬리온·삼중수소핵의 상대 원자 질량, 중양성자 자기 모멘트)를 더한 20개로 다시 세면 |z| > 2 {k20_r2}%, |z| > 3 {k20_r3}% 다.'},
   'en': {'name': 'Edition-to-edition exceedance',
          'short': 'Share of moves between consecutive editions not covered by the two uncertainties',
@@ -99,7 +99,7 @@ METRICS = [{'id': 'm1',
          'caveat': 'Consecutive editions share much of their experimental data, so they are not independent. Without new data a value barely moves '
                    '({m2_zero} pairs did not change in any printed digit), pulling z toward zero. That is why the low share of |z| > 1 cannot be '
                    'read as generous uncertainties (wide error bars). The share of large moves exceeds the normal expectation despite this. '
-                   'Intervals are a cluster bootstrap that resamples whole constants. With three candidates that meet the same selection rule added '
+                   'Intervals are a cluster bootstrap that resamples whole constants (the pairs of one constant form one cluster; clusters are picked again at random, so one may come up twice and another not at all, the calculation is repeated, and the middle 95% of the results is the interval). With three candidates that meet the same selection rule added '
                    '(helion and triton relative atomic masses, deuteron magnetic moment), the 20 constants give |z| > 2 in {k20_r2}% and |z| > 3 in '
                    '{k20_r3}%.'}},
  {'id': 'm3',
@@ -155,7 +155,7 @@ METRICS = [{'id': 'm1',
          'short': '판간 이동 z 분포에 맞춘 Student-t 자유도',
          'definition': '값이 바뀐 연속 판 쌍의 z(M2)에 중심 0인 Student-t 분포를 최대우도로 맞춘다. Student-t 는 꼬리(분포의 양 끝) 두께를 자유도 ν 로 조절하는 분포다. ν 가 작을수록 꼬리가 두꺼워 아주 큰 이동이 '
                        '잦다(ν=1 이면 코시 분포, ν→∞ 이면 정규분포).',
-         'formula': 'z ~ s · t_ν,  ν·s 를 최대우도로 추정.  95% 구간은 상수 군집 부트스트랩 2,000회.  값이 한 자리도 바뀌지 않은 쌍(z = 0)은 뺀다.',
+         'formula': 'z ~ s · t_ν,  ν·s 를 최대우도로 추정.  95% 구간은 상수 군집 부트스트랩 2,000회(상수 단위의 묶음을 무작위로 다시 뽑아 같은 계산을 2,000번 되풀이한 결과의 가운데 95%).  값이 한 자리도 바뀌지 않은 쌍(z = 0)은 뺀다.',
          'denominator': '핵심 상수 {m2_q}개의 연속 판 쌍 {m2_n}개 중 값이 바뀐 {m4_n}개.',
          'reading': 'ν = {m4_nu}(95% 구간 {m4_nu_ci}), 척도 s = {m4_s}({m4_s_ci}). ν 가 1 안팎이면 코시 분포에 가까운 꼬리로, 아주 큰 이동이 정규분포보다 훨씬 흔하다. 1998 판 이후 쌍만으로는 ν '
                     '= {m4_new_nu}({m4_new_nu_ci}). 참고로 Bailey(2017)가 상수 7개의 개별 측정 쌍에서 얻은 값은 ν = 1.81 ± 0.15 다.',
@@ -167,7 +167,7 @@ METRICS = [{'id': 'm1',
          'definition': 'A zero-centered Student-t is fitted by maximum likelihood to the z (M2) of consecutive pairs whose value changed. The '
                        'Student-t distribution sets the thickness of its tails (the two ends) through its degrees of freedom ν: the smaller ν, the '
                        'thicker the tails and the more common very large moves (ν = 1 is the Cauchy distribution; ν → ∞ the normal).',
-         'formula': 'z ~ s · t_ν, ν and s by maximum likelihood; 95% intervals from 2,000 cluster-bootstrap resamples of constants. Pairs whose '
+         'formula': 'z ~ s · t_ν, ν and s by maximum likelihood; 95% intervals from 2,000 cluster-bootstrap resamples of constants (constants picked again at random as whole clusters, the fit repeated 2,000 times, the middle 95% kept). Pairs whose '
                     'printed value did not change (z = 0) are left out.',
          'denominator': '{m4_n} of the {m2_n} consecutive pairs over {m2_q} core constants: those whose value changed.',
          'reading': 'ν = {m4_nu} (95% interval {m4_nu_ci}), scale s = {m4_s} ({m4_s_ci}). A ν near 1 means tails close to the Cauchy distribution: '

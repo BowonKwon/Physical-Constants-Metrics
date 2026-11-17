@@ -26,8 +26,8 @@ DER = ROOT / "data" / "derived"
 # hand-maintained map of the 31 quantities; kept outside data/derived so that clearing derived/ cannot lose it
 QMAP = ROOT / "data" / "manual" / "quantity_map.csv"
 OUT = ROOT / "site"
-VERSION = "1.3.5"
-BUILD_DATE = "2026-11-15"
+VERSION = "1.3.6"
+BUILD_DATE = "2026-11-17"
 REPO = "https://github.com/BowonKwon/Physical-Constants-Metrics"
 PUBLIC_DATA = ["constants_long.csv", "quantity_map.csv", "m1_halflife.csv", "m2_pairs.csv", "m2_summary.csv",
                "m3_vs_latest.csv", "m3_summary.csv", "m4_tail.csv", "m5_funnel.csv", "m6_events.csv",
@@ -151,8 +151,9 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:now
 .wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--card);padding:0 .3rem;margin:.6rem 0 1rem}.wrap table{margin:0}
 figure{margin:1.2rem 0;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:1rem 1rem .8rem;box-shadow:var(--shadow)}
 figcaption{font-size:.86rem;color:var(--fg2);margin-top:.5rem;line-height:1.5}
-svg{max-width:100%;height:auto;display:block}svg text{font-family:var(--body);fill:var(--fg2);font-size:12px}svg .grid{stroke:var(--grid)}svg .ref{stroke:var(--ref);stroke-dasharray:4 4}
+svg{max-width:100%;height:auto;display:block}svg text{font-family:var(--body);font-size:12px}svg text:not([fill]){fill:var(--fg2)}svg .grid{stroke:var(--grid)}svg .ref{stroke:var(--ref);stroke-dasharray:4 4}
 svg .hit{fill:transparent}svg .hit:hover+.dot,svg .dot:hover{stroke:var(--fg);stroke-width:2}
+/* 1.3.6 (verification): a CSS fill on every svg text overrode the fill attribute, so labels given their own colour (H3 direction line, reference labels, the type-grid cell numbers) all came out in --fg2; the default now applies only to text without a fill attribute */
 /* 1.3.4 narrow screens: the 900-wide charts keep a minimum width inside a sideways-scrolling figure and the labels are a little larger (as in Classical Music Metrics 1.4) */
 /* 1.3.5: the chart is drawn at its own size (text 11px, as laid out) instead of 640px with enlarged labels, which came out at 9px */
 @media(max-width:640px){figure{overflow-x:auto;-webkit-overflow-scrolling:touch}figure svg[viewBox^="0 0 900 "]{min-width:900px;max-width:none}}
@@ -352,9 +353,17 @@ def sup(e):
     return "10" + "".join("⁻⁰¹²³⁴⁵⁶⁷⁸⁹"[0] if ch == "-" else "⁰¹²³⁴⁵⁶⁷⁸⁹"[int(ch)] for ch in str(e))
 
 
+def dir_marks(x, y_up, y_down, up, down):
+    """1.3.6: reading direction inside the chart, two short two-line labels in the right margin (up, down)."""
+    def two(y, lines):
+        return (f'<text x="{x}" y="{y:.1f}" fill="var(--fg)"><tspan x="{x}">{lines[0]}</tspan>'
+                f'<tspan x="{x}" dy="1.15em">{lines[1]}</tspan></text>')
+    return two(y_up, up) + two(y_down, down)
+
+
 def chart_uncertainty(qmap, long, lang, W=900, H=360):
     """G1: relative uncertainty by edition, one faint dot per core constant, median line."""
-    L, R, Tp, B = 64, 20, 28, 40   # 1.3.5: room for the name of the vertical axis
+    L, R, Tp, B = 64, 92, 28, 40   # 1.3.5: room for the name of the vertical axis; 1.3.6: right margin for the direction marks
     pts = [(int(r["edition"]), float(r["u_rel"]), r["qid"]) for r in long
            if qmap[r["qid"]]["layer"] == "K" and r["exact"] == "0" and float(r["u_rel"]) > 0]
     ys = [p[1] for p in pts]
@@ -369,7 +378,9 @@ def chart_uncertainty(qmap, long, lang, W=900, H=360):
         o.append(f'<line class="grid" x1="{L}" x2="{W-R}" y1="{Y(t):.1f}" y2="{Y(t):.1f}"/><text x="{L-6}" y="{Y(t)+4:.1f}" text-anchor="end">{sup(int(round(math.log10(t))))}</text>')
     for e in EDITIONS:
         o.append(f'<text x="{X(e):.1f}" y="{H-14}" text-anchor="middle">{e}</text>')
-    o.append(f'<text x="{L}" y="13">{"상대 표준불확도(불확도 ÷ 값) · 아래일수록 정밀하다" if lang == "ko" else "relative standard uncertainty (uncertainty ÷ value) · lower = more precise"}</text>')
+    o.append(f'<text x="{L}" y="15">{"상대 표준불확도(불확도 ÷ 값) · 아래일수록 정밀하다" if lang == "ko" else "Relative standard uncertainty (uncertainty ÷ value) · lower = more precise"}</text>')
+    o.append(dir_marks(W - R + 10, Tp + 14, H - B - 22, ("↑ 오차가", "크다") if lang == "ko" else ("↑ Larger", "error"),
+                       ("↓ 더", "정밀하다") if lang == "ko" else ("↓ More", "precise")))
     name = "name_ko" if lang == "ko" else "name_en"
     for e, v, q in pts:
         o.append(f'<circle class="dot" cx="{X(e):.1f}" cy="{Y(v):.1f}" r="4" fill="var(--s1)" fill-opacity=".28" stroke="var(--card)" stroke-width="1" data-tip="{esc(qmap[q][name])} · {e}: {fmt_sci(v, 3)}"/>')
@@ -389,7 +400,7 @@ def chart_uncertainty(qmap, long, lang, W=900, H=360):
 
 def chart_tail(pairs, nu, s, lang, W=900, H=360):
     """G2: P(|z| > t) observed vs normal vs fitted Student-t, log y."""
-    L, R, Tp, B = 64, 120, 16, 54   # 1.3.5: room for the axis name under the ticks
+    L, R, Tp, B = 64, 120, 34, 54   # 1.3.5: room for the axis name under the ticks; 1.3.6: and for the vertical one above
     z = np.sort(np.abs([float(p["z"]) for p in pairs]))
     n = len(z)
     tmax = 7.0
@@ -404,6 +415,7 @@ def chart_tail(pairs, nu, s, lang, W=900, H=360):
     for t in range(0, 8):
         o.append(f'<text x="{X(t):.1f}" y="{H-B+18}" text-anchor="middle">{t}</text>')
     o.append(f'<text x="{(L + W - R) / 2:.0f}" y="{H-8}" text-anchor="middle">{"|z| — 이동의 크기 ÷ 두 판의 불확도를 합친 값" if lang == "ko" else "|z|: size of the shift ÷ the combined uncertainty of the two editions"}</text>')
+    o.append(f'<text x="{L}" y="15">{"세로: |z|가 가로축 값을 넘는 판 쌍의 비율(로그 축) · 위일수록 그만큼 큰 이동이 잦다" if lang == "ko" else "Vertical: share of edition pairs with |z| above the horizontal value (log axis) · higher = large shifts more common"}</text>')
     ts = np.linspace(0, tmax, 141)
     normal = [2 * stats.norm.sf(t) for t in ts]
     tfit = [2 * stats.t.sf(t / s, nu) for t in ts]
@@ -436,13 +448,14 @@ def chart_tail(pairs, nu, s, lang, W=900, H=360):
 
 def chart_miss(s3, lang, W=900, H=340):
     """G3: miss rate by edition at 1σ and 2σ with CI whiskers and normal reference lines."""
-    L, R, Tp, B = 56, 150, 16, 40
+    L, R, Tp, B = 56, 150, 34, 40   # 1.3.6: room for the name of the vertical axis
     eds = [r for r in s3 if r["subset"].isdigit()]
 
     def X(i): return L + (i + 0.5) / len(eds) * (W - L - R)
 
     def Y(v): return Tp + (1 - v) * (H - Tp - B)
-    o = [f'<svg viewBox="0 0 {W} {H}" role="img" aria-label="{"판별 놓침 비율" if lang == "ko" else "Miss rate by edition"}">']
+    o = [f'<svg viewBox="0 0 {W} {H}" role="img" aria-label="{"판별 놓침 비율" if lang == "ko" else "Miss rate by edition"}">',
+         f'<text x="{L}" y="15">{"옛 오차 막대가 2022 판 값을 놓친 비율 · 위일수록 자주 놓쳤다" if lang == "ko" else "Share of earlier error bars that missed the 2022 value · higher = missed more often"}</text>']
     for v in (0, .2, .4, .6, .8, 1.0):
         o.append(f'<line class="grid" x1="{L}" x2="{W-R}" y1="{Y(v):.1f}" y2="{Y(v):.1f}"/><text x="{L-6}" y="{Y(v)+4:.1f}" text-anchor="end">{int(v*100)}%</text>')
     for v, lab in ((0.3173, "1σ 31.7%"), (0.0455, "2σ 4.6%")):
@@ -510,7 +523,7 @@ def chart_funnel(rows, lang, W=900, H=340):
 
     def Y(v): return Tp + (fm - f(v)) / (2 * fm) * (H - Tp - B)
     o = [f'<svg viewBox="0 0 {W} {H}" role="img" aria-label="{"수렴 그림" if lang == "ko" else "Convergence plot"}">',
-         f'<text x="{L}" y="13">{"2022 판 값에서 떨어진 정도(값에 대한 비율) · 0이 2022 판 값" if lang == "ko" else "distance from the 2022 value (as a fraction of the value) · 0 = the 2022 value"}</text>']
+         f'<text x="{L}" y="15">{"2022 판 값에서 떨어진 정도(값에 대한 비율) · 0이 2022 판 값 · 위는 그보다 큰 값, 아래는 작은 값" if lang == "ko" else "Distance from the 2022 value (as a fraction of the value) · 0 = the 2022 value · above = larger, below = smaller"}</text>']
     e = int(round(math.log10(lt)))
     ticks = [0.0] + [s * 10.0 ** k for k in range(e + 1, int(round(math.log10(top))) + 1, max(1, (int(round(math.log10(top))) - e) // 4 or 1)) for s in (1, -1)]
     for t in sorted(set(ticks)):
@@ -586,7 +599,7 @@ PROLOGUE = {"ko": """<section class="prologue"><h2>변하지 않는 수, 변해 
 <p>And some numbers are no longer measured at all. In 1983 the meter was redefined as the distance light travels in vacuum in 1/299 792 458 of a second, and the speed of light became a definition rather than a measurement. In 2019 the Planck constant, the elementary charge, the Boltzmann constant and the Avogadro constant followed. That ended the era in which one platinum-iridium cylinder, kept in a vault at Sèvres outside Paris since 1889, simply was the kilogram. Now the constants define the units.</p>
 <p>This site reads that record backwards. With each value, the scientists of each edition published a bar saying the true value is probably inside it. The site counts how often those bars missed the values of later editions, and whether that happened as often as a normal distribution predicts or more often. The atomic-weights chapter asks the same question of a different kind of number. Atomic weights are not constants of nature: isotope ratios differ from sample to sample, so the values wander, and since 2009 some elements have been given an interval instead of a single value.</p></section>"""}
 
-GLOSS = {"ko": '<div class="note"><b>불확도(uncertainty)</b> — 측정값이 참값에서 벗어나 있을 수 있는 폭을 표준편차로 나타낸 값이다. 그림의 오차 막대(±1σ) 길이가 이것이다. 참값과의 실제 차이인 「오차(error)」와 달리, 불확도는 그 차이가 얼마쯤일지에 대한 추정이다. 계측 분야의 표준 용어로, 한국산업표준 KS Q ISO/IEC GUIDE 98-3 「측정불확도 표현 지침」이 이 말을 쓴다. 이 사이트가 재는 것은 그 추정한 폭이 판이 바뀔 때의 실제 이동을 담았는가이다.</div><div class="note"><b>판(edition)</b> — CODATA 기본상수 작업반이 그때까지 나온 측정과 이론 계산을 모두 모아 최소제곱 조정을 한 번 하고, 그 결과로 공표하는 권고값 한 벌이다. 판의 이름은 반영한 자료의 마감 연도다(예: 2022 판은 2022년 말까지의 자료로 만들어 2024년에 공표). 1973·1986 판 뒤 1998 판부터는 4년마다 나왔다. 1969 판은 CODATA 이전의 개인 연구진(Taylor·Parker·Langenberg) 조정값으로, 비교를 위해 함께 싣는다. 판이 바뀌면 같은 상수의 값과 불확도가 함께 바뀐다 — 이 사이트는 그 변화를 센다.</div>', "en": '<div class="note"><b>Uncertainty</b> — the width, expressed as a standard deviation, within which a measured value may differ from the true value; the length of the ±1σ error bars in the plots. Unlike the error, the actual difference from the true value, the uncertainty is an estimate of how large that difference may be. It is the standard term in metrology (ISO/IEC Guide 98-3, the Guide to the Expression of Uncertainty in Measurement). What this site measures is whether that estimated width covered the actual moves between editions.</div><div class="note"><b>Edition</b> — one set of recommended values published by the CODATA Task Group on Fundamental Constants after a least-squares adjustment of all the measurements and theoretical calculations available at the time. An edition is named after the closing year of its data (the 2022 edition uses data to the end of 2022 and was published in 2024). After the 1973 and 1986 editions, a new edition has appeared every four years since 1998. The 1969 edition is the pre-CODATA adjustment by Taylor, Parker and Langenberg, included for comparison. With each new edition the values and uncertainties of the same constants change; this site counts those changes.</div>'}
+GLOSS = {"ko": '<div class="note"><b>불확도(uncertainty)</b> — 측정값이 참값에서 벗어나 있을 수 있는 폭을 표준편차로 나타낸 값이다. 그림의 오차 막대(±1σ) 길이가 이것이다. 참값과의 실제 차이인 「오차(error)」와 달리, 불확도는 그 차이가 얼마쯤일지에 대한 추정이다. 계측 분야의 표준 용어로, 한국산업표준 KS Q ISO/IEC GUIDE 98-3 「측정불확도 표현 지침」이 이 말을 쓴다. 이 사이트가 재는 것은 그 추정한 폭이 판이 바뀔 때의 실제 이동을 담았는가이다.</div><div class="note"><b>판(edition)</b> — CODATA(국제과학위원회 산하 과학기술데이터위원회) 기본상수 작업반이 그때까지 나온 측정과 이론 계산을 모두 모아 최소제곱 조정을 한 번 하고, 그 결과로 공표하는 권고값 한 벌이다. 판의 이름은 반영한 자료의 마감 연도다(예: 2022 판은 2022년 말까지의 자료로 만들어 2024년에 공표). 1973·1986 판 뒤 1998 판부터는 4년마다 나왔다. 1969 판은 CODATA 이전의 개인 연구진(Taylor·Parker·Langenberg) 조정값으로, 비교를 위해 함께 싣는다. 판이 바뀌면 같은 상수의 값과 불확도가 함께 바뀐다 — 이 사이트는 그 변화를 센다.</div>', "en": '<div class="note"><b>Uncertainty</b> — the width, expressed as a standard deviation, within which a measured value may differ from the true value; the length of the ±1σ error bars in the plots. Unlike the error, the actual difference from the true value, the uncertainty is an estimate of how large that difference may be. It is the standard term in metrology (ISO/IEC Guide 98-3, the Guide to the Expression of Uncertainty in Measurement). What this site measures is whether that estimated width covered the actual moves between editions.</div><div class="note"><b>Edition</b> — one set of recommended values published by the Task Group on Fundamental Constants of CODATA (the Committee on Data of the International Science Council) after a least-squares adjustment of all the measurements and theoretical calculations available at the time. An edition is named after the closing year of its data (the 2022 edition uses data to the end of 2022 and was published in 2024). After the 1973 and 1986 editions, a new edition has appeared every four years since 1998. The 1969 edition is the pre-CODATA adjustment by Taylor, Parker and Langenberg, included for comparison. With each new edition the values and uncertainties of the same constants change; this site counts those changes.</div>'}
 
 
 CONST_HEAD = {
@@ -721,8 +734,8 @@ def build():
                   "The cause (overconfidence, unknown systematic error, or the adjustment procedure) cannot be told from these data alone."]
         gloss = GLOSS[lang]
         body = hero + PROLOGUE[lang] + takeaway(lang, tk) + stats_h + f'<figure>{g1}<figcaption>{esc(g1cap)}</figcaption></figure>' + intro2 + gloss + f'<h2>{t["metrics"]}</h2><div class="cards">{cards}</div>' + (
-            '<h2>원자량 장 <span class="tag">1.1</span></h2><div class="cards"><a class="card" href="atomic/index.html"><b>원자량 — 표준 원자량의 개정 기록</b><small>CIAAW 1902~2024, 개정 701건. 불확도를 확장 범위로 정의하는 기록에 같은 질문을 던진다</small></a></div>' if lang == "ko" else
-            '<h2>Atomic-weights chapter <span class="tag">1.1</span></h2><div class="cards"><a class="card" href="atomic/index.html"><b>Atomic weights — the revision record</b><small>CIAAW 1902–2024, 701 revisions. The same question, asked of a record that defines uncertainty as an expanded range</small></a></div>') + (
+            '<h2>원자량 장 <span class="tag">1.1</span></h2><div class="cards"><a class="card" href="atomic/index.html"><b>원자량 — 표준 원자량의 개정 기록</b><small>CIAAW(국제순수·응용화학연맹의 동위원소 존재비·원자량 위원회) 1902~2024, 개정 701건. 불확도를 확장 범위로 정의하는 기록에 같은 질문을 던진다</small></a></div>' if lang == "ko" else
+            '<h2>Atomic-weights chapter <span class="tag">1.1</span></h2><div class="cards"><a class="card" href="atomic/index.html"><b>Atomic weights — the revision record</b><small>CIAAW (the IUPAC Commission on Isotopic Abundances and Atomic Weights) 1902–2024, 701 revisions. The same question, asked of a record that defines uncertainty as an expanded range</small></a></div>') + (
             '<h2>허블 상수 장 <span class="tag">1.2</span></h2><div class="cards"><a class="card" href="hubble/index.html"><b>허블 상수 — 발표된 H0 추정값과 그 오차</b><small>Huchra 목록 1929~2010(집계만)과 표 A2 1976~2019. 판 대신 개별 측정의 기록에, 두 기준값(Planck 2018·Riess 외 2022)을 나란히 두고 같은 질문을 던진다</small></a></div>' if lang == "ko" else
             '<h2>Hubble-constant chapter <span class="tag">1.2</span></h2><div class="cards"><a class="card" href="hubble/index.html"><b>Hubble constant — published H0 estimates and their errors</b><small>Huchra’s list 1929–2010 (aggregates only) and Table A2 1976–2019. The same question, asked of individual measurements against two references (Planck 2018, Riess et al. 2022)</small></a></div>') + (
             '<h2>CODATA 이전 장 <span class="tag">1.3</span></h2><div class="cards"><a class="card" href="early/index.html"><b>CODATA 이전 — 1929~1969년 권고값</b><small>Birge·DuMond·Cohen 의 검토 6개에서 다섯 상수를 원 논문 표로 옮기고, Henrion & Fischhoff(1986)의 지표를 1973·2022 기준으로 다시 계산한다</small></a></div>' if lang == "ko" else
@@ -865,8 +878,8 @@ def build():
         (base / "prior.html").write_text(page(lang, t["prior"], prior_page(lang), 1, "prior"), encoding="utf-8")
         (base / "method.html").write_text(page(lang, t["method"], method_page(lang, N), 1, "method"), encoding="utf-8")
         rows = [[f'<a href="../data/{f}">{f}</a>', esc(DATA_DESC[f][0 if lang == "ko" else 1])] for f in PUBLIC_DATA]
-        lic = ("<p>파생 표(아래 CSV)는 CC BY 4.0. 원 수치는 NIST가 공개한 CODATA 권고값과 1969년 논문의 표에서 옮겼고, 각 행에 원자료 위치를 적었다. NIST의 원 파일(ASCII 표·PDF)은 이 저장소에 싣지 않는다 — NIST는 표준참조자료(SRD)의 복제에 사전 허락을 요구한다고 밝힌다. 원 파일의 주소·내려받은 날짜·SHA-256 은 <a href='../data/raw_manifest.json'>raw_manifest.json</a> 에 있다.</p>" if lang == "ko"
-               else "<p>The derived tables below are CC BY 4.0. The underlying values were taken from the CODATA recommended values published by NIST and from the 1969 paper's table; every row records its source location. NIST's original files (ASCII tables, PDFs) are not included: NIST states that its Standard Reference Data may not be reproduced without prior permission. Their URLs, retrieval dates and SHA-256 hashes are in <a href='../data/raw_manifest.json'>raw_manifest.json</a>.</p>")
+        lic = ("<p>파생 표(아래 CSV)는 CC BY 4.0. 원 수치는 NIST가 공개한 CODATA(국제과학위원회 산하 과학기술데이터위원회) 권고값과 1969년 논문의 표에서 옮겼고, 각 행에 원자료 위치를 적었다. NIST의 원 파일(ASCII 표·PDF)은 이 저장소에 싣지 않는다 — NIST는 표준참조자료(SRD)의 복제에 사전 허락을 요구한다고 밝힌다. 원 파일의 주소·내려받은 날짜·SHA-256 은 <a href='../data/raw_manifest.json'>raw_manifest.json</a> 에 있다.</p>" if lang == "ko"
+               else "<p>The derived tables below are CC BY 4.0. The underlying values were taken from the recommended values of CODATA (the Committee on Data of the International Science Council) published by NIST and from the 1969 paper's table; every row records its source location. NIST's original files (ASCII tables, PDFs) are not included: NIST states that its Standard Reference Data may not be reproduced without prior permission. Their URLs, retrieval dates and SHA-256 hashes are in <a href='../data/raw_manifest.json'>raw_manifest.json</a>.</p>")
         import h0_site as _h0
         ncsv = len(PUBLIC_DATA) + len(__import__("aw_site").PUBLIC) + len(_h0.PUBLIC) + len(__import__("pre_site").PUBLIC)
         dtk = ([f"파생 CSV {ncsv}개와 datapackage.json 을 내려받을 수 있다. 엮은이가 계산한 부분은 CC BY 4.0 이다(원자량 값 자체는 IUPAC/CIAAW 조건을, 허블 상수 표 A2 의 값은 CC BY 4.0 출처 표시를 따른다).", "NIST 원 파일과 Huchra 목록 원 파일은 싣지 않는다. NIST 파일은 주소·날짜·해시로 같은 파일을 다시 받을 수 있고, Huchra 목록은 집계만 싣는다."] if lang == "ko" else
@@ -954,28 +967,28 @@ def reading_page(lang, N):
 <p class="lead">지표 면의 숫자를 한 번에 읽는 글이다. 해석이 들어가는 대목에는 근거의 한계를 같이 적었다.</p>
 <div class="takeaway"><b>핵심</b><ul><li>불확도는 꾸준히 줄었지만, 판이 바뀔 때 값은 그 불확도가 허용하는 것보다 자주 크게 움직였다.</li><li>공표된 불확도는 「이 범위 밖일 확률 5%」라는 약속보다, 이 분야 기록이 보여 주는 두꺼운 꼬리와 함께 읽는 것이 맞다.</li></ul></div>
 <h2>무엇을 셌나</h2>
-<p>CODATA 는 대략 4년마다 그동안의 측정과 이론 계산을 한데 모아 최소제곱 조정을 하고 기본 물리 상수의 권고값과 표준불확도를 낸다. 이 사이트는 1969년 조정(CODATA 이전)과 CODATA 아홉 판에서 서로 환산 관계가 없는 핵심 상수 17개를 골라, 판이 바뀔 때 값이 움직인 폭을 그 불확도와 견주었다.</p>
+<p>CODATA(국제과학위원회 산하 과학기술데이터위원회)는 대략 4년마다 그동안의 측정과 이론 계산을 한데 모아 최소제곱 조정을 하고 기본 물리 상수의 권고값과 표준불확도를 낸다. 이 사이트는 1969년 조정(CODATA 이전)과 CODATA 아홉 판에서 서로 환산 관계가 없는 핵심 상수 17개를 골라, 판이 바뀔 때 값이 움직인 폭을 그 불확도와 견주었다.</p>
 <h2>보이는 것</h2>
 <p>불확도는 꾸준히 줄었다. 불확도가 줄어든 핵심 상수 {N['m1_n_dec']}개의 상대 불확도는 중앙값으로 {N['m1_median']}년마다 절반이 되었다. 그런데 이동의 크기는 불확도가 말하는 범위를 자주 넘었다. 연속한 두 판 사이에서 두 불확도를 합친 것의 2배를 넘은 이동이 {N['m2_r2']}%, 3배를 넘은 이동이 {N['m2_r3']}% 였다. 판이 독립이고 정규분포를 따른다면 각각 4.6%, 0.27% 여야 한다. 2022 판 값을 기준으로 보면 옛 판의 ±2σ 막대 중 {N['m3_m2']}% 가 그 값을 담지 못했다.</p>
 <p>반대로 작은 이동은 기대보다 드물었다. |z| > 1 인 판 쌍은 {N['m2_r1']}% 로 기대치 31.7% 보다 낮다. 판과 판이 같은 실험 자료를 상당 부분 공유하기 때문이다. 새 측정이 없으면 값은 거의 그대로 남고({N['m2_zero']}개 쌍은 한 자리도 바뀌지 않았다), 새 측정이나 이론 수정이 들어오면 한꺼번에 크게 움직인다. 2006→2010 판의 미세 구조 상수 이동(옛 σ 기준 6.4배)은 CODATA 2010 보고서가 주로 전자 자기 모멘트 이론의 8차 항 계산 오류를 바로잡은 결과로 설명한다. 2014→2018 판의 양성자 전하 반지름 이동(옛 σ 기준 5.5배)에는 뮤온 수소·중수소의 램 이동 측정이 처음 들어온 것과 수소·중수소 분광의 개선이 함께 작용했다.</p>
 <h2>어디까지 말할 수 있나</h2>
 <ul><li>이 숫자는 「보고된 불확도가 판간 이동을 설명하지 못한 비율」이다. 그 원인이 연구자의 과신인지, 알려지지 않은 계통 오차인지, 조정 절차(어떤 측정을 넣고 뺄지, 불확도를 얼마나 키울지)인지는 이 자료로 가릴 수 없다.</li>
 <li>2022 판도 참값이 아니다. 기준을 바꾸면 놓침률도 바뀐다.</li>
-<li>판은 서로 독립이 아니고 상수도 서로 상관되어 있다(공동 조정, α 와 aₑ 의 이론 관계, R∞ 와 핵 반지름의 분광 입력). 비율의 구간은 상수 단위 군집 부트스트랩으로 냈지만, 이것은 같은 상수 안의 의존만 다루고 상수 사이의 상관은 남는다. 표본은 상수 17개뿐이다.</li>
+<li>판은 서로 독립이 아니고 상수도 서로 상관되어 있다(공동 조정, α 와 aₑ 의 이론 관계, R∞ 와 핵 반지름의 분광 입력). 비율의 구간은 상수 단위 군집 부트스트랩(상수를 묶음째 다시 뽑아 계산을 되풀이하는 방법)으로 냈지만, 이것은 같은 상수 안의 의존만 다루고 상수 사이의 상관은 남는다. 표본은 상수 17개뿐이다.</li>
 <li>Henrion & Fischhoff(1986)는 같은 경향을 1929~1973년 자료에서, Bailey(2017)는 개별 측정 4만여 건에서 보고했다. 이 사이트의 자료는 그보다 좁고(권고값, 핵심 상수) 길다(2022 판까지). 결과의 방향은 같다.</li></ul>
 <p>실무에서 쓸 만한 교훈은 하나다. 공표된 불확도는 「이 범위 밖일 확률이 5%」라는 약속으로 읽기보다, 이 분야의 과거 기록이 보여 주는 꼬리를 함께 보고 읽어야 한다는 것이다. 그 꼬리의 크기가 이 사이트의 숫자다.</p></div>"""
     return f"""<div class="prose"><h1>Reading — error bars and the next edition</h1>
 <p class="lead">An essay that reads the metric pages in one pass. Where interpretation enters, the limits of the evidence are stated alongside.</p>
 <div class="takeaway"><b>Takeaway</b><ul><li>Uncertainties fell steadily, yet values moved between editions by more than those uncertainties allow, and more often than a normal distribution predicts.</li><li>A published uncertainty is better read together with the heavy tails the field's record shows than as a promise that the true value lies outside the stated range only 5% of the time.</li></ul></div>
 <h2>What was counted</h2>
-<p>About every four years CODATA gathers the measurements and theoretical calculations of the period, performs a least-squares adjustment, and publishes recommended values and standard uncertainties for the fundamental physical constants. This site takes 17 core constants, none an exact function of the others, from the 1969 adjustment (pre-CODATA) and the nine CODATA editions, and compares each move between editions with the stated uncertainties.</p>
+<p>About every four years CODATA (the Committee on Data of the International Science Council) gathers the measurements and theoretical calculations of the period, performs a least-squares adjustment, and publishes recommended values and standard uncertainties for the fundamental physical constants. This site takes 17 core constants, none an exact function of the others, from the 1969 adjustment (pre-CODATA) and the nine CODATA editions, and compares each move between editions with the stated uncertainties.</p>
 <h2>What it shows</h2>
 <p>Uncertainties fell steadily: among the {N['m1_n_dec']} core constants whose uncertainty declined, the median half-life of the relative uncertainty is {N['m1_median']} years. Yet moves often exceeded what the uncertainties allowed. Between consecutive editions, {N['m2_r2']}% of moves exceeded twice the combined uncertainty and {N['m2_r3']}% exceeded three times, against 4.6% and 0.27% if editions were independent and normal. Against the 2022 values, {N['m3_m2']}% of earlier ±2σ error bars miss.</p>
 <p>Small moves, on the other hand, were rarer than expected: |z| > 1 in {N['m2_r1']}% of pairs, below the 31.7% expected. Editions share much of their experimental input. Without new data a value stays put ({N['m2_zero']} pairs did not change in any printed digit); when a new measurement or a corrected calculation arrives, it moves a long way at once. The CODATA 2010 report attributes the 2006→2010 move of the fine-structure constant (6.4 old σ) mainly to the correction of an error in eighth-order terms of the theory of the electron magnetic moment. The 2014→2018 move of the proton charge radius (5.5 old σ) came with the first inclusion of the muonic hydrogen and deuterium Lamb-shift measurements, together with improved hydrogen and deuterium spectroscopy.</p>
 <h2>How far this goes</h2>
 <ul><li>These numbers are the share of moves that the reported uncertainties did not cover. Whether the cause is the researchers' overconfidence, unknown systematic errors, or the adjustment procedure (which data to keep, how far to expand uncertainties) cannot be told from these data.</li>
 <li>The 2022 values are not the true values either; a different reference would give different miss rates.</li>
-<li>Editions are not independent and constants are correlated (joint adjustment, the theoretical link between α and aₑ, spectroscopic input shared by R∞ and nuclear radii). Intervals for rates are cluster bootstraps over constants, which handle dependence within a constant but not correlation between constants; and there are only 17 constants.</li>
+<li>Editions are not independent and constants are correlated (joint adjustment, the theoretical link between α and aₑ, spectroscopic input shared by R∞ and nuclear radii). Intervals for rates are cluster bootstraps over constants (constants picked again as whole clusters and the count repeated), which handle dependence within a constant but not correlation between constants; and there are only 17 constants.</li>
 <li>Henrion & Fischhoff (1986) reported the same tendency for the reviews from 1929 to 1969, measured against the 1973 values, and Bailey (2017) for some 41,000 individual measurements. The data here are narrower (recommended values, core constants) and longer (to 2022). The direction of the result is the same.</li></ul>
 <p>One practical lesson follows. A published uncertainty is better read together with the heavy tails that the field's record shows than as a promise that the truth lies outside the stated range only 5% of the time. The size of those tails is what this site measures.</p></div>"""
 
@@ -1012,7 +1025,7 @@ def method_page(lang, N):
 <li>1998 판 ASCII 의 진공 투자율 행은 지수가 빠져 있어(정의값 4π×10⁻⁷) 복원했다.</li></ul>
 <h2>상수 선정</h2><p>통계의 분모인 핵심 상수 17개는 서로 정확한 환산 관계가 없도록 골랐다. 예컨대 2019년 이전에는 e = √(2αh/(μ₀c)), mₑ = 2R∞h/(cα²) 이므로 α·h·R∞ 를 넣으면 e·mₑ 는 뺀다. 아보가드로 상수는 몰 플랑크 상수 관계로 h 와 묶여 있어 뺐다. 상대 원자 질량(전자·양성자·중성자·중양성자·알파 입자)을 넣고, 그 비인 양성자–전자 질량비는 뺐다. PDG 에서 받아 쓰는 양(타우 질량, 페르미 결합 상수, 약한 혼합각)은 넣지 않았다. 빛의 속력은 1969·1973 판에서 측정값이었으므로 그 두 판의 관계식에는 c 가 측정값으로 더 들어가지만, 측정값인 판이 둘뿐이라 핵심 상수에 넣지 않았다. μ₀·M_u 는 2014 판까지 정의값이었다.</p>
 <p>17개는 설계 단계에서 고른 목록이다. 같은 규칙(정확한 관계 없음, 측정값인 판 4개 이상, PDG 채택값 아님)에 맞지만 넣지 않은 양이 더 있다 — 헬리온·삼중수소핵의 상대 원자 질량, 중양성자 자기 모멘트, 규소 격자 간격 등. 앞의 셋을 더한 20개로 다시 계산한 값을 M2·M3 면에 민감도로 적었다(<code>sens_candidates.csv</code>). 정확한 관계가 없다는 것이 통계적으로 독립이라는 뜻은 아니다.</p>
-<h2>통계</h2><ul><li>비율(M2·M3)과 M4 의 신뢰구간: 상수를 통째로 다시 뽑는 군집 부트스트랩, 10,000회(M4 는 2,000회), 시드 2026, 백분위 95%. M1 의 구간은 회귀 기울기의 t(n−2) 구간이다.</li>
+<h2>통계</h2><ul><li>비율(M2·M3)과 M4 의 신뢰구간: 상수를 통째로 다시 뽑는 군집 부트스트랩(한 상수에 딸린 판 쌍을 한 묶음으로 삼아 묶음째 무작위로 다시 뽑고 — 같은 묶음이 두 번 뽑히거나 빠질 수 있다 — 같은 계산을 되풀이해, 결과의 가운데 95%를 구간으로 잡는 방법), 10,000회(M4 는 2,000회), 시드 2026, 백분위 95%. M1 의 구간은 회귀 기울기의 t(n−2) 구간이다.</li>
 <li>M4 는 값이 한 자리도 바뀌지 않은 판 쌍(z = 0)을 빼고 맞춘다. 남기면 중심 0 Student-t 의 우도가 척도 0 쪽으로 무한대가 되어 최대우도 추정량이 없다.</li>
 <li>판 연도는 판 이름의 연도(자료 마감 연도)다. 1998 판은 2000년에 출판되었다.</li>
 <li>정의값인 판은 그 상수의 M1~M4 계산에서 뺀다.</li></ul>
@@ -1033,7 +1046,7 @@ def method_page(lang, N):
 <li>The 1998 ASCII row for the vacuum magnetic permeability lacks its exponent; the exact value 4π×10⁻⁷ was restored.</li></ul>
 <h2>Choice of constants</h2><p>The 17 core constants that form every denominator were chosen so that none is an exact function of the others. Before 2019, e = √(2αh/(μ₀c)) and mₑ = 2R∞h/(cα²); with α, h and R∞ in, e and mₑ are out. The Avogadro constant is tied to h through the molar Planck constant and is out. The relative atomic masses of the electron, proton, neutron, deuteron and alpha particle are in, and their ratio mₚ/mₑ is out. Quantities CODATA adopts from the PDG (tau mass, Fermi coupling constant, weak mixing angle) are not used. The speed of light was measured in the 1969 and 1973 editions, so in those two editions the relations above involve c as a further measured quantity; with only two measured editions it is not a core constant. μ₀ and M_u were exact up to 2014.</p>
 <p>The 17 were chosen at the design stage. Other quantities meet the same rule (no exact relation, measured in at least four editions, not adopted from the PDG) but were not included: the helion and triton relative atomic masses, the deuteron magnetic moment, the silicon lattice spacing and others. The M2 and M3 pages give, as a sensitivity check, the values with the first three added (20 constants; <code>sens_candidates.csv</code>). The absence of exact relations does not make the constants statistically independent.</p>
-<h2>Statistics</h2><ul><li>Intervals for the rates (M2, M3) and for M4: cluster bootstrap resampling whole constants, 10,000 resamples (2,000 for M4), seed 2026, 95% percentile intervals. M1 intervals are t(n−2) intervals of the regression slope.</li>
+<h2>Statistics</h2><ul><li>Intervals for the rates (M2, M3) and for M4: cluster bootstrap resampling whole constants (the pairs of one constant form one cluster; clusters are picked again at random, so one may come up twice and another not at all, the calculation is repeated, and the middle 95% of the results is the interval), 10,000 resamples (2,000 for M4), seed 2026, 95% percentile intervals. M1 intervals are t(n−2) intervals of the regression slope.</li>
 <li>M4 is fitted without the pairs whose printed value did not change (z = 0); with them, the likelihood of a zero-centered Student-t is unbounded as the scale goes to zero and no maximum-likelihood estimate exists.</li>
 <li>Edition year is the year in the edition's name (data cut-off); the 1998 edition was published in 2000.</li>
 <li>Editions in which a constant is exact are left out of its M1–M4 calculations.</li></ul>

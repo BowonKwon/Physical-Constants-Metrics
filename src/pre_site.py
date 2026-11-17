@@ -40,12 +40,12 @@ HF_CITE = "M. Henrion, B. Fischhoff, Am. J. Phys. 54, 791 (1986)"
 
 T = {
     "ko": dict(nav="CODATA 이전", title="CODATA 이전 — 1929~1969년 권고값과 Henrion & Fischhoff 재계산",
-               lead="CODATA 가 생기기 전에도 물리 상수의 권고값은 있었다. Birge(1929·1941)와 DuMond·Cohen(1950~1963)이 그때까지의 측정을 모아 값을 내고 오차를 붙였다. 이 장은 다섯 상수(α⁻¹·h·e·mₑ·N_A)의 그 값을 원 논문 표에서 옮겨, 1973 판과 2022 판에 비추어 오차가 뒤의 값을 담았는지 센다.",
+               lead="CODATA(국제과학위원회 산하 과학기술데이터위원회 — 그 기본상수 작업반이 1973년부터 기본 물리 상수의 권고값을 낸다)가 생기기 전에도 물리 상수의 권고값은 있었다. Birge(1929·1941)와 DuMond·Cohen(1950~1963)이 그때까지의 측정을 모아 값을 내고 오차를 붙였다. 이 장은 다섯 상수(α⁻¹·h·e·mₑ·N_A)의 그 값을 원 논문 표에서 옮겨, 1973 판과 2022 판에 비추어 오차가 뒤의 값을 담았는지 센다.",
                glance="한눈에 보기", fig="다섯 상수의 권고값, 1929~2022", values="옮긴 값", hf="Henrion & Fischhoff (1986) 재계산", method="방법·한계",
                review="검토", source="원 논문", page="쪽", const="상수", printed="원 표기", kind="±의 뜻", z73="z (1973 기준)", z22="z (2022 기준)", ppm22="2022 대비 ppm",
                variant="변형", ref="기준 판", n="n", rb="R_B (H&F 식 1)", rbsd="RMS", iq="IQ", si="SI", reviews="검토", download="CSV 내려받기"),
     "en": dict(nav="Before CODATA", title="Before CODATA — recommended values 1929–1969 and the Henrion & Fischhoff indices",
-               lead="Recommended values of the physical constants existed before CODATA. Birge (1929, 1941) and DuMond and Cohen (1950–1963) gathered the measurements of their day into adopted values with stated errors. This chapter transcribes those values for five constants (α⁻¹, h, e, mₑ, N_A) from the original tables and counts, against the 1973 and 2022 editions, whether the stated errors covered the later values.",
+               lead="Recommended values of the physical constants existed before CODATA (the Committee on Data of the International Science Council, whose Task Group on Fundamental Constants has issued recommended values since 1973). Birge (1929, 1941) and DuMond and Cohen (1950–1963) gathered the measurements of their day into adopted values with stated errors. This chapter transcribes those values for five constants (α⁻¹, h, e, mₑ, N_A) from the original tables and counts, against the 1973 and 2022 editions, whether the stated errors covered the later values.",
                glance="At a glance", fig="Recommended values of five constants, 1929–2022", values="Transcribed values", hf="Henrion & Fischhoff (1986), recomputed", method="Method and limits",
                review="Review", source="Paper", page="Page", const="Constant", printed="As printed", kind="Kind of ±", z73="z (vs 1973)", z22="z (vs 2022)", ppm22="ppm vs 2022",
                variant="Variant", ref="Reference", n="n", rb="R_B (H&F eq. 1)", rbsd="RMS", iq="IQ", si="SI", reviews="Reviews", download="Download CSV"),
@@ -102,13 +102,14 @@ def chart(D, lang, H, W=900, ph=150):
     """Five panels: deviation from the 2022 value in ppm on a symmetric log axis, pre-CODATA reviews (filled)
     and CODATA editions 1969-2018 (open), bars = ± one standard uncertainty."""
     esc = H["esc"]
-    Lm, R, Tp, gap = 56, 20, 16, 30
+    Lm, R, Tp, gap = 56, 20, 40, 30   # 1.3.6: room for the name of the vertical axis above the first panel
     Hh = Tp + 5 * (ph + gap) + 20
     x0, x1 = 1925, 2025
     lim = _sl(30000)
 
     def X(y): return Lm + (y - x0) / (x1 - x0) * (W - Lm - R)
-    o = [f'<svg viewBox="0 0 {W} {Hh}" role="img" aria-label="{esc(T[lang]["fig"])}">']
+    o = [f'<svg viewBox="0 0 {W} {Hh}" role="img" aria-label="{esc(T[lang]["fig"])}">',
+         f'<text x="{Lm}" y="15">{"세로: 2022 판 값에서 떨어진 정도(ppm — 백만분의 1, 대칭 로그 축) · 0이 2022 판 값 · 위는 그보다 큰 값" if lang == "ko" else "Vertical: distance from the 2022 value (ppm, parts per million; symmetric-log axis) · 0 = the 2022 value · above = larger"}</text>']
     pre = {}
     for r in D["vals"]:
         pre.setdefault(r["qid"], []).append(r)
