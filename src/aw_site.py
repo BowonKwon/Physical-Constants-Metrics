@@ -281,7 +281,7 @@ def build(lang, base, H, out_root):
            else "The vertical axis is z_old = (new value − previous value) ÷ previous uncertainty. Between the dashed lines at ±1 the new value lies within the range of the previous recommendation; outside them it moved out of that range. The axis is linear, and values beyond ±8 are drawn at its edge. One dot per revision whose previous recommendation had an uncertainty. Orange: new value outside the previous range; triangles: clipped beyond ±8.")
     body = (f'<h1>{esc(t["title"])}</h1><p class="lead">{esc(t["lead"])}</p>' + takeaway(lang, tk) + stats +
             f'<figure>{chart_z(pairs, lang, H)}<figcaption>{esc(cap)}</figcaption></figure>' + GLOSS[lang] +
-            f'<h2>{t["metrics"]}</h2><div class="cards">{cards}</div><h2>{t["elements"]}</h2><div class="cards">{elcards}</div>' + credit(lang, H))
+            f'<h2 id=metrics>{t["metrics"]}</h2><div class="cards">{cards}</div><h2 id=elements>{t["elements"]}</h2><div class="cards">{elcards}</div>' + credit(lang, H))
     (d / "index.html").write_text(page(lang, t["nav"], body, 2, "atomic"), encoding="utf-8")
 
     # metric pages

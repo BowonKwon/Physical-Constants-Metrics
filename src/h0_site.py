@@ -551,13 +551,13 @@ def method_body(lang, N, D, t, H):
     if lang == "ko":
         return f"""<div class="prose"><h1>허블 상수 장 — 방법·한계</h1>
 <div class="takeaway"><b>핵심</b><ul><li>두 집성을 쓴다. Huchra 목록(1927~2010, 553건)은 재게시 허락 문장이 없어 집계만 싣고, Faerber & López-Corredoira(2020) 표 A2(1976~2019, 163건, CC BY 4.0)는 행 단위로 싣는다.</li><li>두 집성 모두 오차가 몇 σ 인지 적지 않아 「수준 미표기」계열로 다루고 1σ 로 바꿔 부르지 않는다.</li><li>지표는 H1·H3·H4 이고 H2 는 내지 않는다. 기준값은 Planck 2018 과 Riess 외 2022 를 나란히 둔다. 관찰 자료의 집계이며 원인을 말하지 않는다.</li></ul></div>
-<h2>자료원과 이용 조건</h2>{sources_block(lang, H)}
+<h2 id=sources>자료원과 이용 조건</h2>{sources_block(lang, H)}
 <p>Huchra 목록에 대해서는 허락을 구하지 않았다(저자는 2010년에 작고했고, 사본의 관리자와 권리 승계는 확인되지 않았다). 표 A2 는 164행이 인쇄돼 있고 본문은 163건이라 한다. 「1998, 62 ± 6, Croft and Dailey」가 두 번 인쇄돼 있어 둘째 것을 뺐다. 그러면 Croft & Dailey 120 + 1976~1989년 8 + 2011~2019년 35 = 163 으로 논문이 적은 구성과 맞는다. 위·아래 오차가 다른 행은 {N['fa_asym']}개로, 원 표기를 CSV 의 err_as_printed 열에 남겼다.</p>
-<h2>두 집성이 겹치는 기간(1976~2010)</h2>
+<h2 id=overlap>두 집성이 겹치는 기간(1976~2010)</h2>
 <p>같은 측정으로 볼 수 있는 짝은 연도가 1년 이내, H0 차이 0.5 이내, 오차 차이가 0.5 또는 큰 쪽 오차의 10% 이내인 행으로 정했다(1976~1989년 행은 저자 이름도 Huchra 의 문헌 칸에 있어야 한다). 표 A2 의 128행 가운데 69행이 Huchra 목록과 짝이 되고(연도·값·오차가 모두 같은 것 42), 59행은 Huchra 목록에 없다. 1990~2010년의 120행 중 65행이 짝이 된다. 두 집성을 합친 계열(짝이 된 행은 한 번만 셈)은 감도 표에만 싣는다 — 값으로만 맞춘 짝이 있어 과잉 제거일 수 있다. Huchra 와 표 A2 를 짝지은 행 단위 대조표는 공개하지 않는다.</p>
-<h2>오차의 수준</h2>
+<h2 id=errors>오차의 수준</h2>
 <p>두 집성 모두 오차가 몇 σ 인지 적지 않았다. Huchra 목록의 설명문은 「외부 오차가 있으면 그것을, 없으면 저자가 인용한 오차를 적당히 반올림해 쓴다」고 적고, 표 A2 의 논문은 표의 오차를 χ² 의 σ_i 로 쓰며 「주어진 오차 막대는 모든 통계적 효과를 포함한다」고 적는다. 둘 다 신뢰 수준의 진술은 아니다. 그래서 이 장의 오차는 「수준 미표기」계열로 다루고 1σ 로 바꿔 부르지 않는다. 위·아래 오차가 다른 행은 평균을 쓴다. 참고로 Chen, Gott & Ratra(2003)는 Huchra 목록의 위·아래 오차를 1 표준편차 오차 막대로 다뤘다 — 그 논문의 해석이지 집성의 진술은 아니다.</p>
-<h2>지표와 결정</h2>
+<h2 id=metrics-decisions>지표와 결정</h2>
 <ul><li><b>H1 정밀도 반감기.</b> 해마다 상대 오차(u/|x|)의 중앙값을 취해 log₂ 를 연도에 회귀한다(본값). 해마다 가장 작은 상대 오차만 쓰는 정밀도 최전선을 참고로 나란히 둔다. 구간은 기울기의 t 구간.</li>
 <li><b>H2 — 내지 않음.</b> {esc(H2_TEXT["ko"])}</li>
 <li><b>H3 기준값 대비 놀람 지수.</b> z = (기준값 − x)/u_x 로 |z| > 1, |z| > 2, |z| < 0.674(사분위 안), |z| > 2.326 의 비율. 기준값은 Planck 2018(67.36 ± 0.54 — {esc(REFS["planck18"]["cite_ko"])})과 Riess 외 2022(73.04 ± 1.04 — {esc(REFS["riess22"]["cite_ko"])})를 나란히 둔다. 기준값의 불확도는 z 에 들어가지 않는다. 구간은 목록에 적힌 연도를 군집으로 한 부트스트랩(Huchra 목록의 날짜는 출판·프리프린트·학회 발표 가운데 하나의 시점이다. 같은 해에 나온 추정을 한 묶음으로 삼아 묶음째 무작위로 다시 뽑고 — 같은 해가 두 번 뽑히거나 빠질 수 있다 — 같은 계산을 되풀이해, 결과의 가운데 95%를 구간으로 잡는 방법) 10,000회(시드 2026). Huchra 목록은 Type 부호를 군집으로 한 구간도 감도로 싣는다(더 넓다).</li>
@@ -566,10 +566,10 @@ def method_body(lang, N, D, t, H):
 <li><b>시작 연도.</b> 기본 계산은 1929년부터이고 1950년부터의 값을 병기한다. Huchra 목록의 1929년 이전 행 2개(1927년, 1928년 — 둘 다 1차 부호 O, 위 오차에 부호가 없는 형식)는 기본 계산에서 뺀다. 오차가 없는 행 3개(1978·1984·1986년)도 쓰지 않는다.</li>
 <li><b>집계의 표시.</b> Huchra 목록의 연도별·10년별 집계는 건수와 H0·상대 오차의 사분위(선형 보간)만 싣고, 3건 미만인 해는 건수만 적는다 — 한두 건의 중앙값은 곧 그 행의 값이기 때문이다. 1929~2010년 51개 해 가운데 {N['h1_hu_small']}개 해가 그렇다. 1940년대에는 행이 없다.</li>
 <li><b>번호.</b> 정의가 M1~M4 와 달라 H1~H4 로 새로 붙였다(원자량 장의 A1~A5 와 같은 방식).</li></ul>
-<h2>방법 부호</h2>
+<h2 id=method-codes>방법 부호</h2>
 <p>Huchra 목록의 Type 부호를 그대로 쓴다. 새 분류를 붙이지 않는다. 1차 부호(방법)와 2차 부호(저자군·조건)의 뜻은 파일의 범례 그대로이고, 범례에 없는 부호(1차 I·M, 2차 T)는 미확인으로 둔다. 부호가 없는 행이 {none_n}개 있다. 표 A2 에는 방법 열이 없다. 건수는 1929년 이후 오차 있는 행 기준이다.</p>
 <h3>1차 부호</h3>{ptab}<h3>2차 부호</h3>{stab}
-<h2>한계</h2>
+<h2 id=limits>한계</h2>
 <ul><li>두 집성은 각각 전수 조사가 아니다. 겹치는 기간에서도 표 A2 의 절반 가까이가 Huchra 목록에 없고, Huchra 목록의 대부분은 표 A2 에 없다.</li>
 <li>오차의 뜻(통계만인지, 계통 포함인지, 몇 σ 인지)이 행마다 다를 수 있고 집성은 그것을 적지 않았다.</li>
 <li>같은 해 측정이 여럿이라 H1 은 해별 요약에 기대며, 초기 연도는 점이 하나뿐인 해가 많다.</li>
@@ -577,16 +577,16 @@ def method_body(lang, N, D, t, H):
 <li>같은 보정자·같은 자료·같은 팀의 갱신은 독립 측정이 아니다. 연도 군집 부트스트랩은 그 의존의 일부만 다룬다.</li>
 <li>표 A2 의 1990~2010년 행은 원 논문을 알 수 없어, 같은 논문의 값이 두 집성에 한 번씩 들어가는 것을 완전히 막지 못했다.</li>
 <li>표 A2 는 arXiv 판에서 읽었고, 1.2.1 에서 출판본(MDPI 웹판) 표의 164행 전부와 연도·값·오차 표기·참고문헌 번호를 대조해 모두 같음을 확인했다. Planck 2018 값은 결과 VI(arXiv 1807.06209v4) 16쪽 표 2, Riess 외 2022 값은 arXiv 2112.04510v3 1쪽(초록)·33쪽에서 확인했다.</li></ul>
-<h2>재현</h2><p>표 A2 는 <code>h0_faerber.py</code> 가 arXiv PDF 의 문자층에서 읽어 <code>h0_faerber2020.csv</code> 로 쓴다. H1·H3·H4 는 <code>h0_stage1b.py</code> 가 <code>metrics.py</code> 의 공식을 어댑터(<code>h0_metrics.py</code>)로 불러 계산한다. Huchra 목록의 집계는 <code>h0_aggregate.py</code>, 면은 <code>h0_site.py</code>(정의 문장은 <code>h0_registry.py</code>)가 만든다. Huchra 목록 원 파일은 공개 저장소에 싣지 않는다.</p></div>"""
+<h2 id=reproduction>재현</h2><p>표 A2 는 <code>h0_faerber.py</code> 가 arXiv PDF 의 문자층에서 읽어 <code>h0_faerber2020.csv</code> 로 쓴다. H1·H3·H4 는 <code>h0_stage1b.py</code> 가 <code>metrics.py</code> 의 공식을 어댑터(<code>h0_metrics.py</code>)로 불러 계산한다. Huchra 목록의 집계는 <code>h0_aggregate.py</code>, 면은 <code>h0_site.py</code>(정의 문장은 <code>h0_registry.py</code>)가 만든다. Huchra 목록 원 파일은 공개 저장소에 싣지 않는다.</p></div>"""
     return f"""<div class="prose"><h1>Hubble constant — method and limits</h1>
 <div class="takeaway"><b>Takeaway</b><ul><li>Two compilations are used. Huchra's list (1927–2010, 553 rows) grants no right to republish and is shown only in aggregate; Table A2 of Faerber & López-Corredoira (2020) (1976–2019, 163 rows, CC BY 4.0) is shown row by row.</li><li>Neither compilation states the confidence level of its errors, so they are treated as an "unstated" series and not relabeled as 1σ.</li><li>The metrics are H1, H3 and H4; H2 is not produced. Two references, Planck 2018 and Riess et al. 2022, are shown side by side. The pages aggregate observed records and state no cause.</li></ul></div>
-<h2>Sources and terms of use</h2>{sources_block(lang, H)}
+<h2 id=sources>Sources and terms of use</h2>{sources_block(lang, H)}
 <p>No permission was sought for Huchra's list (the author died in 2010; who maintains the copy and holds the rights could not be established). Table A2 prints 164 rows while the text counts 163: the row "1998, 62 ± 6, Croft and Dailey" is printed twice and the second copy is dropped. The remainder, 120 Croft & Dailey + 8 (1976–1989) + 35 (2011–2019), matches the paper's own breakdown. {N['fa_asym']} rows have different upper and lower errors; the printed form is kept in the err_as_printed column of the CSV.</p>
-<h2>Where the two compilations overlap (1976–2010)</h2>
+<h2 id=overlap>Where the two compilations overlap (1976–2010)</h2>
 <p>Two rows are taken as the same estimate when their years are at most one apart, H0 differs by at most 0.5, and the errors differ by at most 0.5 or 10% of the larger one (for the named rows of 1976–1989 the surname must also appear in Huchra's reference text). Of the 128 Table A2 rows in this span, 69 pair with a Huchra row (42 with identical year, value and error) and 59 are absent from Huchra's list; 65 of the 120 Croft & Dailey rows pair. A merged series (paired rows counted once) appears only in the sensitivity tables, since pairs matched on values alone may remove too much. The row-level comparison of Huchra and Table A2 is not published.</p>
-<h2>What the errors mean</h2>
+<h2 id=errors>What the errors mean</h2>
 <p>Neither compilation states the confidence level of its errors. The explanatory text of Huchra's list says that external errors are used when available and otherwise the errors quoted by the authors, appropriately rounded; the Table A2 paper uses the errors as σ_i in χ² and says that "the given error bars account for all statistical effects". Neither is a statement of a confidence level. The chapter therefore treats the errors as one "unstated" series and does not relabel them as 1σ. Asymmetric errors enter as the mean of the two. For the record, Chen, Gott & Ratra (2003) treated Huchra's upper and lower errors as one-standard-deviation error bars; that is the authors' reading, not a statement of the compilation.</p>
-<h2>Metrics and decisions</h2>
+<h2 id=metrics-decisions>Metrics and decisions</h2>
 <ul><li><b>H1 precision half-life.</b> The yearly median of the relative error (u/|x|), log₂-regressed on year (main value); the precision frontier (the smallest relative error of each year) as a reference. Interval: t interval of the slope.</li>
 <li><b>H2, not produced.</b> {esc(H2_TEXT["en"])}</li>
 <li><b>H3 surprise against a reference.</b> z = (reference − x)/u_x, with the shares |z| > 1, |z| > 2, |z| < 0.674 (inside the interquartile band) and |z| > 2.326. Two references side by side: Planck 2018 (67.36 ± 0.54; {esc(REFS["planck18"]["cite_en"])}) and Riess et al. 2022 (73.04 ± 1.04; {esc(REFS["riess22"]["cite_en"])}). The reference's uncertainty does not enter z. Intervals: cluster bootstrap by the year recorded in the list (in Huchra's list, the date of the preprint, the publication or the conference talk; the estimates of one year form one cluster; years are picked again at random, so one may come up twice and another not at all, the calculation is repeated, and the middle 95% of the results is the interval; 10,000 resamples, seed 2026). For Huchra's list, intervals with the type code as cluster are shown as a sensitivity check (they are wider).</li>
@@ -595,10 +595,10 @@ def method_body(lang, N, D, t, H):
 <li><b>Start year.</b> The baseline starts in 1929; values from 1950 are shown alongside. The two rows before 1929 in Huchra's list (1927 and 1928, both primary code O, both with an unsigned upper error) are left out of the baseline, as are the three rows without an error (1978, 1984, 1986).</li>
 <li><b>How aggregates are shown.</b> The yearly and decade aggregates of Huchra's list give only counts and the quartiles (linear interpolation) of H0 and of the relative error, and a year with fewer than three rows gives its count only, since the median of one or two rows is a printed value. {N['h1_hu_small']} of the 51 years from 1929 to 2010 are such years. The 1940s have no row.</li>
 <li><b>Numbering.</b> The definitions differ from M1–M4, so the metrics are numbered H1–H4 (as A1–A5 in the atomic-weights chapter).</li></ul>
-<h2>Method codes</h2>
+<h2 id=method-codes>Method codes</h2>
 <p>Huchra's type codes are used as printed; no new classification is added. The meanings of the primary codes (method) and secondary codes (authors, conditions) are the file legend's own words, and codes absent from the legend (primary I and M, secondary T) are left unverified. {none_n} row has no code. Table A2 has no method column. Counts are over the rows with an error from 1929 on.</p>
 <h3>Primary codes</h3>{ptab}<h3>Secondary codes</h3>{stab}
-<h2>Limits</h2>
+<h2 id=limits>Limits</h2>
 <ul><li>Neither compilation is complete. Even in the overlapping years nearly half of Table A2 is absent from Huchra's list, and most of Huchra's list is absent from Table A2.</li>
 <li>What an error means (statistical only or with systematics, and at what level) may differ from row to row; the compilations do not say.</li>
 <li>Several estimates share a year, so H1 rests on a yearly summary; many early years have a single point.</li>
@@ -606,7 +606,7 @@ def method_body(lang, N, D, t, H):
 <li>Estimates sharing a calibrator, the same data or the same team are not independent; the year-cluster bootstrap handles only part of that dependence.</li>
 <li>The 1990–2010 rows of Table A2 cannot be traced to their papers, so the same paper may enter the two compilations once each.</li>
 <li>Table A2 was read from the arXiv version; in 1.2.1 all 164 rows were checked against the table of the published (MDPI web) version for year, value, error as printed and reference number, and all agree. The Planck 2018 value was checked in Results VI (arXiv 1807.06209v4), p. 16, Table 2; the Riess et al. 2022 value in arXiv 2112.04510v3, p. 1 (abstract) and p. 33.</li></ul>
-<h2>Reproduction</h2><p>Table A2 is read from the text layer of the arXiv PDF by <code>h0_faerber.py</code> into <code>h0_faerber2020.csv</code>. H1, H3 and H4 are computed by <code>h0_stage1b.py</code>, which calls the formulas of <code>metrics.py</code> through the adapter <code>h0_metrics.py</code>. The aggregates of Huchra's list come from <code>h0_aggregate.py</code>; the pages from <code>h0_site.py</code> (definitions in <code>h0_registry.py</code>). The original file of Huchra's list is not included in the public repository.</p></div>"""
+<h2 id=reproduction>Reproduction</h2><p>Table A2 is read from the text layer of the arXiv PDF by <code>h0_faerber.py</code> into <code>h0_faerber2020.csv</code>. H1, H3 and H4 are computed by <code>h0_stage1b.py</code>, which calls the formulas of <code>metrics.py</code> through the adapter <code>h0_metrics.py</code>. The aggregates of Huchra's list come from <code>h0_aggregate.py</code>; the pages from <code>h0_site.py</code> (definitions in <code>h0_registry.py</code>). The original file of Huchra's list is not included in the public repository.</p></div>"""
 
 
 def build(lang, base, H, out_root):
@@ -636,8 +636,8 @@ def build(lang, base, H, out_root):
 <a class="stat" href="h3.html"><span class="n">{N['h3_hu_p_m2']}%</span><span class="vs">{"정규 기대 4.6%" if ko else "normal 4.6%"}</span><small>{"H3 — Planck 2018 기준으로 인용 오차의 2배 밖에 있는 Huchra 목록 추정값의 비율(95% 구간 " if ko else "H3: share of Huchra's list beyond twice the quoted error against Planck 2018 (95% interval "}{N['h3_hu_p_m2_ci']}{"); Riess 외 2022 기준 " if ko else "); against Riess et al. 2022 "}{N['h3_hu_r_m2']}%</small></a>
 <a class="stat" href="h3.html"><span class="n">{N['h3_hu_p_si']}%</span><span class="vs">{"정규 기대 2%" if ko else "normal 2%"}</span><small>{"H3 놀람 지수(|z| > 2.326), Planck 기준; Riess 기준 " if ko else "H3 surprise index (|z| > 2.326) against Planck; against Riess "}{N['h3_hu_r_si']}%</small></a>
 <a class="stat" href="h4.html"><span class="n">ν = {N['h4_hu_p_nu']}</span><small>{"H4 — Huchra 목록의 z 에 맞춘 Student-t 자유도, Planck 기준(95% 구간 " if ko else "H4: Student-t degrees of freedom fitted to the z of Huchra's list, against Planck (95% interval "}{N['h4_hu_p_ci']}{"); Riess 기준 " if ko else "); against Riess "}{N['h4_hu_r_nu']}</small></a></div>"""
-    what = ("<h2>무엇을 재는가</h2><div class=\"prose\"><p>허블 상수 H0 는 은하의 후퇴 속도를 거리로 나눈 값으로, 단위는 km s⁻¹ Mpc⁻¹ 이다. CODATA 판(국제과학위원회 산하 과학기술데이터위원회가 몇 해마다 그때까지의 측정을 모두 모아 한 번에 정하는 권고값)과 달리 H0 에는 「다음 판」이 없다. 한 해에 여러 팀이 서로 다른 방법으로 값을 내고, 오늘날에도 초기 우주(우주배경복사)와 후기 우주(거리 사다리) 측정이 서로 다른 값을 낸다. 그래서 이 장은 각 추정값을 두 기준값과 나란히 견주고, 두 기준 모두에 대해 「인용된 오차가 기준값과의 차이를 담았는가」를 센다. 판 사이 이동(M2)에 대응하는 지표는 내지 않는다.</p></div>" if ko else
-            "<h2>What is measured</h2><div class=\"prose\"><p>The Hubble constant H0 is the recession velocity of galaxies divided by their distance, in km s⁻¹ Mpc⁻¹. Unlike a CODATA edition (the recommended values that the Committee on Data of the International Science Council sets every few years from all the measurements to date), an H0 estimate has no \"next edition\": several teams publish values by different methods in the same year, and today early-universe (cosmic microwave background) and late-universe (distance ladder) measurements give different values. The chapter therefore sets every estimate against two reference values and counts, for both, whether the quoted error covered the distance to the reference. No analogue of the edition-to-edition move (M2) is published.</p></div>")
+    what = ("<h2 id=what>무엇을 재는가</h2><div class=\"prose\"><p>허블 상수 H0 는 은하의 후퇴 속도를 거리로 나눈 값으로, 단위는 km s⁻¹ Mpc⁻¹ 이다. CODATA 판(국제과학위원회 산하 과학기술데이터위원회가 몇 해마다 그때까지의 측정을 모두 모아 한 번에 정하는 권고값)과 달리 H0 에는 「다음 판」이 없다. 한 해에 여러 팀이 서로 다른 방법으로 값을 내고, 오늘날에도 초기 우주(우주배경복사)와 후기 우주(거리 사다리) 측정이 서로 다른 값을 낸다. 그래서 이 장은 각 추정값을 두 기준값과 나란히 견주고, 두 기준 모두에 대해 「인용된 오차가 기준값과의 차이를 담았는가」를 센다. 판 사이 이동(M2)에 대응하는 지표는 내지 않는다.</p></div>" if ko else
+            "<h2 id=what>What is measured</h2><div class=\"prose\"><p>The Hubble constant H0 is the recession velocity of galaxies divided by their distance, in km s⁻¹ Mpc⁻¹. Unlike a CODATA edition (the recommended values that the Committee on Data of the International Science Council sets every few years from all the measurements to date), an H0 estimate has no \"next edition\": several teams publish values by different methods in the same year, and today early-universe (cosmic microwave background) and late-universe (distance ladder) measurements give different values. The chapter therefore sets every estimate against two reference values and counts, for both, whether the quoted error covered the distance to the reference. No analogue of the edition-to-edition move (M2) is published.</p></div>")
     h2line = (f'<div class="note"><b>H2 — 내지 않음.</b> 연속 측정 쌍의 |z| 초과 비율은 쌍을 어떻게 묶느냐에 따라 결론이 갈려 내지 않는다. <a href="h2.html">까닭</a>.</div>' if ko else
               f'<div class="note"><b>H2, not produced.</b> The exceedance rate of consecutive pairs changes its verdict with how the pairs are grouped, so no number is published. <a href="h2.html">Why</a>.</div>')
     cards = "".join(f'<a class="card{" d" if m["id"] == "h2" else ""}" href="{m["id"]}.html"><b>{m["id"].upper()} · {esc(m[lang]["name"])}</b><small>{esc(m[lang]["short"])}</small></a>' for m in H0_METRICS)
@@ -646,10 +646,10 @@ def build(lang, base, H, out_root):
     ef = event_facts(D["codes"])
     cap_tl = ("세로축은 H0 값(km s⁻¹ Mpc⁻¹)이다. 파란 점은 표 A2 의 행(오차 막대는 ± 인용 오차, 비대칭이면 평균), 회색 띠는 Huchra 목록 10년 단위의 사분위 범위와 중앙값(건수 표시), 점선은 두 기준값. 세로축 로그. 위의 사건은 연대기 면에 근거를 적었다." if ko
               else "Vertical axis: H0 (km s⁻¹ Mpc⁻¹). Blue dots: rows of Table A2 (bars: ± quoted error, the mean if asymmetric). Gray bands: quartile range and median of Huchra's list per decade (with counts). Dashed lines: the two references. Log vertical axis. The events along the top are documented on the chronology page.")
-    body = (f'<h1>{esc(t["title"])}</h1><p class="lead">{esc(t["lead"])}</p>' + takeaway(lang, tk) + f'<h2>{t["glance"]}</h2>' + stats_h +
+    body = (f'<h1>{esc(t["title"])}</h1><p class="lead">{esc(t["lead"])}</p>' + takeaway(lang, tk) + f'<h2 id=glance>{t["glance"]}</h2>' + stats_h +
             f'<figure><div class="legend"><span style="--c:var(--s1)">{"표 A2 (행)" if ko else "Table A2 (rows)"}</span><span style="--c:var(--fg3)">{"Huchra 목록 (10년 단위 집계)" if ko else "Huchra (decade aggregates)"}</span><span class="dash" style="--c:var(--s3)">Planck 2018</span><span class="dash" style="--c:var(--s2)">{"Riess 외 2022" if ko else "Riess et al. 2022"}</span></div>{chart_timeline(D["decades"], D["frows"], D["codes"], lang, H)}<figcaption>{esc(cap_tl)}</figcaption></figure>' +
-            what + f'<h2>{"두 자료원과 이용 조건" if ko else "The two sources and their terms"}</h2>' + sources_block(lang, H) + h2line +
-            f'<h2>{t["metrics"]}</h2><div class="cards">{cards}</div><h2>{t["pages"]}</h2><div class="cards">{pcards}</div>' + credit(lang, H))
+            what + f'<h2 id=sources>{"두 자료원과 이용 조건" if ko else "The two sources and their terms"}</h2>' + sources_block(lang, H) + h2line +
+            f'<h2 id=metrics>{t["metrics"]}</h2><div class="cards">{cards}</div><h2 id=pages>{t["pages"]}</h2><div class="cards">{pcards}</div>' + credit(lang, H))
     (d / "index.html").write_text(page(lang, t["nav"], body, 2, "hubble"), encoding="utf-8")
 
     # ---------- metric pages
@@ -696,9 +696,9 @@ def build(lang, base, H, out_root):
              takeaway(lang, tl_tk) +
              f'<figure><div class="legend"><span style="--c:var(--s1)">{"표 A2 (행)" if ko else "Table A2 (rows)"}</span><span style="--c:var(--fg3)">{"Huchra 목록 (10년 단위 집계)" if ko else "Huchra (decade aggregates)"}</span><span class="dash" style="--c:var(--s3)">Planck 2018</span><span class="dash" style="--c:var(--s2)">{"Riess 외 2022" if ko else "Riess et al. 2022"}</span></div>{chart_timeline(D["decades"], D["frows"], D["codes"], lang, H)}<figcaption>{esc(cap_tl)}</figcaption></figure>' +
              f'<figure>{chart_zoom(D["decades"], D["frows"], lang, H)}<figcaption>{"같은 요소를 1970년부터 선형 축(40~110 km s⁻¹ Mpc⁻¹)으로. 범위 밖 값은 세모." if ko else "The same elements from 1970 on a linear axis (40–110 km s⁻¹ Mpc⁻¹); triangles: outside the range."}</figcaption></figure>' +
-             f'<h2>{"사건" if ko else "Events"}</h2>' + table([t["year"], ("사건" if ko else "Event"), ("근거" if ko else "Basis")], evrows, cls="") +
-             f'<h2>{"측정 방법의 변화" if ko else "The changing mix of methods"}</h2><figure>{chart_types(D["types"], D["decades"], lang, H)}<figcaption>{"Huchra 목록, 10년 단위 × 1차 Type 부호(파일 범례 그대로). 칸의 색은 그 10년 행 가운데의 비율, 숫자는 건수. 10건 미만인 부호는 「그 밖의 부호」로 묶었다. 1929년 이후 오차 있는 행 기준." if ko else "Huchra’s list by decade and primary type code (file legend as printed). Shade: share of the decade’s rows; number: count. Codes with fewer than 10 rows are folded into “other codes”. Rows with an error from 1929 on."}</figcaption></figure>' + f"<p class='src'>{esc(TYPE_GLOSS[lang])}</p>" +
-             f'<h2>{"표 A2 전체" if ko else "Table A2 in full"}</h2>' + a2_table(D["frows"], lang, t, table, esc) +
+             f'<h2 id=events>{"사건" if ko else "Events"}</h2>' + table([t["year"], ("사건" if ko else "Event"), ("근거" if ko else "Basis")], evrows, cls="") +
+             f'<h2 id=methods-mix>{"측정 방법의 변화" if ko else "The changing mix of methods"}</h2><figure>{chart_types(D["types"], D["decades"], lang, H)}<figcaption>{"Huchra 목록, 10년 단위 × 1차 Type 부호(파일 범례 그대로). 칸의 색은 그 10년 행 가운데의 비율, 숫자는 건수. 10건 미만인 부호는 「그 밖의 부호」로 묶었다. 1929년 이후 오차 있는 행 기준." if ko else "Huchra’s list by decade and primary type code (file legend as printed). Shade: share of the decade’s rows; number: count. Codes with fewer than 10 rows are folded into “other codes”. Rows with an error from 1929 on."}</figcaption></figure>' + f"<p class='src'>{esc(TYPE_GLOSS[lang])}</p>" +
+             f'<h2 id=table-a2>{"표 A2 전체" if ko else "Table A2 in full"}</h2>' + a2_table(D["frows"], lang, t, table, esc) +
              f'<p class="files"><a href="../../data/h0_faerber2020.csv">{t["download"]}: h0_faerber2020.csv</a> <a href="../../data/h0_h3_rows_faerber.csv">{t["download"]}: h0_h3_rows_faerber.csv</a> <a href="../../data/h0_huchra_decades.csv">{t["download"]}: h0_huchra_decades.csv</a> <a href="../../data/h0_huchra_types.csv">{t["download"]}: h0_huchra_types.csv</a></p>' + credit(lang, H))
     (d / "timeline.html").write_text(page(lang, t["timeline"], tbody, 2, "hubble", leaf=leaf(lang, t, "timeline.html")), encoding="utf-8")
 
@@ -713,9 +713,9 @@ def data_rows(lang, esc):
 
 def data_license(lang, esc):
     if lang == "ko":
-        return ("<h2>허블 상수 장</h2><p>표 A2 의 값은 Faerber & López-Corredoira (2020), Universe 6, 114 의 부록 표에서 옮겼다(CC BY 4.0, arXiv 판 2008.04035v1 에서 읽고 출판본 표와 164행 전부 대조). 행 단위 CSV 에 출처를 적었다. Huchra 목록(hubble.plot.dat)은 저작권 표시와 인용 요청만 있고 재게시 허락 문장이 없어 집계(연도별·10년별 건수와 사분위, 부호별 건수, 지표)만 싣는다. 행 단위 값, 개별 추정을 찍은 그림, 두 집성을 짝지은 행 단위 대조표는 싣지 않으며 원 파일은 공개 저장소에 없다. 이 사이트의 CC BY 4.0 은 엮은이가 계산한 부분(z·집계·반감기·적합)에 미친다. 출처: "
+        return ("<h2 id=hubble>허블 상수 장</h2><p>표 A2 의 값은 Faerber & López-Corredoira (2020), Universe 6, 114 의 부록 표에서 옮겼다(CC BY 4.0, arXiv 판 2008.04035v1 에서 읽고 출판본 표와 164행 전부 대조). 행 단위 CSV 에 출처를 적었다. Huchra 목록(hubble.plot.dat)은 저작권 표시와 인용 요청만 있고 재게시 허락 문장이 없어 집계(연도별·10년별 건수와 사분위, 부호별 건수, 지표)만 싣는다. 행 단위 값, 개별 추정을 찍은 그림, 두 집성을 짝지은 행 단위 대조표는 싣지 않으며 원 파일은 공개 저장소에 없다. 이 사이트의 CC BY 4.0 은 엮은이가 계산한 부분(z·집계·반감기·적합)에 미친다. 출처: "
                 + esc(H0_SOURCES["huchra"]["credit"]) + " · " + esc(H0_SOURCES["faerber"]["credit"]) + "</p>")
-    return ("<h2>Hubble-constant chapter</h2><p>The Table A2 values are taken from the appendix table of Faerber & López-Corredoira (2020), Universe 6, 114 (CC BY 4.0; read from arXiv:2008.04035v1 and checked against the published table, all 164 rows); the row-level CSV carries the attribution. Huchra's list (hubble.plot.dat) carries a copyright line and a request for citation but no grant to republish, so only aggregates are published: counts and quartiles by year and decade, counts by code, and the metrics. No row values, no chart of individual estimates and no row-level pairing of the two compilations are published, and the original file is not in the public repository. The site's CC BY 4.0 covers the editor's computations (z, aggregates, half-lives, fits). Sources: "
+    return ("<h2 id=hubble>Hubble-constant chapter</h2><p>The Table A2 values are taken from the appendix table of Faerber & López-Corredoira (2020), Universe 6, 114 (CC BY 4.0; read from arXiv:2008.04035v1 and checked against the published table, all 164 rows); the row-level CSV carries the attribution. Huchra's list (hubble.plot.dat) carries a copyright line and a request for citation but no grant to republish, so only aggregates are published: counts and quartiles by year and decade, counts by code, and the metrics. No row values, no chart of individual estimates and no row-level pairing of the two compilations are published, and the original file is not in the public repository. The site's CC BY 4.0 covers the editor's computations (z, aggregates, half-lives, fits). Sources: "
             + esc(H0_SOURCES["huchra"]["credit"]) + " · " + esc(H0_SOURCES["faerber"]["credit"]) + "</p>")
 
 
