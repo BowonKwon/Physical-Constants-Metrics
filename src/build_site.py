@@ -26,8 +26,8 @@ DER = ROOT / "data" / "derived"
 # hand-maintained map of the 31 quantities; kept outside data/derived so that clearing derived/ cannot lose it
 QMAP = ROOT / "data" / "manual" / "quantity_map.csv"
 OUT = ROOT / "site"
-VERSION = "1.3.7"
-BUILD_DATE = "2026-11-18"
+VERSION = "1.3.8"
+BUILD_DATE = "2026-11-19"
 import site_nav  # 1.3.7: section ids, section lists, a button back to the list
 REPO = "https://github.com/BowonKwon/Physical-Constants-Metrics"
 PUBLIC_DATA = ["constants_long.csv", "quantity_map.csv", "m1_halflife.csv", "m2_pairs.csv", "m2_summary.csv",
