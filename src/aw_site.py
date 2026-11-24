@@ -9,6 +9,8 @@ import math
 from pathlib import Path
 
 from aw_registry import AW_METRICS, AW_SOURCE
+import fig_explain
+import fig_texts_aw
 
 ROOT = Path(__file__).resolve().parent.parent
 DER = ROOT / "data" / "derived"
@@ -143,25 +145,40 @@ def chart_bars(items, H, W=900, Hh=260, unit="", lang="en", ylab=""):
     return "".join(o)
 
 
-def chart_element(rows, lang, H, W=900, Hh=320):
+_F12 = 15.9994 / 16   # the 1961 conversion from the oxygen = 16 scale (aw_metrics.py)
+
+
+def _v12(r):
+    """1.3.9 v2 verification: the value on the ¹²C scale computed from the printed value, not read from the
+    value_12C column, which is rounded to 8 decimals and erased real differences of 10⁻¹¹ (F 2013, P 1985 · 2005)."""
+    return float(r["value"]) * (_F12 if r["scale"] == "O=16" else 1.0)
+
+
+def _snap(x):
+    """1.3.9 v1 verification: (v − ref)/ref of two equal printed values can come out as ±1e-16 in binary floating point;
+    the printed values carry at most 10 significant digits, so anything below 1e-12 is an exact zero."""
+    return 0.0 if abs(x) < 1e-12 else x
+
+
+def chart_element(rows, lang, H, W=900, Hh=320, last=False):
     """Relative deviation (¹²C scale) from the current value, symmetric-log axis; intervals as hollow bars."""
     esc, sup = H["esc"], H["sup"]
     cur = rows[-1]
     if cur["kind"] == "withdrawn":
         cur = next(r for r in reversed(rows) if r["kind"] != "withdrawn")
-    ref = float(cur["value_12C"])
+    ref = _v12(cur)
     pts = []
     for r in rows:
         if r["kind"] == "withdrawn" or not r["value_12C"]:
             continue
-        v = float(r["value_12C"])
-        f = float(r["value_12C"]) / float(r["value"]) if r["value"] else 1
+        v = _v12(r)
+        f = _F12 if r["scale"] == "O=16" else 1.0
         if r["kind"] == "interval":
             lo, hi = float(r["lo"]) * f, float(r["hi"]) * f
-            pts.append((int(r["year"]), (v - ref) / ref, (lo - ref) / ref, (hi - ref) / ref, "interval", r))
+            pts.append((int(r["year"]), _snap((v - ref) / ref), _snap((lo - ref) / ref), _snap((hi - ref) / ref), "interval", r))
         else:
             u = float(r["u"]) * f if r["u"] else 0.0
-            pts.append((int(r["year"]), (v - ref) / ref, (v - u - ref) / ref, (v + u - ref) / ref, r["kind"], r))
+            pts.append((int(r["year"]), _snap((v - ref) / ref), _snap((v - u - ref) / ref), _snap((v + u - ref) / ref), r["kind"], r))
     mags = [abs(x) for p in pts for x in p[1:4] if x != 0]
     lt = 10 ** math.floor(math.log10(min(mags))) if mags else 1e-6
     top = 10 ** math.ceil(math.log10(max(mags + [lt * 10])))
@@ -175,7 +192,7 @@ def chart_element(rows, lang, H, W=900, Hh=320):
 
     def Y(v): return Tp + (fm - fz(v)) / (2 * fm) * (Hh - Tp - B)
     o = [f'<svg viewBox="0 0 {W} {Hh}" role="img" aria-label="{"원자량 변천" if lang == "ko" else "Atomic weight history"}">',
-         f'<text x="{Lm}" y="15">{"세로: 현재 값에서 떨어진 정도(값에 대한 비율) · 0이 현재 값 · 위는 그보다 큰 값" if lang == "ko" else "Vertical: distance from the current value (as a fraction of it) · 0 = the current value · above = larger"}</text>']
+         f'<text x="{Lm}" y="15">{("세로: 마지막 값에서 떨어진 정도(값에 대한 비율) · 0이 마지막 값 · 위는 그보다 큰 값" if last else "세로: 현재 값에서 떨어진 정도(값에 대한 비율) · 0이 현재 값 · 위는 그보다 큰 값") if lang == "ko" else ("Vertical: distance from the last value (as a fraction of it) · 0 = the last value · above = larger" if last else "Vertical: distance from the current value (as a fraction of it) · 0 = the current value · above = larger")}</text>']
     e = int(round(math.log10(lt)))
     te = int(round(math.log10(top)))
     for t in [0.0] + [sgn * 10.0 ** k for k in range(e + 1, te + 1, max(1, (te - e) // 3 or 1)) for sgn in (1, -1)]:
@@ -194,9 +211,96 @@ def chart_element(rows, lang, H, W=900, Hh=320):
             continue
         if hi != lo:
             o.append(f'<line x1="{x:.1f}" x2="{x:.1f}" y1="{Y(lo):.1f}" y2="{Y(hi):.1f}" stroke="var(--s1)" stroke-width="2"/>')
-        o.append(f'<circle class="dot" cx="{x:.1f}" cy="{Y(dv):.1f}" r="4.5" fill="{"var(--s1)" if kind in ("unc", "exact") else "var(--card)"}" stroke="var(--s1)" stroke-width="2" data-tip="{esc(tip)}"/>')
+        # 1.3.9: one meaning per mark across the site — × = a value given without an uncertainty, square = exact (no bar); filled circle = value with its bar
+        if kind == "none":
+            y = Y(dv)
+            o.append(f'<path class="dot" d="M{x-4:.1f},{y-4:.1f} L{x+4:.1f},{y+4:.1f} M{x-4:.1f},{y+4:.1f} L{x+4:.1f},{y-4:.1f}" stroke="var(--s1)" stroke-width="2" fill="none" data-tip="{esc(tip)}"/>')
+        elif kind == "exact":
+            o.append(f'<rect class="dot" x="{x-4:.1f}" y="{Y(dv)-4:.1f}" width="8" height="8" fill="var(--card)" stroke="var(--fg3)" stroke-width="1.5" data-tip="{esc(tip)}"/>')
+        else:
+            o.append(f'<circle class="dot" cx="{x:.1f}" cy="{Y(dv):.1f}" r="4.5" fill="var(--s1)" stroke="var(--s1)" stroke-width="2" data-tip="{esc(tip)}"/>')
     o.append("</svg>")
     return "".join(o)
+
+
+# ------------------------------------------------------------------ 1.3.9: figures with their explanations
+def fig_z(lang, pairs, N, H):
+    ko = lang == "ko"
+    clipped = [p for p in pairs if abs(float(p["z_prev"])) > 8]
+    dis = [p for p in pairs if p["ranges_disjoint"] == "1"]
+    ex = dis[0]
+    v = dict(n=N["aw_a2_n"], out=N["aw_a2_out"], out_pct=N["aw_a2_out_pct"], dis=N["aw_a2_dis"], dis_list=N["aw_a2_dis_list"], med=N["aw_a3_med"], half=N["aw_a3_half"],
+             clipped_txt=", ".join(f'{KO.get(p["symbol"], p["symbol"])}({p["symbol"]}) {p["year_new"]}년, z = {fig_explain.num(p["z_prev"], ".1f")}' for p in clipped) or "없음",
+             clipped_txt_en=", ".join(f'{p["symbol"]} {p["year_new"]}, z = {fig_explain.num(p["z_prev"], ".1f")}' for p in clipped) or "none",
+             ex=dict(sym=(f'{KO.get(ex["symbol"], ex["symbol"])}({ex["symbol"]})' if ko else ex["element"]), y0=ex["year_prev"], y1=ex["year_new"], prev=ex["prev"], new=ex["new"],
+                     z=fig_explain.num(ex["z_prev"]), az=f'{abs(float(ex["z_prev"])):.2f}'))
+    title, intro, paras = fig_texts_aw.zplot(lang, v)
+    leg = fig_explain.legend([("dot", "var(--s2)", "직전 범위 밖" if ko else "Outside the previous range"), ("dot", "var(--s1)", "직전 범위 안" if ko else "Inside it"),
+                              ("tri", "var(--s2)", "±8 밖(잘림)" if ko else "Beyond ±8 (clipped)"), ("dash", "var(--ref)", "직전 범위 끝(z = ±1)" if ko else "Edge of the previous range (z = ±1)")])
+    return fig_explain.figure(lang, title, intro, chart_z(pairs, lang, H), paras, leg)
+
+
+def fig_a1(lang, items, long, H):
+    dec = {}
+    for r in long:
+        dec[int(r["year"]) // 10 * 10] = dec.get(int(r["year"]) // 10 * 10, 0) + 1
+    top = max(dec, key=lambda k: (dec[k], -k))
+    ex = 1960 if 1960 in dec else top
+    v = dict(top_dec=top, top_n=dec[top], total=len(long), last_year=max(int(r["year"]) for r in long), d_ex=str(ex), d_ex_n=dec[ex])
+    title, intro, paras = fig_texts_aw.bars_a1(lang, v)
+    chart = chart_bars([(a[:-1] if lang == "ko" else a[:-1], v_) for a, v_ in items], H, lang=lang, ylab="세로: 권고·개정 기록 수" if lang == "ko" else "Vertical: recommendations and revisions")
+    return fig_explain.figure(lang, title, intro, chart, paras)
+
+
+def fig_a4(lang, dec, saw, long, H):
+    top = max(dec, key=lambda k: (dec[k], -k))
+    v = dict(n_saw=len(saw), top_dec=top, top_n=dec[top], old_n=sum(1 for e in saw if int(e["last"]) <= 1969), last_year=max(int(r["year"]) for r in long))
+    title, intro, paras = fig_texts_aw.bars_a4(lang, v)
+    chart = chart_bars([(str(k), dec.get(k, 0)) for k in range(1960, 2030, 10)], H, lang=lang, ylab="세로: 원소 수" if lang == "ko" else "Vertical: number of elements")
+    return fig_explain.figure(lang, title, intro, chart, paras)
+
+
+def element_points(rows):
+    """the plotted points of chart_element, as (year, relative deviation, record) — the same rule as the chart."""
+    cur = rows[-1]
+    if cur["kind"] == "withdrawn":
+        cur = next(r for r in reversed(rows) if r["kind"] != "withdrawn")
+    ref = _v12(cur)
+    pts = [(int(r["year"]), _snap((_v12(r) - ref) / ref), r) for r in rows if r["kind"] != "withdrawn" and r["value_12C"]]
+    return cur, pts
+
+
+def fig_element(lang, sym, rs, el, H):
+    ko = lang == "ko"
+    cur, pts = element_points(rs)
+    mags = []
+    for yr, dv, r in pts:
+        f = _F12 if r["scale"] == "O=16" else 1.0
+        ref = _v12(cur)
+        if r["kind"] == "interval":
+            mags += [abs(_snap((float(r["lo"]) * f - ref) / ref)), abs(_snap((float(r["hi"]) * f - ref) / ref)), abs(dv)]
+        else:
+            u = float(r["u"]) * f if r["u"] else 0.0
+            mags += [abs(dv), abs(_snap((_v12(r) - u - ref) / ref)), abs(_snap((_v12(r) + u - ref) / ref))]
+    mags = [m for m in mags if m != 0]
+    lt = 10 ** math.floor(math.log10(min(mags))) if mags else 1e-6
+    nz = [p for p in pts if p[1] != 0]
+    far = max(nz, key=lambda p: abs(p[1])) if nz else None
+    first = nz[0] if nz else None
+    kinds = [p[2]["kind"] for p in pts]
+    ref_kind = "none_saw" if el["has_standard_atomic_weight"] != "1" else ("interval" if cur["kind"] == "interval" else "value")
+    v = dict(name=KO.get(sym, sym) if ko else el["element"][:1].upper() + el["element"][1:], name_lc=el["element"], n_rec=len(rs), n_pts=len(pts),
+             n_unc=kinds.count("unc"), n_none=kinds.count("none"), n_int=kinds.count("interval"), n_exact=kinds.count("exact"),
+             lt_txt=fig_explain.frac(lt, lang)[0], ref_kind=ref_kind,
+             far=dict(yr=far[0], dv=far[1]) if far else None,
+             first=dict(yr=first[0], dv=first[1], txt=first[2]["value_text"]) if first else None)
+    title, intro, paras = fig_texts_aw.element(lang, v)
+    leg = fig_explain.legend([x for k, x in (("unc", ("bar", "var(--s1)", "값과 불확도(확장 범위)" if ko else "Value with its uncertainty (expanded range)")),
+                                             ("none", ("cross", "var(--s1)", "불확도 없는 값" if ko else "Value without an uncertainty")),
+                                             ("interval", ("box", "var(--s2)", "구간" if ko else "Interval")),
+                                             ("exact", ("square", "var(--fg3)", "정확한 기준값" if ko else "Exact reference"))) if k in kinds] +
+                             [("dash", "var(--ref)", "기준값(0)" if ko else "Reference (0)")])
+    return fig_explain.figure(lang, title, intro, chart_element(rs, lang, H, last=ref_kind == "none_saw"), paras, leg)
 
 
 # ------------------------------------------------------------------ pages
@@ -277,10 +381,8 @@ def build(lang, base, H, out_root):
     cards = "".join(f'<a class="card" href="{m["id"]}.html"><b>{m["id"].upper()} · {esc(m[lang]["name"])}</b><small>{esc(m[lang]["short"])}</small></a>' for m in AW_METRICS)
     elcards = "".join(f'<a class="card{"" if els[s]["has_standard_atomic_weight"] == "1" else " d"}" href="el/{s}.html"><b>{s} · {esc(name(s))}</b><small>Z={Z.get(s, "")} · {els[s]["n_revisions"]}{"회" if lang == "ko" else "×"} · {esc(els[s]["current"]) if els[s]["current"] != "n/a" else t["kinds"]["withdrawn"]}</small></a>'
                       for s in sorted(els, key=lambda s: Z.get(s, 999)))
-    cap = ("세로축은 z_옛 = (새 값 − 직전 값) ÷ 직전 불확도다. ±1 점선 사이에 있으면 새 값이 직전 권고의 범위 안에 놓였다는 뜻이고, 밖이면 범위 밖으로 옮겨 갔다는 뜻이다. 세로축은 고른 간격이고, ±8 을 넘는 값은 가장자리에 붙여 그렸다. 점 하나가 개정 하나(직전 권고에 불확도가 있었던 것). 주황 점은 새 값이 직전 범위 밖에 놓인 개정, 세모는 ±8 을 넘어 잘린 값." if lang == "ko"
-           else "The vertical axis is z_old = (new value − previous value) ÷ previous uncertainty. Between the dashed lines at ±1 the new value lies within the range of the previous recommendation; outside them it moved out of that range. The axis is linear, and values beyond ±8 are drawn at its edge. One dot per revision whose previous recommendation had an uncertainty. Orange: new value outside the previous range; triangles: clipped beyond ±8.")
     body = (f'<h1>{esc(t["title"])}</h1><p class="lead">{esc(t["lead"])}</p>' + takeaway(lang, tk) + stats +
-            f'<figure>{chart_z(pairs, lang, H)}<figcaption>{esc(cap)}</figcaption></figure>' + GLOSS[lang] +
+            fig_z(lang, pairs, N, H) + GLOSS[lang] +
             f'<h2 id=metrics>{t["metrics"]}</h2><div class="cards">{cards}</div><h2 id=elements>{t["elements"]}</h2><div class="cards">{elcards}</div>' + credit(lang, H))
     (d / "index.html").write_text(page(lang, t["nav"], body, 2, "atomic"), encoding="utf-8")
 
@@ -293,14 +395,14 @@ def build(lang, base, H, out_root):
             for r in long:
                 dec[int(r["year"]) // 10 * 10] = dec.get(int(r["year"]) // 10 * 10, 0) + 1
             items = [(f"{k}s" if lang == "en" else f"{k}년대", dec.get(k, 0)) for k in range(1900, 2030, 10)]
-            parts.append(f'<figure>{chart_bars([(a[:-1] if lang == "ko" else a[:-1], v) for a, v in items], H, lang=lang, ylab="세로: 개정 건수" if lang == "ko" else "Vertical: number of revisions")}<figcaption>{"10년 단위 개정 건수." if lang == "ko" else "Revisions per decade."}</figcaption></figure>')
+            parts.append(fig_a1(lang, items, long, H))
             parts.append(table([("시대" if lang == "ko" else "Era"), ("개정" if lang == "ko" else "Revisions"), ("보고 연도" if lang == "ko" else "Report years"), ("한 해 평균" if lang == "ko" else "Per year")],
                                [[e["era"], e["revisions"], e["report_years"], e["revisions_per_year"]] for e in eras], num_cols=(1, 2, 3)))
             top = sorted([e for e in els.values() if e["has_standard_atomic_weight"] == "1"], key=lambda e: (-int(e["n_revisions"]), e["symbol"]))[:15]
             parts.append(table([t["sym"], t["name"], t["nrev"], t["last"], ("평균 간격(년)" if lang == "ko" else "Mean gap (years)")],
                                [[f'<a href="el/{e["symbol"]}.html">{e["symbol"]}</a>', esc(name(e["symbol"])), e["n_revisions"], e["last"], e["mean_gap"]] for e in top], num_cols=(2, 3, 4)))
         if m["id"] in ("a2", "a3"):
-            parts.append(f'<figure>{chart_z(pairs, lang, H)}<figcaption>{esc(cap)}</figcaption></figure>')
+            parts.append(fig_z(lang, pairs, N, H))
             sel = [p for p in pairs if p["outside_prev_range"] == "1"] if m["id"] == "a2" else sorted(pairs, key=lambda p: -abs(float(p["z_prev"])))[:20]
             parts.append(table([t["sym"], ("직전 권고" if lang == "ko" else "Previous"), ("새 권고" if lang == "ko" else "New"), ("z_옛" if lang == "ko" else "z_old"), ("범위 겹치지 않음" if lang == "ko" else "Ranges disjoint")],
                                [[f'<a href="el/{p["symbol"]}.html">{p["symbol"]}</a>', f'{p["year_prev"]}: {esc(p["prev"])}', f'{p["year_new"]}: {esc(p["new"])}', p["z_prev"], ("예" if lang == "ko" else "yes") if p["ranges_disjoint"] == "1" else ""] for p in sel],
@@ -310,7 +412,7 @@ def build(lang, base, H, out_root):
             dec = {}
             for e in saw:
                 dec[int(e["last"]) // 10 * 10] = dec.get(int(e["last"]) // 10 * 10, 0) + 1
-            parts.append(f'<figure>{chart_bars([(str(k), dec.get(k, 0)) for k in range(1960, 2030, 10)], H, lang=lang, ylab="세로: 원소 수" if lang == "ko" else "Vertical: number of elements")}<figcaption>{"마지막 개정 연도(10년 단위)별 원소 수." if lang == "ko" else "Elements by decade of latest revision."}</figcaption></figure>')
+            parts.append(fig_a4(lang, dec, saw, long, H))
             old = sorted([e for e in saw if int(e["last"]) <= 1969], key=lambda e: e["last"])
             parts.append(table([t["sym"], t["name"], t["last"], t["cur"]], [[f'<a href="el/{e["symbol"]}.html">{e["symbol"]}</a>', esc(name(e["symbol"])), e["last"], esc(e["current"])] for e in old], num_cols=(2,)))
         if m["id"] == "a5":
@@ -351,11 +453,9 @@ def build(lang, base, H, out_root):
             return f'<a href="https://doi.org/{esc(r["doi"])}">{esc(r["doi"])}</a>'
         tab = [[r["year"], vt(r), t["kinds"][r["kind"]], r["scale"], v12(r), zmap.get((s, r["year"]), ""), doi(r)] for r in rs]
         tag = "" if el["has_standard_atomic_weight"] == "1" else f'<span class="tag">{t["no_saw"]}</span>'
-        cap2 = ("세로축은 현재 값(또는 마지막 값)에서 떨어진 정도를 그 값에 대한 비율로 나타낸 것이고, 0이 현재 값이다(대칭 로그 축). 막대는 불확도(확장 범위), 빈 원은 불확도 없는 값, 주황 사각은 구간. 「1961 기준 변경」은 원자량의 척도가 산소 = 16에서 ¹²C = 12로 바뀐 해다(그 전 값은 ¹²C 척도로 환산해 그렸다). 대칭 로그 축은 0 근처에서는 거의 일정한 간격으로, 바깥으로 갈수록 10배마다 한 칸에 가깝게 그린다(둘 사이에 뚜렷한 경계는 없다). 그래서 0을 가로지르는 막대는 위아래 길이가 달라 보이고, 바깥쪽 눈금에서는 막대 길이를 눈으로 견주기 어렵다. 상수 면의 빈 원(오차 막대가 2022 판 값에 닿지 않은 판)과는 뜻이 다르다." if lang == "ko"
-                else "The vertical axis is the distance from the current (or last) value as a fraction of that value; 0 is the current value (symmetric-log axis). Bars: uncertainty (expanded range); open circles: no uncertainty; orange boxes: intervals. '1961 scale change' marks the year the scale of atomic weights changed from oxygen = 16 to ¹²C = 12 (earlier values are drawn converted to the ¹²C scale). A symmetric-log axis is almost evenly spaced near zero and comes close to one step per factor of ten further out (with no sharp boundary between the two), so a bar that crosses zero looks uneven above and below, and bar lengths are hard to compare by eye in the outer steps. On the constant pages an open circle means something else (an error bar that does not reach the 2022 value).")
         body = (f'<p><span class="tag k">{"원자량" if lang == "ko" else "Atomic weight"}</span>{tag}</p><h1>{s} · {esc(name(s))}</h1><p class="lead" lang="{"en" if lang == "ko" else "ko"}">{esc(el["element"] if lang == "ko" else KO.get(s, ""))}</p>' +
                 takeaway(lang, element_takeaway(lang, s, rs, pairs, el)) +
-                (f'<figure>{chart_element(rs, lang, H)}<figcaption>{esc(cap2)}</figcaption></figure>' if len([r for r in rs if r["value_12C"]]) >= 2 else "") +
+                (fig_element(lang, s, rs, el, H) if len([r for r in rs if r["value_12C"]]) >= 2 else "") +
                 table(head[lang], tab, num_cols=(4, 5)) + credit(lang, H))
         (d / "el" / f"{s}.html").write_text(page(lang, f"{s} · {name(s)}", body, 3, "atomic", leaf=dict(
             crumbs=[(("홈" if lang == "ko" else "Home"), "../../index.html"), (t["nav"], "../index.html")], cur=f"{s}.html",

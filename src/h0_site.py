@@ -7,6 +7,8 @@ Huchra's list may be shown only in aggregate (h0_registry.H0_SOURCES["huchra"]):
 quantiles from data/h0_huchra_*.csv and never a row. Table A2 (CC BY 4.0) is shown row by row."""
 from __future__ import annotations
 
+import fig_explain
+import fig_texts_h0
 import csv
 import math
 from pathlib import Path
@@ -192,7 +194,7 @@ def chart_rates(h3, lang, H, W=900, Hh=360):
 
     def Y(v): return Tp + (1 - v / 0.7) * (Hh - Tp - B)
     o = _svg(W, Hh, "H3 비율과 구간" if lang == "ko" else "H3 shares and intervals")
-    o.append(f'<text x="{Lm}" y="15">{"추정의 비율(%) · 짧은 점선은 오차가 맞을 때의 기대" if lang == "ko" else "Share of estimates (%) · short dashed line = expectation if the errors were right"}</text>')
+    o.append(f'<text x="{Lm}" y="15">{"추정의 비율(%) · 짧은 점선은 z 가 표준정규분포일 때의 기대" if lang == "ko" else "Share of estimates (%) · short dashed line = expectation if z were standard normal"}</text>')
     for v in (0, .1, .2, .3, .4, .5, .6, .7):
         o.append(f'<line class="grid" x1="{Lm}" x2="{W-R}" y1="{Y(v):.1f}" y2="{Y(v):.1f}"/><text x="{Lm-6}" y="{Y(v)+4:.1f}" text-anchor="end">{int(v*100)}%</text>')
     for gi, (col, lab, norm) in enumerate(idx):
@@ -201,8 +203,8 @@ def chart_rates(h3, lang, H, W=900, Hh=360):
         o.append(f'<text x="{gx+gw/2:.1f}" y="{Hh-48}" text-anchor="middle">{esc(lab)}</text><text x="{gx+gw/2:.1f}" y="{Hh-32}" text-anchor="middle">{"정규 기대" if lang == "ko" else "normal"} {norm*100:g}%</text>')
         # 1.3.6: the reading direction of each index, inside the chart; the interquartile share runs the other way
         rev = col == "inside_iq"
-        way = (("↓ 낮을수록 오차를 좁게 밝힘" if rev else "↑ 높을수록 자주 벗어남") if lang == "ko"
-               else ("↓ Lower = errors too narrow" if rev else "↑ Higher = missed more often"))
+        way = (("↓ 낮을수록 오차 안이 적음" if rev else "↑ 높을수록 자주 벗어남") if lang == "ko"   # 1.3.9 v1: not «errors too narrow» — the confidence level of the quoted errors is unknown
+               else ("↓ Lower = fewer inside" if rev else "↑ Higher = missed more often"))
         o.append(f'<text x="{gx+gw/2:.1f}" y="{Hh-12}" text-anchor="middle" font-weight="600" fill="{"var(--accent2)" if rev else "var(--fg)"}">{way}</text>')
         for ci, (s, ref) in enumerate(cells):
             r = h3[(s, 1929, ref, "year")]
@@ -210,10 +212,13 @@ def chart_rates(h3, lang, H, W=900, Hh=360):
             lo, hi = (float(x) for x in r[col + "_ci"].strip("[]").split(","))
             x = gx + gw * (ci + 1) / (len(cells) + 1)
             colr = REF_COLOR[ref]
-            fill = colr if s == HU else "var(--card)"
             tip = f'{SERIES_LABEL[lang][s]} · {REFS[ref][lang]}: {v*100:.1f}% [{lo*100:.0f}–{hi*100:.0f}%], n={r["n"]}'
             o.append(f'<line x1="{x:.1f}" x2="{x:.1f}" y1="{Y(lo):.1f}" y2="{Y(hi):.1f}" stroke="{colr}" stroke-width="2" stroke-opacity=".6"/>')
-            o.append(f'<circle class="dot" cx="{x:.1f}" cy="{Y(v):.1f}" r="5.5" fill="{fill}" stroke="{colr}" stroke-width="2.5" data-tip="{esc(tip)}"/>')
+            if s == HU:
+                o.append(f'<circle class="dot" cx="{x:.1f}" cy="{Y(v):.1f}" r="5.5" fill="{colr}" stroke="{colr}" stroke-width="2.5" data-tip="{esc(tip)}"/>')
+            else:   # 1.3.9: Table A2 as a filled diamond (an open circle means a missed reference on the constant pages)
+                y = Y(v)
+                o.append(f'<path class="dot" d="M{x:.1f},{y-7:.1f} L{x+7:.1f},{y:.1f} L{x:.1f},{y+7:.1f} L{x-7:.1f},{y:.1f} Z" fill="{colr}" stroke="var(--card)" stroke-width="1.5" data-tip="{esc(tip)}"/>')
     o.append("</svg>")
     return "".join(o)
 
@@ -274,11 +279,11 @@ def chart_tail(frows, zcol, nu, s, ref, lang, H, W=900, Hh=340):
         o.append(f'<text x="{X(t):.1f}" y="{Hh-B+18}" text-anchor="middle">{t}</text>')
     o.append(f'<text x="{(Lm + W - R) / 2:.0f}" y="{Hh-8}" text-anchor="middle">{"|z| — 기준값과의 차이 ÷ 그 추정의 인용 오차" if lang == "ko" else "|z|: distance from the reference ÷ the quoted error of the estimate"}</text>')
     ts = np.linspace(0, tmax, 141)
-    for vals, colr, name in (([2 * stats.norm.sf(t) for t in ts], "var(--s1)", "정규분포" if lang == "ko" else "normal"),
+    for vals, colr, name in (([2 * stats.norm.sf(t) for t in ts], "var(--ref)", "정규분포" if lang == "ko" else "normal"),   # 1.3.9: gray dashed normal, as on every chart
                              ([2 * stats.t.sf(t / s, nu) for t in ts], REF_COLOR[ref], f"Student-t (ν={nu:.2f})")):
         pts = [(t, v) for t, v in zip(ts, vals) if v >= lo]
         d = " ".join(f"{'M' if i == 0 else 'L'}{X(t):.1f},{Y(v):.1f}" for i, (t, v) in enumerate(pts))
-        o.append(f'<path d="{d}" fill="none" stroke="{colr}" stroke-width="2" stroke-dasharray="{"5 4" if name.startswith("Student") else "none"}"/>')
+        o.append(f'<path d="{d}" fill="none" stroke="{colr}" stroke-width="2" stroke-dasharray="{"none" if name.startswith("Student") else "6 4"}"/>')
         last = pts[-1]
         o.append(f'<text x="{min(X(last[0]) + 6, W - R + 4):.1f}" y="{Y(last[1]) - 6:.1f}">{name}</text>')
     path, prev = [f"M{X(0):.1f},{Y(1):.1f}"], 1.0
@@ -289,10 +294,10 @@ def chart_tail(frows, zcol, nu, s, ref, lang, H, W=900, Hh=340):
         path.append(f"L{X(t):.1f},{Y(prev):.1f}L{X(t):.1f},{Y(sv):.1f}")
         prev = sv
     path.append(f"L{X(min(z[-1], tmax)):.1f},{Y(prev):.1f}")
-    o.append(f'<path d="{"".join(path)}" fill="none" stroke="var(--fg2)" stroke-width="2"/>')
+    o.append(f'<path d="{"".join(path)}" fill="none" stroke="var(--s1)" stroke-width="2"/>')
     for k in (1, 2, 3):
         r = float(np.mean(z > k))
-        o.append(f'<circle class="dot" cx="{X(k):.1f}" cy="{Y(r):.1f}" r="5" fill="var(--fg2)" stroke="var(--card)" stroke-width="2" data-tip="|z| > {k}: {r*100:.1f}% (n={n})"/>')
+        o.append(f'<circle class="dot" cx="{X(k):.1f}" cy="{Y(r):.1f}" r="5" fill="var(--s1)" stroke="var(--card)" stroke-width="2" data-tip="|z| > {k}: {r*100:.1f}% (n={n})"/>')
     o.append(f'<text x="{X(4.6):.1f}" y="{Y(max(float(np.mean(z > 4.6)), lo)) + 16:.1f}">{"관측(표 A2)" if lang == "ko" else "observed (Table A2)"}</text>')
     o.append("</svg>")
     return "".join(o)
@@ -459,6 +464,137 @@ def chart_types(types, decades, lang, H, W=900):
                 o.append(f'<text x="{x+cw/2:.1f}" y="{y+rh/2+4:.1f}" text-anchor="middle" fill="var(--fg)" stroke="var(--card)" stroke-width="3" paint-order="stroke">{k}</text>')
     o.append("</svg>")
     return "".join(o)
+
+
+# ------------------------------------------------------------------ 1.3.9: figures with their explanations
+def _leg_refs(ko):
+    return [("dash", "var(--s3)", "Planck 2018"), ("dash", "var(--s2)", "Riess 외 2022" if ko else "Riess et al. 2022")]
+
+
+def fig_timeline(lang, D, H):
+    ko = lang == "ko"
+    dd = {int(d["decade"]): d for d in D["decades"]}
+    late = [float(d["h0_median"]) for k, d in dd.items() if k >= 1970 and d["h0_median"]]
+    missing = [k for k in range(min(dd), max(dd) + 10, 10) if k not in dd]
+    d30 = dd[1930]
+    ys = [int(r["year"]) for r in D["frows"]]
+    v = dict(d30=dict(n=d30["n"], med=f'{float(d30["h0_median"]):g}', q1=f'{float(d30["h0_q1"]):g}', q3=f'{float(d30["h0_q3"]):g}'),
+             late_lo=f"{min(late):g}", late_hi=f"{max(late):g}", n_fa=len(D["frows"]), fa0=min(ys), fa1=max(ys), d20_n=dd[1920]["n"] if 1920 in dd else 0,
+             missing_txt="·".join(f"{k}년대" for k in missing) or "없음", missing_txt_en=" and ".join(f"the {k}s" for k in missing) or "no decade")
+    title, intro, paras = fig_texts_h0.timeline(lang, v)
+    leg = fig_explain.legend([("bar", "var(--s1)", "표 A2 (행, ± 인용 오차)" if ko else "Table A2 (rows, ± quoted error)"),
+                              ("band", "var(--fg3)", "Huchra 목록 (10년 단위 사분위 범위·중앙값)" if ko else "Huchra's list (decade quartiles and median)")] + _leg_refs(ko))
+    return fig_explain.figure(lang, title, intro, chart_timeline(D["decades"], D["frows"], D["codes"], lang, H), paras, leg)
+
+
+def fig_zoom(lang, D, H):
+    ko = lang == "ko"
+    out = [r for r in D["frows"] if not 40 <= float(r["h0"]) <= 110]
+    p, q = float(REFS["planck18"]["value"]), float(REFS["riess22"]["value"])
+    v = dict(n_out=len(out), n_fa=len(D["frows"]), n_between=sum(1 for r in D["frows"] if p < float(r["h0"]) < q),
+             out_txt=", ".join(f'{r["year"]}년 {r["h0"]}' for r in out) or "없음", out_txt_en=", ".join(f'{r["year"]}: {r["h0"]}' for r in out) or "none")
+    title, intro, paras = fig_texts_h0.zoom(lang, v)
+    leg = fig_explain.legend([("bar", "var(--s1)", "표 A2 (행)" if ko else "Table A2 (rows)")] + ([("tri", "var(--s1)", "40~110 밖" if ko else "Outside 40–110")] if out else []) + [
+                              ("band", "var(--fg3)", "Huchra 목록 (10년 단위)" if ko else "Huchra's list (decades)")] + _leg_refs(ko))
+    return fig_explain.figure(lang, title, intro, chart_zoom(D["decades"], D["frows"], lang, H), paras, leg)
+
+
+def fig_types(lang, D, H):
+    prim = [r for r in D["types"] if r["kind"] == "primary"]
+    dn = {int(d["decade"]): int(d["n"]) for d in D["decades"]}
+    by = {}
+    for r in prim:
+        by.setdefault(int(r["decade"]), []).append(r)
+    big = max(dn, key=lambda k: dn[k])
+    top = max(by[big], key=lambda r: int(r["n"]))
+    k = int(top["n"])
+    first = {}
+    for r in sorted(prim, key=lambda r: int(r["decade"])):
+        first.setdefault(r["code"], int(r["decade"]))
+    few = [k for k in sorted(dn) if dn[k] < 10]
+    v = dict(few="·".join(f"{k}년대 {dn[k]}건" for k in few), few_en=", ".join(f"the {k}s: {dn[k]}" for k in few), d=big, code=top["code"], name=TYPE_PRIMARY.get(top["code"], "?"), k=k, n=dn[big], pct=f"{100 * k / dn[big]:.0f}",
+             top_txt=f"행이 가장 많은 {big}년대({dn[big]}건)에 가장 많이 쓰인 부호는 {top['code']} · {TYPE_PRIMARY.get(top['code'], '?')}({k}건)다.",
+             top_txt_en=f"In the {big}s, the decade with the most rows ({dn[big]}), the most common code is {top['code']} · {TYPE_PRIMARY.get(top['code'], '?')} ({k} rows).")
+    title, intro, paras = fig_texts_h0.types(lang, v)
+    return fig_explain.figure(lang, title, intro, chart_types(D["types"], D["decades"], lang, H), paras)
+
+
+def fig_urel_yearly(lang, D, N, H):
+    ys = [y for y in D["yearly"] if y["urel_median"]]
+    y = max(ys, key=lambda y: (int(y["n"]), y["year"]))
+    v = dict(hl=N["h1_hu_med"], hl_ci=N["h1_hu_med_ci"], n_years=len(D["yearly"]), n_small=N["h1_hu_small"],
+             yr=dict(year=y["year"], n=y["n"], med=f'{float(y["urel_median"]) * 100:.1f}', q1=f'{float(y["urel_q1"]) * 100:.1f}', q3=f'{float(y["urel_q3"]) * 100:.1f}'))
+    title, intro, paras = fig_texts_h0.urel_yearly(lang, v)
+    ko = lang == "ko"
+    leg = fig_explain.legend([("band", "var(--fg3)", "사분위 범위(가운데 절반)" if ko else "Interquartile range (middle half)"), ("dot", "var(--fg2)", "중앙값" if ko else "Median"),
+                              ("cross", "var(--fg3)", "3건 미만인 해(건수만)" if ko else "Fewer than 3 rows (count only)")])
+    return fig_explain.figure(lang, title, intro, chart_urel_yearly(D["yearly"], lang, H), paras, leg)
+
+
+def fig_urel_points(lang, D, N, H):
+    def rel(r): return float(r["u_mean"]) / float(r["h0"])
+    lo = min(D["frows"], key=lambda r: (rel(r), r["year"]))
+    ex = D["frows"][0]
+
+    def pack(r): return dict(year=r["year"], h0=r["h0"], err=r["err_as_printed"], pct=f"{rel(r) * 100:.1f}")
+    v = dict(n=len(D["frows"]), hl=N["h1_fa_med"], hl_ci=N["h1_fa_med_ci"], lo=pack(lo), ex=pack(ex))
+    title, intro, paras = fig_texts_h0.urel_points(lang, v)
+    return fig_explain.figure(lang, title, intro, chart_urel_points(D["frows"], lang, H), paras)
+
+
+def fig_rates(lang, D, H):
+    ko = lang == "ko"
+    h3 = D["h3"]
+    idx = (("miss_1sigma", 0.317, False), ("miss_2sigma", 0.046, False), ("surprise", 0.020, False), ("inside_iq", 0.500, True))
+    cells = [(HU, "planck18"), (HU, "riess22"), (FA, "planck18"), (FA, "riess22")]
+    bad = sum(1 for col, norm, rev in idx for s_, ref in cells
+              if ((float(h3[(s_, 1929, ref, "year")][col]) < norm) if rev else (float(h3[(s_, 1929, ref, "year")][col]) > norm)))
+    hp = h3[(HU, 1929, "planck18", "year")]
+    v = dict(hp_m2=pct(hp["miss_2sigma"]), hr_m2=pct(h3[(HU, 1929, "riess22", "year")]["miss_2sigma"]),
+             fp_m2=pct(h3[(FA, 1929, "planck18", "year")]["miss_2sigma"]), fr_m2=pct(h3[(FA, 1929, "riess22", "year")]["miss_2sigma"]),
+             n_bad=bad, n_all=len(idx) * len(cells),
+             ex=dict(n=hp["n"], k=round(float(hp["miss_2sigma"]) * int(hp["n"])), pct=pct(hp["miss_2sigma"])))
+    title, intro, paras = fig_texts_h0.rates(lang, v)
+    leg = fig_explain.legend([("dot", "var(--fg2)", "Huchra 목록" if ko else "Huchra's list"), ("diamond", "var(--fg2)", "표 A2" if ko else "Table A2"),
+                              ("dot", "var(--s3)", "Planck 2018 기준" if ko else "Against Planck 2018"), ("dot", "var(--s2)", "Riess 외 2022 기준" if ko else "Against Riess et al. 2022"),
+                              ("dash", "var(--ref)", "정규 기대(z 가 표준정규분포를 따를 때)" if ko else "Normal expectation (if z followed a standard normal)")])
+    return fig_explain.figure(lang, title, intro, chart_rates(D["h3"], lang, H), paras, leg)
+
+
+def fig_zpanels(lang, D, H):
+    def cnt(zc):
+        zs = [float(r[zc]) for r in D["frows"] if r[zc]]
+        return dict(n=len(zs), n2=sum(1 for z in zs if abs(z) > 2), up=sum(1 for z in zs if z > 0))
+    ex = D["frows"][0]
+    clipped = sum(1 for r in D["frows"] for zc in ("z_planck18", "z_riess22") if r[zc] and abs(float(r[zc])) > 8)
+    v = dict(p=cnt("z_planck18"), r=cnt("z_riess22"), clipped=clipped,
+             ex=dict(year=ex["year"], h0=ex["h0"], err=ex["err_as_printed"], z=fig_explain.num(ex["z_planck18"]), **_z_words(float(ex["z_planck18"]))))
+    title, intro, paras = fig_texts_h0.zpanels(lang, v)
+    ko = lang == "ko"
+    leg = fig_explain.legend([("dot", "var(--s3)", "Planck 2018 기준 z (위)" if ko else "z against Planck 2018 (top)"), ("dot", "var(--s2)", "Riess 외 2022 기준 z (아래)" if ko else "z against Riess et al. 2022 (bottom)"),
+                              ("tri", "var(--fg2)", "±8 밖(잘림)" if ko else "Beyond ±8 (clipped)"), ("dash", "var(--ref)", "z = ±1, ±2")])
+    return fig_explain.figure(lang, title, intro, chart_z_panels(D["frows"], lang, H), paras, leg)
+
+
+def _z_words(z):
+    side_ko, side_en = ("기준값보다 작고", "below the reference") if z > 0 else ("기준값보다 크고", "above the reference")
+    a = abs(z)
+    if a <= 1:
+        return dict(ko=f"{side_ko}, 오차 막대가 기준값에 닿는다.", en=f"{side_en}, with its error bar reaching it.")
+    if a <= 2:
+        return dict(ko=f"{side_ko}, 오차 막대 끝(±1)보다 멀지만 ±2 안이다.", en=f"{side_en}, beyond the end of its error bar (±1) but within ±2.")
+    return dict(ko=f"{side_ko}, 오차의 2배보다 멀다.", en=f"{side_en}, more than twice its error away.")
+
+
+def fig_tail(lang, D, ref, zcol, r, H):
+    ko = lang == "ko"
+    zs = [abs(float(x[zcol])) for x in D["frows"] if x[zcol]]
+    k2 = sum(1 for z in zs if z > 2)
+    v = dict(ref=REFS[ref][lang], n=len(zs), k2=k2, r2=f"{100 * k2 / len(zs):.1f}", nu=r["nu"], s=r["scale"], zmax=f"{max(zs):.2f}")
+    title, intro, paras = fig_texts_h0.tail(lang, v)
+    leg = fig_explain.legend([("line", "var(--s1)", "관측(표 A2)" if ko else "Observed (Table A2)"), ("dash", "var(--ref)", "정규분포" if ko else "Normal"),
+                              ("line", REF_COLOR[ref], "Student-t")])
+    return fig_explain.figure(lang, title, intro, chart_tail(D["frows"], zcol, float(r["nu"]), float(r["scale"]), ref, lang, H), paras, leg)
 
 
 # ------------------------------------------------------------------ pages
@@ -644,10 +780,8 @@ def build(lang, base, H, out_root):
     pcards = (f'<a class="card" href="timeline.html"><b>{t["timeline"]}</b><small>{"1929~2022년 H0 값과 오차의 흐름, 방법 부호의 변화, 사건" if ko else "H0 values and errors from 1929 to 2022, the changing mix of methods, events"}</small></a>'
               f'<a class="card" href="method.html"><b>{t["method"]}</b><small>{"자료원·이용 조건·오차 수준·결정·부호 표·한계" if ko else "Sources, terms of use, error levels, decisions, code tables, limits"}</small></a>')
     ef = event_facts(D["codes"])
-    cap_tl = ("세로축은 H0 값(km s⁻¹ Mpc⁻¹)이다. 파란 점은 표 A2 의 행(오차 막대는 ± 인용 오차, 비대칭이면 평균), 회색 띠는 Huchra 목록 10년 단위의 사분위 범위와 중앙값(건수 표시), 점선은 두 기준값. 세로축 로그. 위의 사건은 연대기 면에 근거를 적었다." if ko
-              else "Vertical axis: H0 (km s⁻¹ Mpc⁻¹). Blue dots: rows of Table A2 (bars: ± quoted error, the mean if asymmetric). Gray bands: quartile range and median of Huchra's list per decade (with counts). Dashed lines: the two references. Log vertical axis. The events along the top are documented on the chronology page.")
     body = (f'<h1>{esc(t["title"])}</h1><p class="lead">{esc(t["lead"])}</p>' + takeaway(lang, tk) + f'<h2 id=glance>{t["glance"]}</h2>' + stats_h +
-            f'<figure><div class="legend"><span style="--c:var(--s1)">{"표 A2 (행)" if ko else "Table A2 (rows)"}</span><span style="--c:var(--fg3)">{"Huchra 목록 (10년 단위 집계)" if ko else "Huchra (decade aggregates)"}</span><span class="dash" style="--c:var(--s3)">Planck 2018</span><span class="dash" style="--c:var(--s2)">{"Riess 외 2022" if ko else "Riess et al. 2022"}</span></div>{chart_timeline(D["decades"], D["frows"], D["codes"], lang, H)}<figcaption>{esc(cap_tl)}</figcaption></figure>' +
+            fig_timeline(lang, D, H) +
             what + f'<h2 id=sources>{"두 자료원과 이용 조건" if ko else "The two sources and their terms"}</h2>' + sources_block(lang, H) + h2line +
             f'<h2 id=metrics>{t["metrics"]}</h2><div class="cards">{cards}</div><h2 id=pages>{t["pages"]}</h2><div class="cards">{pcards}</div>' + credit(lang, H))
     (d / "index.html").write_text(page(lang, t["nav"], body, 2, "hubble"), encoding="utf-8")
@@ -663,17 +797,17 @@ def build(lang, base, H, out_root):
             parts.append(spec_block(m, lang, N))
         parts.append(f"<p class='src'>{esc(SRC_NOTE[lang])}</p>")   # 1.3.5: what the two lists and the two references are, on every metric page
         if mid == "h1":
-            parts.append(f'<figure>{chart_urel_yearly(D["yearly"], lang, H)}<figcaption>{"Huchra 목록, 연도별 집계: 막대는 그해 상대 오차의 사분위 범위, 점은 중앙값. 3건 미만인 해는 × 표시만(건수는 툴팁). 세로축은 상대 오차(인용 오차 ÷ H0)이고 아래일수록 오차를 작게 밝혔다는 뜻이다. 로그 축이라 같은 세로 거리가 같은 배수다(1%에서 10%, 10%에서 100%가 같은 거리)." if ko else "Huchra’s list, aggregated by year: bar = quartile range of the relative error, dot = median. Years with fewer than three rows show only an × (count in the tooltip). The vertical axis is the relative error (quoted error ÷ H0): lower means a smaller stated error. The scale is logarithmic: equal vertical distances are equal ratios (1% to 10% is as far as 10% to 100%)."}</figcaption></figure>')
-            parts.append(f'<figure>{chart_urel_points(D["frows"], lang, H)}<figcaption>{"표 A2, 행마다 점 하나: 상대 오차(인용 오차 ÷ H0, 비대칭이면 평균). 세로축 로그." if ko else "Table A2, one dot per row: relative error (quoted error ÷ H0, the mean if asymmetric). Log vertical axis."}</figcaption></figure>')
+            parts.append(fig_urel_yearly(lang, D, N, H))
+            parts.append(fig_urel_points(lang, D, N, H))
             parts.append(h1_table(D, lang, t, table))
         if mid == "h3":
-            parts.append(f'<figure><div class="legend"><span style="--c:var(--s3)">Planck 2018</span><span style="--c:var(--s2)">{"Riess 외 2022" if ko else "Riess et al. 2022"}</span><span class="dash" style="--c:var(--ref)">{"정규 기대" if ko else "Normal expectation"}</span></div>{chart_rates(D["h3"], lang, H)}<figcaption>{"채운 점은 Huchra 목록(1929~), 빈 점은 표 A2(1976~2019). 세로선은 연도 군집 부트스트랩 95% 구간(목록에 적힌 연도를 묶음으로 다시 뽑아 같은 계산을 되풀이했을 때 비율이 흔들리는 범위). 점선보다 위에 있으면 기대보다 자주 벗어났다는 뜻이다. 다만 사분위 안 비율(|z| < 0.674)만은 방향이 반대여서, 기대 50%보다 낮을수록 오차를 좁게 밝혔다는 뜻이다." if ko else "Filled dots: Huchra’s list (from 1929); open dots: Table A2 (1976–2019). Vertical bars: 95% year-cluster bootstrap intervals (the range over which a share moves when the years recorded in the lists are resampled, as whole clusters, and the count repeated). A dot above the dashed line means values fell outside more often than expected. The share within the quartiles (|z| < 0.674) alone runs the other way: the further below the expected 50%, the narrower the stated errors were."}</figcaption></figure>')
-            parts.append(f'<figure>{chart_z_panels(D["frows"], lang, H)}<figcaption>{"표 A2 의 행마다 z = (기준값 − x)/u_x. 추정값이 기준값보다 작으면 z 가 양수(위쪽), 크면 음수(아래쪽)이고, ±1 안이면 그 추정의 오차 막대가 기준값에 닿는다. 점선은 z = ±1과 ±2다(눈금 글자는 0과 ±2 쪽에만 적었다). 위: Planck 2018 기준(2018년의 반올림 Planck 값 행 제외), 아래: Riess 외 2022 기준. ±8 을 넘는 값은 세모로 잘랐다." if ko else "z = (reference − x)/u_x for each Table A2 row: an estimate below the reference has a positive z (upper half), one above it a negative z, and within ±1 its error bar reaches the reference. Dashed lines: z = ±1 and ±2 (tick labels are given for 0 and ±2 only). Top: against Planck 2018 (the 2018 rounded-Planck row left out); bottom: against Riess et al. 2022. Triangles: clipped beyond ±8."}</figcaption></figure>')
+            parts.append(fig_rates(lang, D, H))
+            parts.append(fig_zpanels(lang, D, H))
             parts.append(h3_table(D, lang, t, table))
         if mid == "h4":
             for ref, zcol in (("planck18", "z_planck18"), ("riess22", "z_riess22")):
                 r = D["h4"][(FA, 1929, ref)]
-                parts.append(f'<figure><div class="legend"><span style="--c:var(--fg2)">{"관측(표 A2)" if ko else "Observed (Table A2)"}</span><span style="--c:var(--s1)">{"정규분포" if ko else "Normal"}</span><span class="dash" style="--c:{REF_COLOR[ref]}">Student-t</span></div>{chart_tail(D["frows"], zcol, float(r["nu"]), float(r["scale"]), ref, lang, H)}<figcaption>{"표 A2, " + REFS[ref]["ko"] + " 기준: |z| 가 가로축 값을 넘는 행의 비율(세로축 로그)과 맞춘 Student-t(ν = " + r["nu"] + ", s = " + r["scale"] + "). Huchra 목록은 집계만 싣는 자료라 그림을 그리지 않는다. 읽는 법: 관측 선이 정규분포 곡선보다 위에 있으면, 밝힌 오차가 맞을 때 기대되는 것보다 기준값에서 크게 벗어난 추정이 많았다는 뜻이다." if ko else "Table A2 against " + REFS[ref]["en"] + ": share of rows whose |z| exceeds the value on the horizontal axis (log vertical axis) and the fitted Student-t (ν = " + r["nu"] + ", s = " + r["scale"] + "). Huchra’s list is shown only in aggregate, so it has no such plot. Reading: where the observed line lies above the normal curve, more estimates lay far from the reference than the stated errors would lead one to expect."}</figcaption></figure>')
+                parts.append(fig_tail(lang, D, ref, zcol, r, H))
             parts.append(h4_table(D, lang, t, table))
         if m["file"]:
             parts.append(f'<p class="files"><a href="../../data/{m["file"]}">{t["download"]}: {m["file"]}</a></p>')
@@ -694,10 +828,10 @@ def build(lang, base, H, out_root):
               "Each event is listed with its source in the events table on this page."])
     tbody = (f'<h1>{"허블 상수 연대기 1929~2022" if ko else "Hubble constant chronology, 1929–2022"}</h1><p class="lead">{"두 집성의 H0 값과 오차의 흐름을 한 그림에 모으고, 측정 방법 부호의 분포가 10년마다 어떻게 바뀌었는지를 함께 본다." if ko else "The H0 values and errors of the two compilations in one picture, with the decade-by-decade mix of method codes alongside."}</p>' +
              takeaway(lang, tl_tk) +
-             f'<figure><div class="legend"><span style="--c:var(--s1)">{"표 A2 (행)" if ko else "Table A2 (rows)"}</span><span style="--c:var(--fg3)">{"Huchra 목록 (10년 단위 집계)" if ko else "Huchra (decade aggregates)"}</span><span class="dash" style="--c:var(--s3)">Planck 2018</span><span class="dash" style="--c:var(--s2)">{"Riess 외 2022" if ko else "Riess et al. 2022"}</span></div>{chart_timeline(D["decades"], D["frows"], D["codes"], lang, H)}<figcaption>{esc(cap_tl)}</figcaption></figure>' +
-             f'<figure>{chart_zoom(D["decades"], D["frows"], lang, H)}<figcaption>{"같은 요소를 1970년부터 선형 축(40~110 km s⁻¹ Mpc⁻¹)으로. 범위 밖 값은 세모." if ko else "The same elements from 1970 on a linear axis (40–110 km s⁻¹ Mpc⁻¹); triangles: outside the range."}</figcaption></figure>' +
+             fig_timeline(lang, D, H) +
+             fig_zoom(lang, D, H) +
              f'<h2 id=events>{"사건" if ko else "Events"}</h2>' + table([t["year"], ("사건" if ko else "Event"), ("근거" if ko else "Basis")], evrows, cls="") +
-             f'<h2 id=methods-mix>{"측정 방법의 변화" if ko else "The changing mix of methods"}</h2><figure>{chart_types(D["types"], D["decades"], lang, H)}<figcaption>{"Huchra 목록, 10년 단위 × 1차 Type 부호(파일 범례 그대로). 칸의 색은 그 10년 행 가운데의 비율, 숫자는 건수. 10건 미만인 부호는 「그 밖의 부호」로 묶었다. 1929년 이후 오차 있는 행 기준." if ko else "Huchra’s list by decade and primary type code (file legend as printed). Shade: share of the decade’s rows; number: count. Codes with fewer than 10 rows are folded into “other codes”. Rows with an error from 1929 on."}</figcaption></figure>' + f"<p class='src'>{esc(TYPE_GLOSS[lang])}</p>" +
+             f'<h2 id=methods-mix>{"측정 방법의 변화" if ko else "The changing mix of methods"}</h2>' + fig_types(lang, D, H) + f"<p class='src'>{esc(TYPE_GLOSS[lang])}</p>" +
              f'<h2 id=table-a2>{"표 A2 전체" if ko else "Table A2 in full"}</h2>' + a2_table(D["frows"], lang, t, table, esc) +
              f'<p class="files"><a href="../../data/h0_faerber2020.csv">{t["download"]}: h0_faerber2020.csv</a> <a href="../../data/h0_h3_rows_faerber.csv">{t["download"]}: h0_h3_rows_faerber.csv</a> <a href="../../data/h0_huchra_decades.csv">{t["download"]}: h0_huchra_decades.csv</a> <a href="../../data/h0_huchra_types.csv">{t["download"]}: h0_huchra_types.csv</a></p>' + credit(lang, H))
     (d / "timeline.html").write_text(page(lang, t["timeline"], tbody, 2, "hubble", leaf=leaf(lang, t, "timeline.html")), encoding="utf-8")

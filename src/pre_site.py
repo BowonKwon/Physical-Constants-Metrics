@@ -4,6 +4,8 @@ Called from build_site.build() once per language, like h0_site.build(). Every nu
 data/derived/pre_codata_values.csv, pre_codata_hf.csv and constants_long.csv (made by src/pre_codata.py)."""
 from __future__ import annotations
 
+import fig_explain
+import fig_texts_pre
 import csv
 import math
 from pathlib import Path
@@ -99,8 +101,8 @@ def _sl(v):
 
 
 def chart(D, lang, H, W=900, ph=150):
-    """Five panels: deviation from the 2022 value in ppm on a symmetric log axis, pre-CODATA reviews (filled)
-    and CODATA editions 1969-2018 (open), bars = ± one standard uncertainty."""
+    """Five panels: deviation from the 2022 value in ppm on a symmetric log axis, pre-CODATA reviews (blue)
+    and CODATA editions 1969-2018 (green), both filled; bars = ± one standard uncertainty."""
     esc = H["esc"]
     Lm, R, Tp, gap = 56, 20, 40, 30   # 1.3.6: room for the name of the vertical axis above the first panel
     Hh = Tp + 5 * (ph + gap) + 20
@@ -132,7 +134,7 @@ def chart(D, lang, H, W=900, ph=150):
         for y, x, u, kind in pts:
             p, lo, hi = (x - x22) / x22 * 1e6, (x - u - x22) / x22 * 1e6, (x + u - x22) / x22 * 1e6
             col = "var(--s1)" if kind == "pre" else "var(--s3)"
-            fill = col if kind == "pre" else "var(--card)"
+            fill = col   # 1.3.9: both series filled, told apart by colour (an open circle means a missed reference on the constant pages)
             tip = f"{y}: {p:+,.1f} ppm (± {u / abs(x22) * 1e6:,.1f} ppm)".replace(",", " ").replace("-", "−")
             o.append(f'<line x1="{X(y):.1f}" x2="{X(y):.1f}" y1="{Y(lo):.1f}" y2="{Y(hi):.1f}" stroke="{col}" stroke-width="1.6"/>'
                      f'<circle class="dot" cx="{X(y):.1f}" cy="{Y(p):.1f}" r="4" fill="{fill}" stroke="{col}" stroke-width="1.6" data-tip="{esc(tip)}"/>')
@@ -140,6 +142,20 @@ def chart(D, lang, H, W=900, ph=150):
         o.append(f'<text x="{X(yv):.1f}" y="{Hh - 6}" text-anchor="middle">{yv}</text>')
     o.append("</svg>")
     return "".join(o)
+
+
+
+def fig_chart(lang, D, N, H):
+    """1.3.9: the five-constant chart with its explanation."""
+    ko = lang == "ko"
+    pre = [r for r in D["vals"] if int(r["review"]) < 1969]
+    n_out = sum(1 for r in pre if abs(float(r["z_vs_2022"])) > 1)   # z on the unified scale, from pre_codata.py
+    h = next(r for r in D["vals"] if r["review"] == "1929" and r["qid"] == "h")
+    v = dict(n_pre_all=len(pre), n_out=n_out, h29_pct=N["h29"].lstrip("-"), h29_round=abs(float(N["h29"])) * 1e4 != abs(float(h["ppm_vs_2022"])), h29_ppm=f'{abs(float(h["ppm_vs_2022"])):,.0f}'.replace(",", " "), zh29=N["zh29"].lstrip("-"))
+    title, intro, paras = fig_texts_pre.chart(lang, v)
+    leg = fig_explain.legend([("bar", "var(--s1)", "CODATA 이전 검토(± 표준불확도)" if ko else "Reviews before CODATA (± standard uncertainty)"),
+                              ("bar", "var(--s3)", "CODATA 판 1969~2018" if ko else "CODATA editions 1969–2018")])
+    return fig_explain.figure(lang, title, intro, chart(D, lang, H), paras, leg)
 
 
 # ------------------------------------------------------------------ tables
@@ -245,12 +261,10 @@ def build(lang, base, H, out_root):
            f"Against the 2022 edition the surprise index is {N['si22']}% and the interquartile index {N['iq22']}%. That more than half of the later values lie outside the stated 98% interval holds whichever edition is the reference.",
            f"Only the Birge ratio R_B (Henrion & Fischhoff's eq. (1), R_B² = Σz²/(N−1)) differs: {N['rb73']} against the {N['hf_rb']} of Table I. No sensitivity variant matches R_B, IQ and SI of Table I together, so the cause of the difference is not known.",
            f"Birge's 1929 h and e were {N['h29'].lstrip('-')}% and {N['e29'].lstrip('-')}% below the 2022 values: {N['zh29']} and {N['ze29']} times the standard uncertainty obtained from his probable errors."])
-    cap = ("세로축은 2022 판 값에서의 편차(ppm — 백만분의 1)로, 0 근처는 선형이고 바깥은 로그인 대칭 로그 축이다. 채운 점은 CODATA 이전 검토(1929~1963), 빈 점은 1969~2018 판, 세로 막대는 ± 표준 불확도(확률오차는 1.4826 배). 2022 판에서 h·e·N_A 는 정의값이라 0 이다." if ko else
-           "Vertical axis: deviation from the 2022 value in ppm (parts per million), on a symmetric log scale (linear near zero, logarithmic beyond). Filled dots: reviews before CODATA (1929–1963); open dots: the 1969–2018 editions; bars: ± one standard uncertainty (probable errors × 1.4826). In 2022 h, e and N_A are exact, hence zero.")
     hf_lead = (f"<p>{esc(HF_CITE)} 의 표 I 「Recommended values」 줄(끝에서 두 번째, 794쪽)은 R_B {N['hf_rb']}, IQ {N['hf_iq']}%, SI {N['hf_si']}%(n = {N['hf_n']})를 보고했다. 본문(795쪽)에 따르면 다섯 상수를 「1929~1969년 검토 8개」에서 1973 값과 견주었다. 확률오차는 1.48 배해 표준편차로 바꿨다(797쪽 각주 21). H&F 는 8개를 나열하지 않았지만, 그 참고문헌(3·17·19·28·29번)이 가리키는 검토 7개(1929·1941·1952·1955·1957·1963·1969)에 다섯 상수를 모두 실은 1950 서한을 더하면 8개다. 아래는 이 8개로 같은 정의에 따라 다시 계산한 값과, 조건을 하나씩 바꾼 감도다. IQ·SI 는 표 I 과 같은 건수이고(표 I 은 소수점 아래를 버린 값) R_B 만 다르다. N_A 척도를 환산하지 않으면 R_B 가 {N['rb_nf']}, 확률오차를 바꾸지 않으면 {N['rb_pe']} 로 커지지만 그때는 IQ·SI 가 어긋난다. 1957 을 빼고 조정마다 한 번씩만 세면 R_B {N['rb_no57']}, IQ {N['iq_no57']}%, SI {N['si_no57']}% 다.</p>" if ko else
                f"<p>The \"Recommended values\" row of Table I in {esc(HF_CITE)} (second to last, p. 794) reports R_B {N['hf_rb']}, IQ {N['hf_iq']}% and SI {N['hf_si']}% (n = {N['hf_n']}); the text (p. 795) says five constants in \"eight reviews from 1929 to 1969\" were set against the 1973 values. Probable errors were multiplied by 1.48 (p. 797, note 21). They did not list the eight, but the seven reviews their references point to (refs. 3, 17, 19, 28, 29: 1929, 1941, 1952, 1955, 1957, 1963, 1969) plus the 1950 letter, which gives all five constants, make eight. Below are the indices recomputed for these eight with their definitions, and sensitivity variants that change one condition at a time. IQ and SI give the same counts as Table I (which drops the decimals); only R_B differs. Leaving N_A on its original scale raises R_B to {N['rb_nf']}, and leaving probable errors unconverted to {N['rb_pe']}, but IQ and SI then no longer match. Counting each adjustment once (without 1957) gives R_B {N['rb_no57']}, IQ {N['iq_no57']}% and SI {N['si_no57']}%.</p>")
     body = (f'<h1>{esc(t["title"])}</h1><p class="lead">{esc(t["lead"])}</p>' + takeaway(lang, tk) +
-            f'<h2 id=figure>{t["fig"]}</h2><figure><div class="legend"><span style="--c:var(--s1)">{"CODATA 이전 검토" if ko else "Reviews before CODATA"}</span><span style="--c:var(--s3)">{"CODATA 판 1969~2018" if ko else "CODATA editions 1969–2018"}</span></div>{chart(D, lang, H)}<figcaption>{esc(cap)}</figcaption></figure>' +
+            f'<h2 id=figure>{t["fig"]}</h2>' + fig_chart(lang, D, N, H) +
             timeline(lang) +
             f'<h2 id=hf>{t["hf"]}</h2><div class="prose">{hf_lead}</div>' + hf_table(D, lang, t, table, esc) +
             f'<h2 id=values>{t["values"]}</h2>' + values_table(D, lang, t, table, esc) +
